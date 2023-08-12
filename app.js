@@ -1,7 +1,7 @@
 // Imports
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 3001
 
 
 // Static Files
@@ -30,7 +30,17 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard', { text: 'Dashboard Page'})
 })
 
+app.get('/confirmaremail', (req, res) => {
+    res.render('confirmaremail', { text: 'confirmaremail Page'})
+})
 
+app.get('/esquecisenha', (req, res) => {
+    res.render('esquecisenha', { text: 'esquecisenha Page'})
+})
+
+app.get('/produto', (req, res) => {
+    res.render('produto', { text: 'produto Page'})
+})
 
 
 

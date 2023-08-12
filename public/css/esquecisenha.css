@@ -1,0 +1,41 @@
+html, body {
+    height: 100%;
+}
+
+.container{
+    background: linear-gradient(-90deg, rgb(240, 240, 240), rgb(255, 255, 255));
+    height: auto !important;
+    min-height: 100%;
+}
+
+.loginContent {
+    position: relative;
+    top: 200px;
+}
+
+.formlogin {
+    margin-top: 30px;
+}
+
+.formlogin input {
+    border-radius: 15px;
+}
+
+.formlogin .uk-button {
+    width: 227px;
+    border-radius: 15px;
+    background: rgb(3, 43, 83) !important;
+    color: #fff;
+}
+
+.helpLink{
+    margin-top: 20px;
+}
+
+.helpLink a {
+    display: block;
+    color: rgb(0, 27, 63);
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+}
