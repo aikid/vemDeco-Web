@@ -10,7 +10,7 @@
  
  .navbar{
     background-color: rgb(3, 43, 83);
-    padding: 0px 15px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -34,8 +34,6 @@
     color: white;
     font-size: larger;
     font-style: oblique;
-    border-right: 1px solid #fff;
-    padding-right: 15px;
  }
 
  ul{
@@ -51,41 +49,24 @@
     height: 80%;
  }
 
- .btlogin {
+.btlogin{
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
     padding: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: space-between;
-}
-
-.btlogin h5 {
-    color: rgb(255, 255, 255) !important;
-    margin-right: 15px;
-    margin-bottom: 0px;
 }
 
 .btlogin a {
-    color: rgb(255, 255, 255) !important;
+    color: rgb(3, 43, 83) !important;
     text-decoration: none !important;
     margin-top: 5px !important;
 }
 
 .btlogin .login-icon{
     border-radius: 50px;
-    border: 2px solid rgb(255, 255, 255);
+    border: 2px solid rgb(3, 43, 83);
     padding: 5px;
     width: 30px;
     height: 30px;
-}
-
-.info {
-    text-align: center;
-}
-
-.options {
-    font-size: 12px;
-    text-decoration: underline !important;
 }
 
 #menuToggle
@@ -245,23 +226,32 @@
   color: #25d366 !important;
 }
 
-.sales,.house {
-    min-width: 60px !important;
-    height: 35px !important;
-    border-radius: 10px !important;
-    font-size: 14px !important;
+.container{
+    background: linear-gradient(-90deg, rgb(240, 240, 240), rgb(255, 255, 255));
+    height: auto !important;
+    min-height: 100%;
 }
 
-.sales{
-    background:rgb(255, 0, 0) !important;
+.loginContent {
+    position: relative;
+    top: 200px;
 }
 
-.house{
-    background: rgb(247 193 0) !important;
+.formlogin {
+    margin-top: 30px;
+    position: relative;
+    right: 40%;
 }
 
-.uk-card-title{
-    margin-top: 10px;
+.formlogin input {
+    border-radius: 15px;
+}
+
+.formlogin .uk-button {
+    width: 227px;
+    border-radius: 15px;
+    background: rgb(3, 43, 83) !important;
+    color: #fff;
 }
 
 @media(max-width: 768px){
@@ -298,7 +288,28 @@
     }
 }
 
-.linkservice {
-  color: #0000FF !important;
-  margin-right: 20px !important;
+.uk-textarea {
+    border-radius: 15px !important;
 }
+
+.uk-inline, .uk-textarea {
+    width: 400px !important;
+}
+
+.content-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: stretch;
+    align-items: center;
+}
+
+.title {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+}
+    

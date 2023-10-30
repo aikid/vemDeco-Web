@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Free Web tutorials">
+        <meta name="keywords" content="HTML, CSS, JavaScript">
+        <meta name="author" content="John Doe">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>vemDeco - Entre em contato</title>
+        <link rel="stylesheet" href="css/contato.css">
+        <link rel="stylesheet" href="css/uikit.min.css" />
+        <script src="js/uikit.min.js"></script>
+        <script src="js/uikit-icons.min.js"></script>
+        <link rel="icon" href="img/favicon.ico">
+    </head>
+    <body>
+        <nav class="navbar">
+            <div id="menuToggle">
+                <!--
+                A fake / hidden checkbox is used as click reciever,
+                so you can use the :checked selector on it.
+                -->
+                <input type="checkbox" />
+                
+                <!--
+                Some spans to act as a hamburger.
+                
+                They are acting like a real hamburger,
+                not that McDonalds stuff.
+                -->
+                <span></span>
+                <span></span>
+                <span></span>
+                
+                <!--
+                Too bad the menu has to be inside of the button
+                but hey, it's pure CSS magic.
+                -->
+                <ul id="menu">
+                    <a href="#"><li>Home</li></a>
+                    <a href="#"><li>About</li></a>
+                    <a href="#"><li>Info</li></a>
+                    <a href="#"><li>Contact</li></a>
+                    <a href="https://erikterwan.com/" target="_blank"><li>Show me more</li></a>
+                </ul>
+            </div>
+            <div class="logo">
+                <a href="/" data-link>
+                    <img src="img/vem-deco-plataforma-digital-logo.png">
+                </a>
+            </div>
+      
+            <ul class="nav-items menuDesktop">
+                <li><a href="/" data-link>Home</a></li>
+                <li><a href="/about" data-link>About</a></li>
+                <li><a href="/contact" data-link>Contact us</a></li>
+                <li><a href="/" data-link>Home</a></li>
+                <li><a href="/about" data-link>About</a></li>
+                <li><a href="/contact" data-link>Contact us</a></li>
+            </ul>
+
+            <ul class="nav-items">
+                <li class="btlogin">
+                    <a href="/login" data-link>
+                    <span class="login-icon" uk-icon="user"></span>
+                        Login
+                    </a>
+                </li>
+            </ul>
+        </nav>
+      
+        <div id="home">
+            <div class="content-grid uk-text-center">
+                    <div class="grid-mapa">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3666.7681288118083!2d-46.771864325146055!3d-23.215119348962276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cede5fc9bf04bf%3A0xf65c5477e610ad9!2sR.%20Alemanha%20-%20Jardim%20Europa%2C%20Campo%20Limpo%20Paulista%20-%20SP%2C%2013232-030!5e0!3m2!1spt-BR!2sbr!4v1698688514153!5m2!1spt-BR!2sbr" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="grid-formulario">
+                        
+                        <form class="formlogin">
+                            <h3 class="title"> Entre em contato conosco</h3>
+                            <P class="subtitle">Retornaremos sua proposta o mais breve possível</P>
+                            <div class="uk-margin">
+                                <div class="uk-inline">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Nome:">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline">
+                                    <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                                    <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Email:">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline">
+                                    <span class="uk-form-icon" uk-icon="icon: receiver"></span>
+                                    <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Telefone:">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline">
+                                <textarea class="uk-textarea" rows="5" placeholder="Motivo do Contato" aria-label="Textarea"></textarea>
+                            </div>
+                            </div>
+                            <button class="uk-button">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="uk-text-center" uk-grid>
+                    <div class="uk-width-1-3@m">
+                        <div class="uk-card uk-card-default uk-card-body">
+                            <img src="img/vemdeco-plataforma-digital-logo.png" alt="vemDeco a sua plataforma de venda" title="vemDeco a sua plataforma de venda"/>
+                            <p>O Vemdeco é a sua plataforma digital para administrar, comprar, vender, permutar, alugar , anunciar e comissionar sem sair de casa.</p>
+                            <div class="uk-text-center social" uk-grid>
+                                <a href="" uk-icon="icon: instagram"></a>
+                                <a href="" uk-icon="icon: facebook"></a>
+                                <a href="" uk-icon="icon: twitter"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-width-1-3@m contact">
+                        <div class="uk-card uk-card-default uk-card-body">
+                           <h3>Venha Nos Visitar!</h3>
+                           <p>Escritório 1: Rua Alemanha 183 - JD Europa
+                            Campo Limpo Paulista – SP
+                            CEP: 13232-030</p>
+
+                            <h3>Contato</h3>
+                            <p><a href="" uk-icon="icon: whatsapp"></a>  11 98493-5375 / 11 4039-2394</p>
+                        </div>
+                    </div>
+                    <div class="uk-width-1-3@m mail">
+                        <div class="uk-card uk-card-default uk-card-body">
+                            <h3>Atendimento</h3>
+                            <p>Horário de funcionamento: <br/>das 09:00 às 17:00<br/> de Seg a Sex.</p>
+
+                            <h3>E-mail para contato</h3>
+                            <p><a href="" uk-icon="icon: mail"></a>  atendimento@vemdeco.com.br</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
