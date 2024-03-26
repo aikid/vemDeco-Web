@@ -91,11 +91,17 @@
 .responseDataArea {
   border: 2px solid gray;
   margin: 10px;
-  height: 30vh;
+  margin-bottom: 40px;
+  height: 50vh;
   border-radius: 10px;
 }
 
 .textResponse {
   font-size: 20px;
   font-weight: 600;
+}
+
+p {
+  text-align: left;
+  margin: 5px;
 }

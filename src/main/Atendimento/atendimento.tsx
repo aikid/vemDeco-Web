@@ -1,4 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./atendimento.css";
 import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
 
@@ -119,31 +128,91 @@ function Atendimento() {
   const renderResponse = () => {
     if (response !== undefined) {
       if (response.data.completion.summary !== undefined) {
+        const summaryLines = response.data.completion.summary.split("\n");
+        const prescriptionLines =
+          response.data.completion.prescription.split("\n");
+        const certificateLines =
+          response.data.completion.certificate.split("\n");
+
+        return (
+          <div className="responseContainer">
+            <div className="responseArea">
+              <text className="textResponse">Resumo</text>
+              <div className="responseDataArea">
+                {summaryLines.map(
+                  (
+                    line:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                      | null
+                      | undefined,
+                    index: Key | null | undefined
+                  ) => (
+                    <p key={index}>
+                      {line}
+                      <br />
+                    </p>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div className="responseArea">
+              <text className="textResponse">Prescrição</text>
+              <div className="responseDataArea">
+                {prescriptionLines.map(
+                  (
+                    line:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                      | null
+                      | undefined,
+                    index: Key | null | undefined
+                  ) => (
+                    <p key={index}>
+                      {line}
+                      <br />
+                    </p>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div className="responseArea">
+              <text className="textResponse">Atestado</text>
+              <div className="responseDataArea">
+                {certificateLines.map(
+                  (
+                    line:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                      | null
+                      | undefined,
+                    index: Key | null | undefined
+                  ) => (
+                    <p key={index}>
+                      {line}
+                      <br />
+                    </p>
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+        );
       }
-      return (
-        <div className="responseContainer">
-          <div className="responseArea">
-            <text className="textResponse">Resumo</text>
-            <div className="responseDataArea">
-              {response.data.completion.summary}
-            </div>
-          </div>
-
-          <div className="responseArea">
-            <text className="textResponse">Prescrição</text>
-            <div className="responseDataArea">
-              {response.data.completion.prescription}
-            </div>
-          </div>
-
-          <div className="responseArea">
-            <text className="textResponse">Atestado</text>
-            <div className="responseDataArea">
-              {response.data.completion.certificate}
-            </div>
-          </div>
-        </div>
-      );
     }
   };
 
