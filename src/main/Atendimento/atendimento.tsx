@@ -1,15 +1,8 @@
-import {
-  JSXElementConstructor,
-  Key,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import {JSXElementConstructor, Key, ReactElement, ReactNode, 
+        ReactPortal, useEffect, useRef, useState} from "react";
 import "./atendimento.css";
 import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
+import { useNavigate } from "react-router-dom";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -26,6 +19,7 @@ function Atendimento() {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [audio, setAudio] = useState<string>("");
   const [response, setResponse] = useState<any>();
+  let navigate = useNavigate();
 
   useEffect(() => {
     getMicrophonePermission();
@@ -99,7 +93,7 @@ function Atendimento() {
   const recordinTextRender = (isRecording: boolean) => {
     if (isRecording) {
       return (
-        <div>
+        <div className="recordingArea">
           <text className="recordText">{recordingText}</text>
           <button onClick={stopRecord} className="recordingButton">
             Finalizar atendimento
@@ -118,119 +112,31 @@ function Atendimento() {
   };
 
   const sendAudioToSummarize = async () => {
-    const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
-    console.log(audioBlob);
-    let responseP = await TrancribeAndSummarize.postAudio(audioBlob);
-    console.log("response--------->", responseP);
-    setResponse(responseP);
-  };
-
-  const renderResponse = () => {
-    if (response !== undefined) {
-      if (response.data.completion.summary !== undefined) {
-        const summaryLines = response.data.completion.summary.split("\n");
-        const prescriptionLines =
-          response.data.completion.prescription.split("\n");
-        const certificateLines =
-          response.data.completion.certificate.split("\n");
-
-        return (
-          <div className="responseContainer">
-            <div className="responseArea">
-              <text className="textResponse">Resumo</text>
-              <div className="responseDataArea">
-                {summaryLines.map(
-                  (
-                    line:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | Iterable<ReactNode>
-                      | ReactPortal
-                      | null
-                      | undefined,
-                    index: Key | null | undefined
-                  ) => (
-                    <p key={index}>
-                      {line}
-                      <br />
-                    </p>
-                  )
-                )}
-              </div>
-            </div>
-
-            <div className="responseArea">
-              <text className="textResponse">Prescrição</text>
-              <div className="responseDataArea">
-                {prescriptionLines.map(
-                  (
-                    line:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | Iterable<ReactNode>
-                      | ReactPortal
-                      | null
-                      | undefined,
-                    index: Key | null | undefined
-                  ) => (
-                    <p key={index}>
-                      {line}
-                      <br />
-                    </p>
-                  )
-                )}
-              </div>
-            </div>
-
-            <div className="responseArea">
-              <text className="textResponse">Atestado</text>
-              <div className="responseDataArea">
-                {certificateLines.map(
-                  (
-                    line:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | Iterable<ReactNode>
-                      | ReactPortal
-                      | null
-                      | undefined,
-                    index: Key | null | undefined
-                  ) => (
-                    <p key={index}>
-                      {line}
-                      <br />
-                    </p>
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        );
-      }
+    if(audioChunks.length>0){
+      const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
+      console.log(audioBlob);
+      let responseP = await TrancribeAndSummarize.postAudio(audioBlob);
+      console.log("response--------->", responseP);
+      setResponse(responseP);
+      navigate('/resumo', {state:{response:responseP}})
     }
   };
 
+
+
   return (
     <div className="container">
-      <div>{recordinTextRender(isRecording)}</div>
+      {recordinTextRender(isRecording)}
 
       <div className="audio-container">
         <audio className="audioPlayer" src={audio} controls></audio>
-        <a className="audioLink" download href={audio}>
+        {/* <a className="audioLink" download href={audio}>
           Download Recording
-        </a>
+        </a> */}
         <button className="summarizeButton" onClick={sendAudioToSummarize}>
           Resumir Audio
         </button>
       </div>
-
-      <div>{renderResponse()}</div>
     </div>
   );
 }
