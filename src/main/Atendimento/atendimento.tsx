@@ -94,7 +94,7 @@ function Atendimento() {
     if (isRecording) {
       return (
         <div className="recordingArea">
-          <text className="recordText">{recordingText}</text>
+          <p className="recordText">{recordingText}</p>
           <button onClick={stopRecord} className="recordingButton">
             Finalizar atendimento
           </button>
@@ -103,7 +103,7 @@ function Atendimento() {
     }
     return (
       <div className="recordingArea">
-        <text className="recordText">{notRecordingText}</text>
+        <p className="recordText">{notRecordingText}</p>
         <button onClick={() => beginRecord()} className="notRecordingButton">
           Iniciar atendimento &rarr;
         </button>
