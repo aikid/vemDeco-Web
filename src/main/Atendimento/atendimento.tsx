@@ -19,11 +19,20 @@ function Atendimento() {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [audio, setAudio] = useState<string>("");
   const [response, setResponse] = useState<any>();
-  let navigate = useNavigate();
+  let navigate = useNavigate(); 
+  let authkey:string | null = "unlogged";
+
+  const[logged, setLogged] = useState<boolean>(false)
 
   useEffect(() => {
     getMicrophonePermission();
   });
+
+  useEffect(()=>{
+    authkey = localStorage.getItem("authkey");
+    setLogged(authkey == 'logged');
+  },[])
+
   const getMicrophonePermission = async () => {
     if ("MediaRecorder" in window) {
       try {
@@ -114,9 +123,7 @@ function Atendimento() {
   const sendAudioToSummarize = async () => {
     if(audioChunks.length>0){
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
-      console.log(audioBlob);
       let responseP = await TrancribeAndSummarize.postAudio(audioBlob);
-      console.log("response--------->", responseP);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
@@ -125,6 +132,7 @@ function Atendimento() {
 
 
   return (
+    logged?
     <div className="container">
       {recordinTextRender(isRecording)}
 
@@ -138,6 +146,8 @@ function Atendimento() {
         </button>
       </div>
     </div>
+     :
+    <div>Acesso não autorizado</div>
   );
 }
 
