@@ -1,24 +1,80 @@
-.container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+html {background-color: #F8F8F8;}
+
+.maincontainer{
     height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    
   }
+
+.mainBox{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
   
   .responseContainer {
     display: flex;
-    margin-left: 5px;
-    margin-right: 5px;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    margin-top: 100px;
+    padding-bottom: 20px;
+    width: 23%;
+    min-width: 330px;
+    border: 1px solid #D0D5DD;
+
   }
-  
+
+
+  .responseContainerCompletion {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    margin-top: 100px;
+    padding-bottom: 20px;
+    width: 23%;
+    min-width: 330px;
+    border: 1px solid #D0D5DD;
+    margin-left: 15px;
+  }
+
+  .responseGlobalContainerCompletion{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    width: 100%;
+  }
+
+  .responseGlobalContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+  }
+
   .responseArea {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
   
   .responseDataArea {
-    margin-left: 50px;
-    height: 600px;
+    height: 500px;
     min-width: 320px;
+    width: 100%;
   }
   
   .textResponse {
@@ -29,14 +85,105 @@
   p {
     text-align: left;
     margin: 5px;
+    margin-top: 10px;
+    color: #323539;
   }
 
 textarea{
     box-sizing:border-box;
-    height: 100%;
-    width: 100%;
+    height: 90%;
+    width: 90%;
     resize: none;
-    border: 1px solid gray;
+    border: 1px solid #D0D5DD;
     border-radius: 8px;
 }
-  
+
+.buttonAct{
+  min-width: 90px;
+  width: 30%;
+  height: 46px;
+  border: 1px solid #E5E5E7;
+  background-color: white;
+  border-radius: 5px;
+  color: #344054;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.buttonsDiv{
+  width: 90%;
+  margin-top: -45px;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+hr {
+  border-top: 1px solid #D0D5DD;
+  width: 99%;
+  margin-top: -2px;
+  margin-bottom: 25px;
+}
+
+.saveAllButtonsDiv{
+  margin-top: 30px;
+  width: 97%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  justify-content: space-between;
+}
+
+.saveAllButton{
+  width:49%;
+  height: 55px;
+  border: 1px solid #E5E5E7;
+  background-color: white;
+  border-radius: 5px;
+  color: #344054;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 30px;
+}
+
+
+.saveAllButtonsCompletionDiv{
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+
+.saveAllButtonCompletion{
+  width: 23%;
+  min-width: 330px;
+  margin-left: 15px;
+  height: 55px;
+  border: 1px solid #E5E5E7;
+  background-color: white;
+  border-radius: 5px;
+  color: #344054;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+.leaveButton{
+  background-color: #E73F3F;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  height: 66px;
+  width: 278px;
+  margin-top: 20px;
+}
+.footDiv{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: start;
+  align-content: start;
+  width: 100%;
+  margin-left: 20px;
+}

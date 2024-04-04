@@ -3,6 +3,7 @@ import {JSXElementConstructor, Key, ReactElement, ReactNode,
 import "./atendimento.css";
 import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
+import SoundWave from "../../utils/soundwave/soundwave";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -23,6 +24,10 @@ function Atendimento() {
   let authkey:string | null = "unlogged";
 
   const[logged, setLogged] = useState<boolean>(false)
+  
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+
 
   useEffect(() => {
     getMicrophonePermission();
@@ -70,11 +75,11 @@ function Atendimento() {
     };
     setAudioChunks(localAudioChunks);
   };
-  const stopRecording = () => {
+  const stopRecording = async () => {
     setRecordingStatus("inactive");
     //stops the recording instance
     mediaRecorder.current!.stop();
-    mediaRecorder.current!.onstop = () => {
+    mediaRecorder.current!.onstop = async () => {
       //creates a blob file from the audiochunks data
       const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
       //creates a playable URL from the blob file.
@@ -82,6 +87,7 @@ function Atendimento() {
       setAudio(audioUrl);
       // setAudioChunks([]);
     };
+    await sleep(1500);
   };
   const beginRecord = async () => {
     const permissionGranted = await getMicrophonePermission();
@@ -93,17 +99,19 @@ function Atendimento() {
     }
   };
 
-  const stopRecord = () => {
+  const stopRecord = async () => {
     setIsRecording(false);
     setPermission(false);
-    stopRecording();
+    await stopRecording();
+    await sendAudioToSummarize();
   };
 
   const recordinTextRender = (isRecording: boolean) => {
     if (isRecording) {
       return (
-        <div className="recordingArea">
+        <div className="recordingArea"> 
           <p className="recordText">{recordingText}</p>
+          <SoundWave></SoundWave>
           <button onClick={stopRecord} className="recordingButton">
             Finalizar atendimento
           </button>
@@ -127,27 +135,32 @@ function Atendimento() {
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
+    else{
+      alert("Seu audio não foi gravado")
+    }
   };
 
 
 
   return (
     logged?
-    <div className="container">
+    <div className="atendimentoContainer">
       {recordinTextRender(isRecording)}
 
       <div className="audio-container">
-        <audio className="audioPlayer" src={audio} controls></audio>
+        {/* <audio className="audioPlayer" src={audio} controls></audio> */}
         {/* <a className="audioLink" download href={audio}>
           Download Recording
         </a> */}
-        <button className="summarizeButton" onClick={sendAudioToSummarize}>
+        {/* <button className="summarizeButton" onClick={sendAudioToSummarize}>
           Resumir Audio
-        </button>
+        </button> */}
       </div>
     </div>
      :
-    <div>Acesso não autorizado</div>
+    <div>
+      Acesso não autorizado
+    </div>
   );
 }
 

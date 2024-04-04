@@ -40,7 +40,7 @@ function Login(){
     }
 
     return(
-        <div className="container">
+        <div className="loginContainer">
             <div className="authBox">
                     <div className="rricon">
                         <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      

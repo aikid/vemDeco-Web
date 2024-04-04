@@ -1,231 +1,143 @@
-import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./resumo.css";
+import { useNavigate } from "react-router-dom";
 
 
 function Resumo() {
 
 let location = useLocation();
 const response = location.state.response;
-console.log(response.data);
 
-const renderResponseArea = (nome:string, list:any)=> {
+const [transcriptionLines, setTrancriptionLines] = useState('');
+const [summaryLines, setSummaryLines] = useState('');
+const [prescriptionLines, setPrescriptionLines] = useState('');
+const [certificateLines, setCertificateLines] = useState('');
+const [completionLines, setCompletionLines] = useState('');
+const [isConpletionKind, setIsCompletionKind] = useState(false);
+let navigate = useNavigate(); 
+
+useEffect(() => {
+  if (response !== undefined) {
+    if (response.data.completion.summary !== undefined) {
+      setTrancriptionLines(response.data.transcription);
+      setSummaryLines(response.data.completion.summary);
+      setPrescriptionLines(response.data.completion.prescription);
+      setCertificateLines(response.data.completion.certificate);
+    } else {
+      setTrancriptionLines(response.data.transcription);
+      setCompletionLines(response.data.completion);
+      setIsCompletionKind(true);
+    }
+  }
+}, [response]);
+
+const handleCopy = (text:string) => {
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      console.log('Texto copiado com sucesso!');
+    })
+    .catch(err => {
+      console.error('Erro ao copiar o texto:', err);
+    });
+};
+
+const handleOpenGoogleDocs = (text:string) => {
+  const googleDocsUrl = `https://docs.google.com/document/u/0/create?usp=docs_home&ths=true&copyFrom=${encodeURIComponent(text)}&body=${encodeURIComponent(text)}`;
+  window.open(googleDocsUrl, '_blank');
+};
+
+
+const renderResponseArea = (nome:string, list:any, setFunc:React.Dispatch<React.SetStateAction<string>>)=> {
     return (
         <div className="responseContainer">
             <div className="responseArea">
-                <text className="textResponse">{nome}</text>
+                <h3 className="textResponse">{nome}</h3>
+                <hr className="solid"></hr>
                 <div className="responseDataArea">
-                 <textarea >{list}</textarea>
+                 <textarea defaultValue={list} onChange={(e)=>setFunc(e.target.value)}></textarea>
                 </div>
             </div>
+          <div className="buttonsDiv">
+            <button className="buttonAct" onClick={()=>handleCopy(list)}>Copiar</button>
+            <button className="buttonAct" onClick={()=>handleOpenGoogleDocs(list)}>Word</button>
+            <button className="buttonAct" >PDF</button>
+          </div>
         </div>
     );
 }
-const renderResponses = () => {
-    const transcription = response.data.transcription;
-    const summaryLines = response.data.completion.summary;
-    const prescriptionLines =
-          response.data.completion.prescription;
-        const certificateLines =
-          response.data.completion.certificate;
 
-    // return(
-    //     
-   
-    //     )
+const renderResponseAreaCompletion = (nome:string, list:any, setFunc:React.Dispatch<React.SetStateAction<string>>)=> {
+  return (
+      <div className="responseContainerCompletion">
+          <div className="responseArea">
+              <h3 className="textResponse">{nome}</h3>
+              <hr className="solid"></hr>
+              <div className="responseDataArea">
+               <textarea defaultValue={list} onChange={(e)=>setFunc(e.target.value)}></textarea>
+              </div>
+          </div>
+        <div className="buttonsDiv">
+          <button className="buttonAct" onClick={()=>handleCopy(list)}>Copiar</button>
+          <button className="buttonAct" onClick={()=>handleOpenGoogleDocs(list)}>Word</button>
+          <button className="buttonAct" >PDF</button>
+        </div>
+      </div>
+  );
+}
+const renderResponses = () => {
     
     if (response !== undefined) {
       if (response.data.completion.summary !== undefined) {
-        const transcription = response.data.transcription;
-        const summaryLines = response.data.completion.summary;
-        const prescriptionLines =
-          response.data.completion.prescription;
-        const certificateLines =
-          response.data.completion.certificate;
-
         return (
-            <div className="responseContainer">
-                 {renderResponseArea('Trancrição', transcription)}
-                 {renderResponseArea('Resumo', summaryLines)}
-                 {renderResponseArea('Prescição', prescriptionLines)}
-                 {renderResponseArea('Atestado', certificateLines)}
-         </div>
-        //   <div className="responseContainer">
+            <div className="responseGlobalContainer">
+             
+                 {renderResponseArea('Trancrição', transcriptionLines, setTrancriptionLines)}
+                 {renderResponseArea('Resumo', summaryLines, setSummaryLines)}
+  
+         
+                 {renderResponseArea('Prescição', prescriptionLines, setPrescriptionLines)}
+                 {renderResponseArea('Atestado', certificateLines, setCertificateLines)}
 
-        //     <div className="responseArea">
-        //       <text className="textResponse">Transcrição</text>
-        //       <div className="responseDataArea">
-        //         {transcription.map(
-        //           (
-        //             line:
-        //               | string
-        //               | number
-        //               | boolean
-        //               | ReactElement<any, string | JSXElementConstructor<any>>
-        //               | Iterable<ReactNode>
-        //               | ReactPortal
-        //               | null
-        //               | undefined,
-        //             index: Key | null | undefined
-        //           ) => (
-        //             <p key={index}>
-        //               {line}
-        //               <br />
-        //             </p>
-        //           )
-        //         )}
-        //       </div>
-        //     </div>
-
-        //     <div className="responseArea">
-        //       <text className="textResponse">Resumo</text>
-        //       <div className="responseDataArea">
-        //         {summaryLines.map(
-        //           (
-        //             line:
-        //               | string
-        //               | number
-        //               | boolean
-        //               | ReactElement<any, string | JSXElementConstructor<any>>
-        //               | Iterable<ReactNode>
-        //               | ReactPortal
-        //               | null
-        //               | undefined,
-        //             index: Key | null | undefined
-        //           ) => (
-        //             <p key={index}>
-        //               {line}
-        //               <br />
-        //             </p>
-        //           )
-        //         )}
-        //       </div>
-        //     </div>
-
-        //     <div className="responseArea">
-        //       <text className="textResponse">Prescrição</text>
-        //       <div className="responseDataArea">
-        //         {prescriptionLines.map(
-        //           (
-        //             line:
-        //               | string
-        //               | number
-        //               | boolean
-        //               | ReactElement<any, string | JSXElementConstructor<any>>
-        //               | Iterable<ReactNode>
-        //               | ReactPortal
-        //               | null
-        //               | undefined,
-        //             index: Key | null | undefined
-        //           ) => (
-        //             <p key={index}>
-        //               {line}
-        //               <br />
-        //             </p>
-        //           )
-        //         )}
-        //       </div>
-        //     </div>
-
-        //     <div className="responseArea">
-        //       <text className="textResponse">Atestado</text>
-        //       <div className="responseDataArea">
-        //         {certificateLines.map(
-        //           (
-        //             line:
-        //               | string
-        //               | number
-        //               | boolean
-        //               | ReactElement<any, string | JSXElementConstructor<any>>
-        //               | Iterable<ReactNode>
-        //               | ReactPortal
-        //               | null
-        //               | undefined,
-        //             index: Key | null | undefined
-        //           ) => (
-        //             <p key={index}>
-        //               {line}
-        //               <br />
-        //             </p>
-        //           )
-        //         )}
-        //       </div>
-        //     </div>
-        //   </div>
+                    
+            </div>
         );
       }
-
-      const transcription = response.data.transcription;
-      const completion = response.data.completion;
-      return(
-
-        <div className="responseContainer">
-            {renderResponseArea('Trancrição', transcription)}
-            {renderResponseArea('Resumo', completion)}
-        </div>
-    //     <div className="responseContainer">
-
-    //     <div className="responseArea">
-    //       <text className="textResponse">Transcrição</text>
-    //       <div className="responseDataArea">
-    //         {transcription.map(
-    //           (
-    //             line:
-    //               | string
-    //               | number
-    //               | boolean
-    //               | ReactElement<any, string | JSXElementConstructor<any>>
-    //               | Iterable<ReactNode>
-    //               | ReactPortal
-    //               | null
-    //               | undefined,
-    //             index: Key | null | undefined
-    //           ) => (
-    //             <p key={index}>
-    //               {line}
-    //               <br />
-    //             </p>
-    //           )
-    //         )}
-    //       </div>
-    //     </div>
-
-    //     <div className="responseArea">
-    //       <text className="textResponse">Resultado</text>
-    //       <div className="responseDataArea">
-    //         {completion.map(
-    //           (
-    //             line:
-    //               | string
-    //               | number
-    //               | boolean
-    //               | ReactElement<any, string | JSXElementConstructor<any>>
-    //               | Iterable<ReactNode>
-    //               | ReactPortal
-    //               | null
-    //               | undefined,
-    //             index: Key | null | undefined
-    //           ) => (
-    //             <p key={index}>
-    //               {line}
-    //               <br />
-    //             </p>
-    //           )
-    //         )}
-    //       </div>
-    //     </div>
-    //   </div>
-
-      );
+      else{
+        return(
+  
+          <div className="responseGlobalContainerCompletion">
+              {renderResponseAreaCompletion('Trancrição', transcriptionLines, setTrancriptionLines)}
+              {renderResponseAreaCompletion('Resumo', completionLines, setCompletionLines)}
+          </div>
+        );
+      }
     }
   };
 
   return(
-    <div className="container">
-          {renderResponses()}
+    <div className="maincontainer">
+      <div className="mainBox">
+        {renderResponses()}
+          {isConpletionKind? 
+            <div className="saveAllButtonsCompletionDiv">
+              <button className="saveAllButtonCompletion">Salvar todos os cards em um único word</button>
+              <button className="saveAllButtonCompletion">Salvar todos os cards em um único PDF</button>
+            </div>
+          : 
+          <div className="saveAllButtonsDiv">
+              <button className="saveAllButton">Salvar todos os cards em um único word</button>
+              <button className="saveAllButton">Salvar todos os cards em um único PDF</button>
+          </div>
+          }
+          <div className="footDiv">
+            <p>Ao clicar em “encerrar atendimento” todas as informações do atendimento serão excluídas.</p>
+            <button className="leaveButton" onClick={()=>navigate('/atendimento')}>Encerrar atendimento</button>
+          </div>
+         
+      </div>  
     </div>
   );
-  
 
 }
 
