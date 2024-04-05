@@ -17,6 +17,7 @@ function NavBar() {
       <div className='iconDiv'>
         <img style={{marginLeft:"50px"}} src="RRIcon.svg" alt="" />
         <img style={{marginLeft:"5px"}}  src="RRINI.svg" alt="" />
+        <img style={{marginLeft:"5px", height:"35px", marginTop:"5px"}}  src="logoSC.png" alt="" />
       </div>
       <div className='rightSide'>
         <img style={{marginLeft:"50px"}} src="Bell_pin.svg" alt="" />

@@ -1,0 +1,26 @@
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); /* Define uma cor de fundo com opacidade para criar o efeito de desfoque */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Coloca o loader na frente de todos os outros elementos */
+  }
+  
+  .loader {
+    border: 4px solid #f3f3f3; /* Cor do spinner */
+    border-top: 4px solid #1b8d56; /* Cor da parte superior do spinner */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite; /* Animação do spinner */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

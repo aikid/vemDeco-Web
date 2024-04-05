@@ -5,6 +5,7 @@ import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";
+import Loader from "../../utils/loader/loader";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -24,6 +25,8 @@ function Atendimento() {
   let navigate = useNavigate(); 
   let authkey:string | null = "unlogged";
 
+  const [loading, setLoading] = useState(false);
+
   const[logged, setLogged] = useState<boolean>(false)
   
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -37,6 +40,7 @@ function Atendimento() {
   useEffect(()=>{
     authkey = localStorage.getItem("authkey");
     setLogged(authkey == 'logged');
+    setLoading(false);
   },[])
 
   const getMicrophonePermission = async () => {
@@ -101,10 +105,12 @@ function Atendimento() {
   };
 
   const stopRecord = async () => {
+    setLoading(true);
     setIsRecording(false);
     setPermission(false);
     await stopRecording();
     await sendAudioToSummarize();
+    setLoading(false);
   };
 
   const recordinTextRender = (isRecording: boolean) => {
@@ -144,6 +150,7 @@ function Atendimento() {
 
 
   return (
+    loading?<Loader/>:
     logged?
     <div>
       <NavBar></NavBar>

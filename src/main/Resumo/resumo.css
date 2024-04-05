@@ -11,6 +11,7 @@ html {background-color: #F8F8F8;}
 
 .mainBox{
   width: 98%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,6 +54,8 @@ html {background-color: #F8F8F8;}
   flex-wrap: wrap;
   justify-content: start;
   width: 100%;
+  height: fit-content;
+  max-width: 1600px;
 }
 
 .responseGlobalContainer {
@@ -60,6 +63,9 @@ html {background-color: #F8F8F8;}
   flex-wrap: wrap;
   justify-content: space-around;
   width: 100%;
+  height: fit-content;
+  max-width: 1600px;
+
 }
 
 .responseArea {
@@ -68,10 +74,12 @@ html {background-color: #F8F8F8;}
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100%;
 }
 
 .responseDataArea {
-  height: 400px;
+  min-height: 400px;
+  height: 100%;
   width: 100%;
 }
 
@@ -125,11 +133,15 @@ hr {
 }
 
 .saveAllButtonsDiv{
-  width: 97%;
+  width: 95%;
+  max-width: 1585px;
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
   justify-content: space-between;
+ 
 }
 
 .saveAllButton{
@@ -147,6 +159,7 @@ hr {
 
 .saveAllButtonsCompletionDiv{
   margin-top: 10px;
+  max-width: 1585px;
   width: 100%;
   display: flex;
   justify-content: start;
@@ -184,5 +197,6 @@ hr {
   align-items: start;
   align-content: start;
   width: 100%;
+  max-width: 1600px;
   margin-left: 20px;
 }

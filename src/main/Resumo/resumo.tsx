@@ -97,11 +97,11 @@ const renderResponses = () => {
         return (
             <div className="responseGlobalContainer">
              
-                 {renderResponseArea('Trancrição', transcriptionLines, setTrancriptionLines)}
+                 {renderResponseArea('Transcrição', transcriptionLines, setTrancriptionLines)}
                  {renderResponseArea('Resumo', summaryLines, setSummaryLines)}
   
          
-                 {renderResponseArea('Prescição', prescriptionLines, setPrescriptionLines)}
+                 {renderResponseArea('Prescrição', prescriptionLines, setPrescriptionLines)}
                  {renderResponseArea('Atestado', certificateLines, setCertificateLines)}
 
                     
