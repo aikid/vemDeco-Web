@@ -4,6 +4,7 @@ import "./atendimento.css";
 import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
 import SoundWave from "../../utils/soundwave/soundwave";
+import NavBar from "../../utils/navbar/navbar";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -144,7 +145,9 @@ function Atendimento() {
 
   return (
     logged?
-    <div className="atendimentoContainer">
+    <div>
+      <NavBar></NavBar>
+      <div className="atendimentoContainer">
       {recordinTextRender(isRecording)}
 
       <div className="audio-container">
@@ -157,6 +160,8 @@ function Atendimento() {
         </button> */}
       </div>
     </div>
+    </div>
+    
      :
     <div>
       Acesso não autorizado

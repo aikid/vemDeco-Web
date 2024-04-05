@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./resumo.css";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../../utils/navbar/navbar";
 
 
 function Resumo() {
@@ -20,17 +21,21 @@ let navigate = useNavigate();
 useEffect(() => {
   if (response !== undefined) {
     if (response.data.completion.summary !== undefined) {
-      setTrancriptionLines(response.data.transcription);
-      setSummaryLines(response.data.completion.summary);
-      setPrescriptionLines(response.data.completion.prescription);
-      setCertificateLines(response.data.completion.certificate);
+      console.log(response.data.completion.prescription)
+      setTrancriptionLines(response.data.transcription.replace(/\. /g , ".\n").replace(/\? /g , "?\n").replace(/\!/g , "!\n"));
+      setSummaryLines(response.data.completion.summary.replace(/\n/g, "\n\n"));
+      setPrescriptionLines(response.data.completion.prescription.replace(/\n/g, "\n\n"));
+      setCertificateLines(response.data.completion.certificate.replace(/\n/g, "\n\n"));
     } else {
-      setTrancriptionLines(response.data.transcription);
-      setCompletionLines(response.data.completion);
+      setTrancriptionLines(response.data.transcription.replace(/\n/g, "\n\n"));
+      setCompletionLines(response.data.completion.replace(/\n/g, "\n\n"));
       setIsCompletionKind(true);
     }
   }
 }, [response]);
+
+
+
 
 const handleCopy = (text:string) => {
   navigator.clipboard.writeText(text)
@@ -53,7 +58,7 @@ const renderResponseArea = (nome:string, list:any, setFunc:React.Dispatch<React.
         <div className="responseContainer">
             <div className="responseArea">
                 <h3 className="textResponse">{nome}</h3>
-                <hr className="solid"></hr>
+                
                 <div className="responseDataArea">
                  <textarea defaultValue={list} onChange={(e)=>setFunc(e.target.value)}></textarea>
                 </div>
@@ -72,7 +77,7 @@ const renderResponseAreaCompletion = (nome:string, list:any, setFunc:React.Dispa
       <div className="responseContainerCompletion">
           <div className="responseArea">
               <h3 className="textResponse">{nome}</h3>
-              <hr className="solid"></hr>
+             
               <div className="responseDataArea">
                <textarea defaultValue={list} onChange={(e)=>setFunc(e.target.value)}></textarea>
               </div>
@@ -116,27 +121,31 @@ const renderResponses = () => {
   };
 
   return(
-    <div className="maincontainer">
-      <div className="mainBox">
-        {renderResponses()}
-          {isConpletionKind? 
-            <div className="saveAllButtonsCompletionDiv">
-              <button className="saveAllButtonCompletion">Salvar todos os cards em um único word</button>
-              <button className="saveAllButtonCompletion">Salvar todos os cards em um único PDF</button>
+    <div>
+      <NavBar></NavBar>
+      <div className="maincontainer">
+        <div className="mainBox">
+          {renderResponses()}
+            {isConpletionKind? 
+              <div className="saveAllButtonsCompletionDiv">
+                <button className="saveAllButtonCompletion">Salvar todos os cards em um único word</button>
+                <button className="saveAllButtonCompletion">Salvar todos os cards em um único PDF</button>
+              </div>
+            : 
+            <div className="saveAllButtonsDiv">
+                <button className="saveAllButton">Salvar todos os cards em um único word</button>
+                <button className="saveAllButton">Salvar todos os cards em um único PDF</button>
             </div>
-          : 
-          <div className="saveAllButtonsDiv">
-              <button className="saveAllButton">Salvar todos os cards em um único word</button>
-              <button className="saveAllButton">Salvar todos os cards em um único PDF</button>
-          </div>
-          }
-          <div className="footDiv">
-            <p>Ao clicar em “encerrar atendimento” todas as informações do atendimento serão excluídas.</p>
-            <button className="leaveButton" onClick={()=>navigate('/atendimento')}>Encerrar atendimento</button>
-          </div>
-         
-      </div>  
+            }
+            <div className="footDiv">
+              <p>Ao clicar em “encerrar atendimento” todas as informações do atendimento serão excluídas.</p>
+              <button className="leaveButton" onClick={()=>navigate('/atendimento')}>Encerrar atendimento</button>
+            </div>
+          
+        </div>  
+      </div>
     </div>
+
   );
 
 }

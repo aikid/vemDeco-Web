@@ -55,7 +55,7 @@ function Login(){
                 <form onSubmit={handleSubmit}>
                     <label>
                     <p className="textBox">E-mail</p>
-                    <input className="formBox" type="text" placeholder="Digite se e-mail" onChange={e => setUserName(e.target.value)} />
+                    <input className="formBox" type="text" placeholder="Digite seu e-mail" onChange={e => setUserName(e.target.value)} />
                     </label>
                     <label>
                     <p className="textBox">Senha</p>
@@ -81,7 +81,7 @@ function Login(){
                     } }></GoogleLogin>
                 </div>
                 <div className="noAccountText">
-                    Não tem uma conta? <a className="links" href="">Criar conta</a>
+                    Não tem uma conta? <a className="links" onClick={()=>navigate('/cadastro')} href="">Criar conta</a>
                 </div>
             </div>
         </div>

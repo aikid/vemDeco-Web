@@ -10,96 +10,94 @@ html {background-color: #F8F8F8;}
   }
 
 .mainBox{
-  width: 80%;
+  width: 98%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
   
-  .responseContainer {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border-radius: 5px;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    margin-top: 100px;
-    padding-bottom: 20px;
-    width: 23%;
-    min-width: 330px;
-    border: 1px solid #D0D5DD;
+.responseContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  margin-top: 70px;
+  padding-bottom: 10px;
+  width: 23%;
+  min-width: 250px;
+  border: 1px solid #D0D5DD;
+}
 
-  }
 
+.responseContainerCompletion {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  margin-top: 70px;
+  padding-bottom: 20px;
+  width: 23%;
+  min-width: 330px;
+  border: 1px solid #D0D5DD;
+  margin-left: 15px;
+}
 
-  .responseContainerCompletion {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border-radius: 5px;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    margin-top: 100px;
-    padding-bottom: 20px;
-    width: 23%;
-    min-width: 330px;
-    border: 1px solid #D0D5DD;
-    margin-left: 15px;
-  }
+.responseGlobalContainerCompletion{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  width: 100%;
+}
 
-  .responseGlobalContainerCompletion{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    width: 100%;
-  }
+.responseGlobalContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
 
-  .responseGlobalContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    width: 100%;
-  }
+.responseArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
-  .responseArea {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .responseDataArea {
-    height: 500px;
-    min-width: 320px;
-    width: 100%;
-  }
-  
-  .textResponse {
-    font-size: 20px;
-    font-weight: 600;
-  }
-  
-  p {
-    text-align: left;
-    margin: 5px;
-    margin-top: 10px;
-    color: #323539;
-  }
+.responseDataArea {
+  height: 400px;
+  width: 100%;
+}
+
+.textResponse {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 7px;
+}
+
+p {
+  text-align: left;
+  margin: 5px;
+  color: #323539;
+}
 
 textarea{
     box-sizing:border-box;
     height: 90%;
-    width: 90%;
+    width: 91%;
     resize: none;
     border: 1px solid #D0D5DD;
     border-radius: 8px;
 }
 
 .buttonAct{
-  min-width: 90px;
+  min-width: 65px;
   width: 30%;
   height: 46px;
   border: 1px solid #E5E5E7;
@@ -108,6 +106,7 @@ textarea{
   color: #344054;
   font-size: 15px;
   font-weight: 500;
+  margin-top: 10px;
 }
 
 .buttonsDiv{
@@ -126,29 +125,28 @@ hr {
 }
 
 .saveAllButtonsDiv{
-  margin-top: 30px;
   width: 97%;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   justify-content: space-between;
 }
 
 .saveAllButton{
   width:49%;
-  height: 55px;
+  height: 45px;
   border: 1px solid #E5E5E7;
   background-color: white;
   border-radius: 5px;
   color: #344054;
   font-size: 15px;
   font-weight: 500;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 
 .saveAllButtonsCompletionDiv{
-  margin-top: 30px;
+  margin-top: 10px;
   width: 100%;
   display: flex;
   justify-content: start;
@@ -159,14 +157,14 @@ hr {
   width: 23%;
   min-width: 330px;
   margin-left: 15px;
-  height: 55px;
+  height: 45px;
   border: 1px solid #E5E5E7;
   background-color: white;
   border-radius: 5px;
   color: #344054;
   font-size: 15px;
   font-weight: 500;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .leaveButton{
@@ -174,9 +172,10 @@ hr {
   color: white;
   border: none;
   border-radius: 5px;
-  height: 66px;
+  height: 60px;
   width: 278px;
-  margin-top: 20px;
+  margin-top: 10px;
+  font-size: 16px;
 }
 .footDiv{
   display: flex;
