@@ -23,12 +23,12 @@ useEffect(() => {
     if (response.data.completion.summary !== undefined) {
       console.log(response.data.completion.prescription)
       setTrancriptionLines(response.data.transcription.replace(/\. /g , ".\n").replace(/\? /g , "?\n").replace(/\!/g , "!\n"));
-      setSummaryLines(response.data.completion.summary.replace(/\n/g, "\n\n"));
-      setPrescriptionLines(response.data.completion.prescription.replace(/\n/g, "\n\n"));
-      setCertificateLines(response.data.completion.certificate.replace(/\n/g, "\n\n"));
+      setSummaryLines(response.data.completion.summary.replace(".\n", ".\n\n"));
+      setPrescriptionLines(response.data.completion.prescription.replace(".\n", ".\n\n"));
+      setCertificateLines(response.data.completion.certificate.replace(".\n", ".\n\n"));
     } else {
-      setTrancriptionLines(response.data.transcription.replace(/\n/g, "\n\n"));
-      setCompletionLines(response.data.completion.replace(/\n/g, "\n\n"));
+      setTrancriptionLines(response.data.transcription.replace('.', ".\n\n"));
+      setCompletionLines(response.data.completion.replace('.', ".\n\n"));
       setIsCompletionKind(true);
     }
   }
