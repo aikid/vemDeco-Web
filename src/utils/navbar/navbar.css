@@ -12,12 +12,13 @@
     display: flex;
     justify-content: left;
     align-items: center;
+    margin-left: 120px;
 }
 .rightSide{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 50px;
+    margin-right: 120px;
 }
 
 .accountText{

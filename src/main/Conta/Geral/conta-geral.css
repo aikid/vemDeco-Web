@@ -1,0 +1,16 @@
+.inputMain{
+  display: flex;
+  justify-content: space-between;
+  width: 98%;
+  height: 48px;
+  border: 1px solid #C1C3C7;
+  border-radius: 8px;
+  font-size: 100%;
+  padding-left: 2%;
+}
+
+.typography{
+    color: #344054;
+    font-size: 14;
+}
+

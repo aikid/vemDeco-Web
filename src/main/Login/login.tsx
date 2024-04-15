@@ -24,7 +24,7 @@ function Login(){
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if(username === "DMRR" && password === "s3nh4DMRR"){
+        if(username === "DMRR" && password === "Sampeless"){
             localStorage.setItem("authkey","logged");
             navigate('/atendimento');
         }

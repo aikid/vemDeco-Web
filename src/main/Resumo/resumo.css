@@ -189,6 +189,7 @@ hr {
   border-radius: 5px;
   height: 90%;
   width: 18%;
+  min-width: 200px;
   margin-top: 0.3%;
   font-size: 100%;
 }
