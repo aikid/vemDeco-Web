@@ -142,13 +142,15 @@ export default function ContaGeral() {
                 Data de Nascimento
                 </Typography>
                 <DesktopDatePicker
+                
                 className="inputMain"
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       borderColor: '#C1C3C7',
                       borderRadius:2,
-                      height: "55px"
+                      height: "50px",
+                      marginTop:"5px"
                     },
                     '&:hover fieldset': {
                       borderColor: 'black',
@@ -156,6 +158,7 @@ export default function ContaGeral() {
                     '&.Mui-focused fieldset': {
                       borderColor: 'black',
                     },
+                    '& legend': { display: 'none' }
                   },
                 }}
                   value={
@@ -176,29 +179,25 @@ export default function ContaGeral() {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={4}>
+              <Typography className = "typography"> Pessoa Jurídica </Typography>
               <FormControl
                 fullWidth
               >
-                <InputLabel>Sexo</InputLabel>
                 <Select
                   id="select-sex"
                   name="select-sex"
                   label="Sexo"
                   fullWidth
-                  error={
-                    userProfileRequest.sex === undefined ||
-                    userProfileRequest.sex === ""
-                      ? true
-                      : false
-                  }
                   value={userProfileRequest?.sex}
                   onChange={handleOnChange}
+                  className="inputMain"
+                  sx={{
+                      '& legend': { display: 'none' }
+                  
+                  }}
                 >
-                  <MenuItem value={""}>
-                    <em>Selecionar</em>
-                  </MenuItem>
-                  <MenuItem value={"M"}>Masculino</MenuItem>
-                  <MenuItem value={"F"}>Feminino</MenuItem>
+                  <MenuItem value={"S"}>Sim</MenuItem>
+                  <MenuItem value={"N"}>Não</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

@@ -6,7 +6,7 @@
   border: 1px solid #C1C3C7;
   border-radius: 8px;
   font-size: 100%;
-  padding-left: 2%;
+  text-indent: 10px;
 }
 
 .typography{
@@ -14,3 +14,10 @@
     font-size: 14;
 }
 
+select::after {
+  content: '\25BC'; /* Unicode para a seta para baixo */
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Espaço à direita da seta */
+  transform: translateY(-50%);
+}
