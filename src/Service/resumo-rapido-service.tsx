@@ -3,10 +3,10 @@ import FormData from "form-data";
 
 const defaultPath = "transcribe-and-summarize";
 
-const postAudio = async (audio: any): Promise<any> => {
+const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
   const formData = new FormData();
   formData.append("audio", audio);
-  formData.append("prompt", "conversa-medico-paciente");
+  formData.append("prompt", userName);
   console.log(formData);
   return await HttpClient.executeRequest({
     method: "post",
