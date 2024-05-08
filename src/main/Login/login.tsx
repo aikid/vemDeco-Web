@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import './login.css';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 
+const users = [
+    {username: "DMRR", password: "Sampeless"},
+    {username: "Saocristovao", password: "Sao@2024*"},
+    {username: "Sabara", password: "S@b@r@24"},
+    {username: "Unicoclinica", password: "Unico@2024"},
+];
+
 
 function Login(){
     const [username, setUserName] = useState<string>();
@@ -24,13 +31,16 @@ function Login(){
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if(username === "DMRR" && password === "Sampeless"){
+        let user = users.find(item => item.username === username && item.password === password);
+        
+        if(user){
             localStorage.setItem("authkey","logged");
+            localStorage.setItem("userLogger",user.username);
             navigate('/atendimento');
         }
         else{
             localStorage.setItem("authkey","unlogged");
-            alert("Usuário ou senha incorretos")
+            alert("Usuário ou senha incorretos");
         }
 
         // const token = await loginUser({

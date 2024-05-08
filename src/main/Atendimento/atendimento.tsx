@@ -138,7 +138,8 @@ function Atendimento() {
   const sendAudioToSummarize = async () => {
     if(audioChunks.length>0){
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
-      let responseP = await TrancribeAndSummarize.postAudio(audioBlob);
+      const userLogged = localStorage.getItem("userLogger");
+      let responseP = await TrancribeAndSummarize.postAudio(audioBlob,userLogged);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
