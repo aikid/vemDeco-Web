@@ -1,7 +1,7 @@
 import {JSXElementConstructor, Key, ReactElement, ReactNode, 
         ReactPortal, useEffect, useRef, useState} from "react";
 import "./atendimento.css";
-import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
+import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";
@@ -139,7 +139,7 @@ function Atendimento() {
     if(audioChunks.length>0){
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
       const userLogged = localStorage.getItem("userLogger");
-      let responseP = await TrancribeAndSummarize.postAudio(audioBlob,userLogged);
+      let responseP = await ResumoRapidoService.postAudio(audioBlob,userLogged);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }

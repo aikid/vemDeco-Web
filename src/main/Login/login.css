@@ -126,3 +126,14 @@ input[type="checkbox"]:checked::before {
     justify-content: space-between;
     
 }
+
+.errorMsg {
+  color: red;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.formButtonLoad{
+  background-color: #9dbcad !important;
+}

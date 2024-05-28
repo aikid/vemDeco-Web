@@ -1,0 +1,59 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-container {
+    position: relative; /* Adicionado para permitir o posicionamento absoluto do botão de fechar */
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+  }
+  
+  .modal-header {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .modal-content {
+    margin-bottom: 20px;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modal-close {
+    position: absolute; /* Posicionamento absoluto */
+    top: 10px; /* Distância do topo do contêiner */
+    right: 10px; /* Distância da direita do contêiner */
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+
+  .confirmModal {
+    width: 100px;
+    height: 30px;
+    padding: 8px 18px 8px 18px;
+    gap: 8px;
+    border-radius: 8px ;
+    color: #ffffff;
+    background-color: #1E9B5F;
+    border: 0px;
+  }
+  

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./atendimentoBeta.css";
-import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
+import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";

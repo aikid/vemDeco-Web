@@ -45,3 +45,14 @@
     align-items: center;
     margin-right: 5px;
 }
+
+.logOutLink button {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+}
+
+.logOutLink button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

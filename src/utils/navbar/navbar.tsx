@@ -11,6 +11,13 @@ function NavBar() {
     return null;
   }
 
+  const logOut = () =>{
+    localStorage.setItem("authkey","unlogged");
+    localStorage.setItem("userLogger","");
+    localStorage.setItem("userToken","");
+    window.location.href = "/";
+  }
+
   // Caso contrário, renderiza a barra de navegação
   return (
     <nav className='navContainer'>
@@ -25,7 +32,11 @@ function NavBar() {
         <div className='roundInitials'>DM</div>
         <div className='accountText'>
           <div>Dr. Mobile</div>
-          <a >Ver conta</a>
+          <a>Ver conta</a>
+        </div>
+        <img style={{marginLeft:"5px", marginRight:"5px"}} src="Line 8.svg" alt="" />
+        <div className='logOutLink'>
+          <button onClick={()=>logOut()}>Sair</button>
         </div>
       </div>
     </nav>

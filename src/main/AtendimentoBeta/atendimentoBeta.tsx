@@ -2,7 +2,7 @@ import {JSXElementConstructor, Key, ReactElement, ReactNode,
   ReactPortal, useEffect, useRef, useState} from "react";
 import useSpeechToText, { ResultType } from 'react-hook-speech-to-text';
 import "./atendimentoBeta.css";
-import TrancribeAndSummarize from "../../Service/resumo-rapido-service";
+import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";
@@ -66,15 +66,7 @@ const AtendimentoBeta = () => {
 
   const stopRecording = async () => {
     setIsRecord(false);
-    stopSpeechToText();
-    console.log('Resultado: ', results);
-    if(results.length > 0){
-      console.log('Entrei no if');
-      // Extrai o texto de cada objeto e junta-os em um único texto
-      //@ts-ignore
-      const fullTranscription = results.map(result => result.transcript).join('');
-      console.log('Texto limpo: ', fullTranscription);
-    }
+    stopSpeechToText();    
   };
 
   const formatTime = (milliseconds: number) => {
@@ -85,9 +77,11 @@ const AtendimentoBeta = () => {
   };
 
   const sendAudioToSummarize = async (transcription: string) => {
-    if(transcription.length>0){
+    console.log('Entrei no if', transcription);
+    if(transcription !== ""){
+      console.log('Texto limpo: ', transcription);
       const userLogged = localStorage.getItem("userLogger");
-      let responseP = await TrancribeAndSummarize.postAudio(audioBlob,userLogged);
+      let responseP = await ResumoRapidoService.postTranscribe(transcription,userLogged);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
@@ -137,7 +131,12 @@ const AtendimentoBeta = () => {
       //@ts-ignore
       console.log('Transcrição: ',result.transcript)
     ))
-  },[results])
+    if(results.length > 0 && !isRecord){
+      //@ts-ignore
+      const fullTranscription = results.map(result => result.transcript).join(' ');
+      sendAudioToSummarize(fullTranscription);
+    }
+  },[results, isRecord])
 
   useEffect(()=>{
     console.log('Esta gravando?: ', isRecording);
