@@ -53,7 +53,6 @@ const AtendimentoBeta = () => {
   };
 
   const startRecording = async () => {
-    console.log('Iniciandio gravação');
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const audioContext = new AudioContext();
     const audioStream = audioContext.createMediaStreamSource(stream);
@@ -61,7 +60,6 @@ const AtendimentoBeta = () => {
     
     mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.ondataavailable = (event: any) => {
-      console.log('Entrei no audio avaliado: ', event);
       if (event.data.size > 0) {
         sendAudioChunk(event.data);
       }

@@ -2,7 +2,6 @@ import {
     Button,
     FormControl,
     Grid,
-    InputLabel,
     MenuItem,
     Select,
     TextField,
@@ -17,11 +16,9 @@ import {
 import { IUpdateUserProfileRequest } from "../../../model/user/update-user-profile-request";
 import "./conta-geral.css";
 import InputMask from 'react-input-mask';
-import { BorderAll } from "@mui/icons-material";
 
 
-
-export default function ContaGeral() {
+const ContaGeral = () => {
     const [userProfileRequest, setUserProfileRequest] =
       useState<IUpdateUserProfileRequest>({
         sex: "",
@@ -96,7 +93,7 @@ export default function ContaGeral() {
     return (
       <React.Fragment>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-BR">
-          <Grid  container spacing={3} sx={{ mt: "15px" }}>
+          <Grid container spacing={3} sx={{ mt: "15px" }}>
             <Grid item xs={12} md={6}>
               <Typography className="typography">Nome</Typography>
               <input 
@@ -190,10 +187,9 @@ export default function ContaGeral() {
                   fullWidth
                   value={userProfileRequest?.sex}
                   onChange={handleOnChange}
-                  className="inputMain"
+                  className="inputSelect"
                   sx={{
                       '& legend': { display: 'none' }
-                  
                   }}
                 >
                   <MenuItem value={"S"}>Sim</MenuItem>
@@ -234,4 +230,6 @@ export default function ContaGeral() {
       </React.Fragment>
     );
 }
+
+export default ContaGeral;
   

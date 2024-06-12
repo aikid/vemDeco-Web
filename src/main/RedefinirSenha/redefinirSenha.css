@@ -1,9 +1,12 @@
 
-.cadastroContainer {
+.loginContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-color: #ffffff;
+
+    height:100vh;
     width: 100vw;
   }
 
@@ -26,7 +29,7 @@
         font-weight: 500;
         line-height: 0px;
         text-align: center;
-        margin-top: 0px;
+        margin-top: -20px;
   }
 
   .textoLogin{
@@ -52,17 +55,6 @@
     gap: 8px;
     border-radius: 8px;
     border: 1px solid #C1C3C7;
-    margin-bottom: 5px;
-  }
-
-  .selectBox{
-    width: 390px;
-    height: 47px;
-    padding: 10px 14px 10px 14px;
-    gap: 8px;
-    border-radius: 8px;
-    border: 1px solid #C1C3C7;
-    margin-bottom: 5px;
   }
 
   .textBox{
@@ -82,11 +74,6 @@
     color: #ffffff;
     background-color: #1E9B5F;
     border: 0px;
-    margin-top: 10px;
-  }
-
-  .formButtonLoad{
-    background-color: #9dbcad !important;
   }
 
   .googleButton{
@@ -138,15 +125,6 @@ input[type="checkbox"]:checked::before {
     
 }
 
-.phonebox .react-international-phone-input {
-  width: 100%;
-  height: 50px;
-}
-
-.phonebox .react-international-phone-country-selector button {
-  height: 50px;
-}
-
 .errorMsg {
   color: red;
   font-size: 12px;
@@ -154,11 +132,6 @@ input[type="checkbox"]:checked::before {
   margin-bottom: 15px;
 }
 
-.listErrors {
-  text-align: left;
-  background: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px 30px;
-  font-size: 12px;
+.formButtonLoad{
+  background-color: #9dbcad !important;
 }

@@ -5,3 +5,48 @@
     margin-bottom: 20px;
     background-color: white;
 }
+
+.inputMain{
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    height: 48px;
+    border: 1px solid #C1C3C7;
+    border-radius: 8px;
+    font-size: 100%;
+    text-indent: 10px;
+  }
+  
+  .typography{
+      color: #344054;
+      font-size: 14;
+  }
+  
+  select::after {
+    content: '\25BC'; /* Unicode para a seta para baixo */
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Espaço à direita da seta */
+    transform: translateY(-50%);
+  }
+  
+  .inputSelect{
+    height: 48px;
+    margin-top: 4px;
+  }
+
+  .phonebox {
+    margin-bottom: 20px;
+  }
+
+  .errorMsg {
+    color: red;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .selectBox{
+    width: auto !important;
+    height: 52px !important;
+  }

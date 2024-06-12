@@ -40,7 +40,6 @@ function Cadastro(){
             setLoad(true);
             let response = await ResumoRapidoService.signUp(data);
             if(response && response.data){
-                console.log('Resposta do endpoint: ', response);
                 setModalOpen(true);
                 setLoad(false);
             }
@@ -137,7 +136,7 @@ function Cadastro(){
                 </div>
             </div>
             <Modal
-                show={true}
+                show={isModalOpen}
                 onClose={()=>navigate('/')}
                 title="Cadastro realizado com sucesso!"
                 content={<p>Você sera redirecionado para a página de login.</p>}

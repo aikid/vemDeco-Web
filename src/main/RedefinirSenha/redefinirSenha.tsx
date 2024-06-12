@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import { ISignInData } from "../../interfaces/signin.interfaces";
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { IPasswordReset } from "../../interfaces/passwordReset.interfaces";
 import Modal from "../../components/Modal/Modal";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import ValidationHelper from '../../helpers/validationHelper';
-import './login.css';
+import './redefinirSenha.css';
 
-function Login(){
+function RedefinirSenha(){
     const [load, setLoad] = useState<boolean>(false);
     const [title, setTitle] = useState<string>("");
     const [message, setMessage] = useState<string>("");
@@ -18,22 +17,21 @@ function Login(){
     const { register, handleSubmit, formState:{errors} } = useForm({
         defaultValues: {
             email:"",
-            password:"",
         },      
     });
     
 
     let navigate = useNavigate();
 
-    const signIn = async (data: ISignInData) => {
+    const signIn = async (data: IPasswordReset) => {
         try{
             setLoad(true);
-            let response = await ResumoRapidoService.signIn(data);
-            if(response && response.data.token){
-                localStorage.setItem("authkey","logged");
-                localStorage.setItem("userLogger",response.data.username);
-                localStorage.setItem("userToken",response.data.token);
-                navigate('/atendimento');
+            let response = await ResumoRapidoService.resetPassword(data);
+            if(response && response.email){
+                setLoad(false);
+                setTitle("Pedido de Alteração de Senha Registrado")
+                setMessage("Você recebeu um e-mail para recuperar seu acesso, verique sua caixa de e-mail para os próximos passos");
+                setModalOpen(true);
             }
             else{
                 setLoad(false);
@@ -44,10 +42,9 @@ function Login(){
             }
         }catch (e){
             setLoad(false);
-            setTitle("Erro Encontrado")
-            setMessage("Ocorreu um erro ao fazer a autenticação, caso persista tente redefinir sua senha");
+            setTitle("Pedido de Alteração de Senha Registrado")
+            setMessage("Você recebeu um e-mail para recuperar seu acesso, verique sua caixa de e-mail para os próximos passos");
             setModalOpen(true);
-            console.log('Erro encontrado:', e);
         }
     }
 
@@ -60,10 +57,10 @@ function Login(){
                     </div>
                     
                     <div className="bemVindo">
-                        <h2>Bem vindo!</h2>
+                        <h2>Recuperação de Senha</h2>
                     </div>
                     <div className="textoLogin">
-                        Insira seus dados para entrar na sua conta.
+                        Insira seu e-mail abaixo para recuperar a senha.
                     </div>
                     <form onSubmit={handleSubmit((data)=>{signIn(data)})}>
                         <label>
@@ -71,36 +68,16 @@ function Login(){
                             <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="formBox" type="text" placeholder="Digite seu e-mail" />
                             <p className="errorMsg">{errors.email?.message?.toString()}</p>
                         </label>
-                        <label>
-                            <p className="textBox">Senha</p>
-                            <input {...register("password", {required: 'A Senha é obrigatória'})} className="formBox" type="password" placeholder="••••••••" />
-                            <p className="errorMsg">{errors.password?.message?.toString()}</p>
-                        </label>
-                        <div className="trustDeviceForgottenPwd">
-                            {/* <div className="checkBoxContainer">
-                                <label>
-                                    <input type="checkbox"/>
-                                </label>
-                                <p>Confio nesse Dispositivo</p>
-                            </div> */}
-                            <a className="links"  href="" onClick={()=>navigate('/redefinir-senha')}>Esqueci a senha</a>
-                        </div>
-        
                         <div>
                         {!load ? (
-                            <button className="formButton" type="submit" onClick={()=> handleSubmit}>Entrar</button>
+                            <button className="formButton" type="submit" onClick={()=> handleSubmit}>Enviar</button>
                         ):(
                             <button className="formButton formButtonLoad" type="submit" disabled>Aguarde...</button>
                         )}
                         </div>
                     </form>
-                    {/* <div className="googleButton">
-                        <GoogleLogin logo_alignment={"center"} text="signin_with" onSuccess={function (credentialResponse: CredentialResponse): void {
-                            throw new Error("Function not implemented.");
-                        } }></GoogleLogin>
-                    </div> */}
                     <div className="noAccountText">
-                        Não tem uma conta? <a className="links" onClick={()=>navigate('/cadastro')} href="">Criar conta</a>
+                        Se lembrou do acesso? <a className="links" onClick={()=>navigate('/')} href="">Faça o Login Aqui!</a>
                     </div>
                 </div>
             </div>
@@ -118,5 +95,4 @@ function Login(){
 
 }
 
-export default Login;
-
+export default RedefinirSenha;

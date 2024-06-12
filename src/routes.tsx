@@ -7,6 +7,9 @@ import Resumo from "./main/Resumo/resumo";
 import Login from "./main/Login/login";
 import Cadastro from "./main/Cadastro/cadastro";
 import ContaPrincipal from "./main/Conta/Principal/conta-principal";
+import Planos from "./main/Planos/planos";
+import RecuperarSenha from "./main/RecuperarSenha/recuperarSenha";
+import RedefinirSenha from "./main/RedefinirSenha/redefinirSenha";
 
 const MainRoutes = () => {
     return(
@@ -14,11 +17,13 @@ const MainRoutes = () => {
             <Routes>
                 <Route Component = { Login } path="/" />
                 <Route Component = { Cadastro }  path="/cadastro" />
+                <Route Component= {RedefinirSenha} path="/redefinir-senha"/>
+                <Route Component = { RecuperarSenha }  path="/recuperar-senha" />
+                <Route Component = { Planos }  path="/planos" />
                 <Route Component = { Atendimento }  path="/atendimento" />
                 <Route Component = { AtendimentoBeta }  path="/atendimento-beta" />
                 <Route Component = { Resumo }  path="/resumo" />
                 <Route Component= {ContaPrincipal} path="/conta"/>
-
             </Routes>
         </BrowserRouter>
     )

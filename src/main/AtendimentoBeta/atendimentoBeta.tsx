@@ -77,9 +77,7 @@ const AtendimentoBeta = () => {
   };
 
   const sendAudioToSummarize = async (transcription: string) => {
-    console.log('Entrei no if', transcription);
     if(transcription !== ""){
-      console.log('Texto limpo: ', transcription);
       const userLogged = localStorage.getItem("userLogger");
       let responseP = await ResumoRapidoService.postTranscribe(transcription,userLogged);
       setResponse(responseP);
@@ -101,7 +99,6 @@ const AtendimentoBeta = () => {
   },[])
 
   useEffect(() => {
-    console.log('Contabilizando o tempo');
     let timer: any;
     const restartTime = 4 * 60 * 1000 + 55 * 1000; // 4 minutos e 55 segundos em milissegundos
     if (isRecord) {
@@ -110,10 +107,8 @@ const AtendimentoBeta = () => {
       timer = setInterval(() => {
         const currentTime = Date.now();
         const elapsedTime = currentTime - startTime;
-        console.log('Tempo passado: ', elapsedTime);
         setElapsedTime(elapsedTime);
         if (elapsedTime >= restartTime && isRecording) {
-          console.log('Ja se passaram mais 5 minutos');
           // Se o tempo decorrido for maior ou igual a 4 minutos e 55 segundos, reinicie a gravação
           stopSpeechToText();
           startSpeechToText();
@@ -139,7 +134,6 @@ const AtendimentoBeta = () => {
   },[results, isRecord])
 
   useEffect(()=>{
-    console.log('Esta gravando?: ', isRecording);
     if(!isRecording && isRecord){
       startSpeechToText();
     } 

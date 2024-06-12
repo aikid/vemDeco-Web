@@ -21,7 +21,6 @@ let navigate = useNavigate();
 useEffect(() => {
   if (response !== undefined) {
     if (response.data.completion.summary !== undefined) {
-      console.log(response.data.completion.prescription)
       setTrancriptionLines(response.data.transcription.replace(/\. /g , ".\n").replace(/\? /g , "?\n").replace(/\!/g , "!\n"));
       setSummaryLines(response.data.completion.summary.replace(".\n", ".\n\n"));
       setPrescriptionLines(response.data.completion.prescription.replace(".\n", ".\n\n"));

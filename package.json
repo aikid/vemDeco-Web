@@ -22,9 +22,12 @@
     "axios": "^1.6.8",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
+    "i": "^0.3.7",
     "moment": "^2.29.4",
+    "npm": "^10.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-hook-form": "^7.51.5",
     "react-hook-speech-to-text": "^0.8.0",
     "react-input-mask": "^2.0.4",
@@ -60,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-helmet": "^6.1.11",
     "@types/react-input-mask": "^3.0.5"
   }
 }
