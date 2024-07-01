@@ -53,17 +53,17 @@ function Cadastro(){
     return(
         <>
             <div className="cadastroContainer">
-                <div className="authBox">
+                <div className="cadastroAuthBox">
                     <div className="bemVindo">
                         <h2>Criar conta</h2>
                     </div>
                     <div className="textoLogin">
                         Insira seus dados para criar uma conta.
                     </div>
-                    <form onSubmit={handleSubmit((data)=>{signUp(data)})}>
+                    <form className="mobileForm" onSubmit={handleSubmit((data)=>{signUp(data)})}>
                         <label>
                             <p className="textBox">Selecione o tipo de pessoa para esse cadastro</p>
-                            <select {...register("tipoPessoa", {required: 'Selecione um tipo de pessoa'})} className="selectBox" id="meu-select" value={tipoPessoa} onChange={handleChange}>
+                            <select {...register("tipoPessoa", {required: 'Selecione um tipo de pessoa'})} className="cadastroSelectBox" id="meu-select" value={tipoPessoa} onChange={handleChange}>
                                 <option value="">Selecione...</option>
                                 <option value="pf">Pessoa Física</option>
                                 <option value="pj">Pessoa Jurídica</option>
@@ -73,25 +73,25 @@ function Cadastro(){
                         {tipoPessoa === 'pf' &&
                             <label>
                                 <p className="textBox">CPF</p>
-                                <input {...register("document", {required: 'O CPF é obrigatório', validate: value => ValidationHelper.validarCPF(value) || "Documento inválido"})} className="formBox" type="text" placeholder="Digite seu CPF" />
+                                <input {...register("document", {required: 'O CPF é obrigatório', validate: value => ValidationHelper.validarCPF(value) || "Documento inválido"})} className="cadastroFormBox" type="text" placeholder="Digite seu CPF" />
                                 <p className="errorMsg">{errors.document?.message?.toString()}</p>
                             </label>
                         }
                         {tipoPessoa === 'pj' &&
                             <label>
                                 <p className="textBox">CNPJ</p>
-                                <input {...register("document", {required: 'O CNPJ é obrigatório', validate: value => ValidationHelper.validarCNPJ(value) || "Documento inválido"})} className="formBox" type="text" placeholder="Digite o seu CNPJ"/>
+                                <input {...register("document", {required: 'O CNPJ é obrigatório', validate: value => ValidationHelper.validarCNPJ(value) || "Documento inválido"})} className="cadastroFormBox" type="text" placeholder="Digite o seu CNPJ"/>
                                 <p className="errorMsg">{errors.document?.message?.toString()}</p>
                             </label>
                         }
                         <label>
                             <p className="textBox">Nome</p>
-                            <input {...register("name", {required: 'O Nome é obrigatório'})} className="formBox" type="text" placeholder="Digite seu nome completo"/>
+                            <input {...register("name", {required: 'O Nome é obrigatório'})} className="cadastroFormBox" type="text" placeholder="Digite seu nome completo"/>
                             <p className="errorMsg">{errors.name?.message?.toString()}</p>
                         </label>
                         <label>
                             <p className="textBox">E-mail</p>
-                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="formBox" type="text" placeholder="Digite seu e-mail"/>
+                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="cadastroFormBox" type="text" placeholder="Digite seu e-mail"/>
                             <p className="errorMsg">{errors.email?.message?.toString()}</p>
                         </label>
                         <label>
@@ -101,7 +101,7 @@ function Cadastro(){
                         </label>
                         <label>
                             <p className="textBox">Senha</p>
-                            <input {...register("password", {required: 'A Senha é obrigatória'})} className="formBox" type="password" placeholder="••••••••"/>
+                            <input {...register("password", {required: 'A Senha é obrigatória'})} className="cadastroFormBox" type="password" placeholder="••••••••"/>
                             <p className="errorMsg">{errors.password?.message?.toString()}</p>
                             <ul className="listErrors">
                                 {verificarSenha.resultados.map((resultado, index) => (
@@ -113,7 +113,7 @@ function Cadastro(){
                         </label>
                         <label>
                             <p className="textBox">Confirmar Senha</p>
-                            <input {...register("confirmPassword", {required: 'Confirme sua senha', validate: value => value === password || "As senhas não coincidem"})} className="formBox" type="password" placeholder="••••••••" />
+                            <input {...register("confirmPassword", {required: 'Confirme sua senha', validate: value => value === password || "As senhas não coincidem"})} className="cadastroFormBox" type="password" placeholder="••••••••" />
                             <p className="errorMsg">{errors.confirmPassword?.message?.toString()}</p>
                         </label>
                         <div>

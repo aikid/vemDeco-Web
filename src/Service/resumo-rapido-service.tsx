@@ -12,6 +12,7 @@ const resetPasswordPath = "/user/send-email";
 const resetPasswordRequestPath = "/user/update-password";
 const stateIbgePath = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
 const getUserInfoPath = "/user/get-info";
+const getUserPlansPath = "/user/list-plans";
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
   const formData = new FormData();
@@ -77,7 +78,7 @@ const getStates = async(): Promise<any> =>{
 const getCities = async(stateId: string): Promise<any> =>{
   return await HttpClient.executeRequest({
     method: "GET",
-    url: `${stateIbgePath}`,
+    url: `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateId}/municipios`,
   });
 }
 
@@ -103,6 +104,15 @@ const getUserInfo = async (token: string): Promise<any> => {
   });
 };
 
+const getPlansAvaliable = async (token: string): Promise<any> => {
+
+  return await HttpClient.executeRequest({
+    method: "get",
+    url: `${getUserPlansPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+};
+
 const requestResetPassword = async (data: IPasswordRequestReset, token: string | null): Promise<any> => {
   const formData = new FormData();
   formData.append("token", token);
@@ -116,6 +126,14 @@ const requestResetPassword = async (data: IPasswordRequestReset, token: string |
   });
 };
 
+const getAddressByCep = async (cep: string) => {
+  const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+  if (!response.ok) {
+    throw new Error('Erro ao buscar CEP');
+  }
+  return await response.json();
+};
+
 
 const ResumoRapidoService = {
   postAudio,
@@ -126,7 +144,9 @@ const ResumoRapidoService = {
   getCities,
   resetPassword,
   requestResetPassword,
-  getUserInfo
+  getUserInfo,
+  getPlansAvaliable,
+  getAddressByCep
 };
 
 export default ResumoRapidoService;

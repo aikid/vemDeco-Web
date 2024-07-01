@@ -62,6 +62,7 @@
     border: none;
     background: transparent;
     margin-top: 3px;
+    font-size: 12px;
 }
 
 .buttonLink:hover {

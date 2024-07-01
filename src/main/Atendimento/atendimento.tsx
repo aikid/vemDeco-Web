@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";
 import Loader from "../../utils/loader/loader";
+import generalHelper from "../../helpers/generalHelper";
+import Modal from "../../components/Modal/Modal";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -22,6 +24,11 @@ function Atendimento() {
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [audio, setAudio] = useState<string>("");
   const [response, setResponse] = useState<any>();
+  const [userNotHasPlan, setNotUserHasPlan] = useState<boolean>(true);
+  const [title, setTitle] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
   let navigate = useNavigate(); 
   let authkey:string | null = "unlogged";
 
@@ -32,26 +39,10 @@ function Atendimento() {
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 
-
-  useEffect(() => {
-    getMicrophonePermission();
-  });
-
-  useEffect(()=>{
-    authkey = localStorage.getItem("authkey");
-    setLogged(authkey == 'logged');
-    setLoading(false);
-  },[])
-
   const getMicrophonePermission = async () => {
     if ("MediaRecorder" in window) {
       try {
-        const streamData = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: false,
-        });
         setPermission(true);
-        setStream(streamData);
         return true;
       } catch (err) {
         if (err instanceof Error) {
@@ -95,10 +86,19 @@ function Atendimento() {
     await sleep(1500);
   };
   const beginRecord = async () => {
+    if(userNotHasPlan){
+      setTitle("Ainda há mais um passo para começar a fazer seus resumos");
+      setMessage("Você precisa contratar um plano, clique em ver planos e escolha um que combine com seu uso diario");
+      setModalOpen(true);
+      return;
+    }
     const permissionGranted = await getMicrophonePermission();
     if (permissionGranted) {
-      setIsRecording(true);
-      startRecording();
+      const streamData = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false,
+      });
+      setStream(streamData);
     } else {
       alert("Permissão para o uso do microfone não concedida"); // Trate o caso em que a permissão foi negada
     }
@@ -148,28 +148,62 @@ function Atendimento() {
     }
   };
 
+  useEffect(()=>{
+    const userPlan = localStorage.getItem("userPlan") ?? '{}'
+    const dataPlan = generalHelper.getUserPlan(JSON.parse(userPlan));
+    if(dataPlan){
+      setNotUserHasPlan(false)
+    }
+  },[])
 
+  useEffect(() => {
+    getMicrophonePermission();
+  });
+
+  useEffect(()=>{
+    if(stream && stream.active){
+      console.log(stream)
+      setIsRecording(true);
+      startRecording();
+    }
+  },[stream])
+
+  useEffect(()=>{
+    authkey = localStorage.getItem("authkey");
+    setLogged(authkey == 'logged');
+    setLoading(false);
+  },[])
 
   return (
     loading?<Loader/>:
     logged?
-    <div>
-      <NavBar></NavBar>
-      <div className="atendimentoContainer">
-      {recordinTextRender(isRecording)}
+    <>
+      <div>
+        <NavBar></NavBar>
+        <div className="atendimentoContainer">
+        {recordinTextRender(isRecording)}
 
-      <div className="audio-container">
-        {/* <audio className="audioPlayer" src={audio} controls></audio> */}
-        {/* <a className="audioLink" download href={audio}>
-          Download Recording
-        </a> */}
-        {/* <button className="summarizeButton" onClick={sendAudioToSummarize}>
-          Resumir Audio
-        </button> */}
+        <div className="audio-container">
+          {/* <audio className="audioPlayer" src={audio} controls></audio> */}
+          {/* <a className="audioLink" download href={audio}>
+            Download Recording
+          </a> */}
+          {/* <button className="summarizeButton" onClick={sendAudioToSummarize}>
+            Resumir Audio
+          </button> */}
+        </div>
       </div>
-    </div>
-    </div>
-    
+      </div>
+      <Modal
+          show={isModalOpen}
+          onClose={()=>setModalOpen(false)}
+          title={title}
+          content={<p>{message}</p>}
+          actions={
+          <button className="confirmModal" onClick={()=> navigate('/planos')}>Ver Planos</button>
+          }
+      />
+    </>
      :
     <div>
       Acesso não autorizado

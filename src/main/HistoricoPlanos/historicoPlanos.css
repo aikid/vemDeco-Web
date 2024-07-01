@@ -1,0 +1,37 @@
+.atendimentoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F8F8F8;
+    height: 100vh;
+    width: 100vw;
+}
+
+.menuBtnItem {
+    margin-top: 10px;
+}
+
+.menuConfBtn {
+    width: 320px;
+    height: 50px;
+    justify-content: flex-start !important;
+    background-color: #1B8D55 !important;
+}
+
+.menuConfBtn .MuiButton-icon svg {
+    color: #fff;
+}
+
+.titlePlan{
+    text-align: left;
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.subtitlePlan{
+    text-align: left;
+    margin-left: 15px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}

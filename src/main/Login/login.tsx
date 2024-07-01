@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ISignInData } from "../../interfaces/signin.interfaces";
@@ -6,6 +6,7 @@ import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import Modal from "../../components/Modal/Modal";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import ValidationHelper from '../../helpers/validationHelper';
+import generalHelper from "../../helpers/generalHelper";
 import './login.css';
 
 function Login(){
@@ -30,10 +31,18 @@ function Login(){
             setLoad(true);
             let response = await ResumoRapidoService.signIn(data);
             if(response && response.data.token){
+                const loginTime = new Date().toISOString();
                 localStorage.setItem("authkey","logged");
                 localStorage.setItem("userLogger",response.data.username);
                 localStorage.setItem("userToken",response.data.token);
-                navigate('/atendimento');
+                localStorage.setItem('loginTime', loginTime);
+                localStorage.setItem("userPlan", generalHelper.setUserPlan(response.data).toString())
+                const dataPlan = generalHelper.getUserPlan(response.data.subscription);
+                if(!dataPlan){
+                    navigate('/planos');
+                }else{
+                    navigate('/atendimento');
+                }
             }
             else{
                 setLoad(false);
@@ -50,6 +59,12 @@ function Login(){
             console.log('Erro encontrado:', e);
         }
     }
+
+    useEffect(()=>{
+        if(localStorage.getItem("authkey") === "logged" && localStorage.getItem("userToken") !== ""){
+            navigate('/atendimento');
+        }
+    },[])
 
     return(
         <>

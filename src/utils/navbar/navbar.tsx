@@ -13,12 +13,32 @@ function NavBar() {
     localStorage.setItem("authkey","unlogged");
     localStorage.setItem("userLogger","");
     localStorage.setItem("userToken","");
+    localStorage.setItem("loginTime","");
+    localStorage.setItem("userPlan","");
     window.location.href = "/";
   }
 
   const redirect = (route: string) => {
     window.location.href = route;
   }
+
+  useEffect(()=>{
+    const checkSession = async () => {
+      const loginTime = localStorage.getItem('loginTime');
+
+    if (loginTime) {
+      const loginDate = new Date(loginTime);
+      const currentDate = new Date();
+      const diffInMinutes = (currentDate.getTime() - loginDate.getTime()) / 1000 / 60;
+
+      if (diffInMinutes > 60) {
+        logOut();
+      }
+    }
+    };
+
+    checkSession();
+  },[])
 
   useEffect(()=>{
     if(isDefaultRoute){
@@ -59,7 +79,7 @@ function NavBar() {
             <div className='roundInitials'>DM</div>
             <div className='accountText'>
               <div>{nameDisplayed}</div>
-              <button className="buttonLink" onClick={()=>redirect('/conta')}>Ver conta</button>
+              <button className="buttonLink" onClick={()=>redirect('/configuracoes')}>Configurações</button>
             </div>  
           </>
         )}

@@ -4,23 +4,57 @@ import NavBar from "../../utils/navbar/navbar";
 import "./planos.css";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { Plans } from "../../interfaces/plans.interfaces";
+import { useNavigate } from "react-router-dom";
 import StarsIcon from '@mui/icons-material/Stars';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Loader from "../../utils/loader/loader";
 
 const Planos = () => {
 
     const [planos, setPlanos] = useState<Plans[]>([]);
     const [load, setLoad] = useState<boolean>(false);
+    let navigate = useNavigate();
+    const planosAtribuites = [
+        {
+            qtdResumo:"1 Resumo de teste",
+            recordTime:"Máximo 5 minutos de gravação para um único atendimento",
+        },
+        {
+            qtdResumo:"100 resumos mês",
+            recordTime:"Máximo 60 minutos de gravação por atendimento",
+        },
+        {
+            qtdResumo:"200 resumos mês",
+            recordTime:"Máximo 60 minutos de gravação por atendimento",
+        },
+        {
+            qtdResumo:"500 resumos mês",
+            recordTime:"Máximo 60 minutos de gravação por atendimento",
+        },
+        {
+            qtdResumo:"Resumos ilimitados",
+            recordTime:"Máximo 60 minutos de gravação por atendimento",
+        },
+        {
+            qtdResumo:"Resumos ilimitados",
+            recordTime:"Sem limite de tempo",
+        }
+    ]
 
 
     const getPlans = async () => {
         try{
-            let response = await ResumoRapidoService.getStates();
-            if(response && response.data){
-                const estadosOrdenados = response.data.sort((a: any, b: any) => a.nome.localeCompare(b.nome));
-                setPlanos(estadosOrdenados);
+            setLoad(true);
+            const token = localStorage.getItem("userToken")
+            if(token){
+                let response = await ResumoRapidoService.getPlansAvaliable(token);
+                if(response && response.data){
+                    setPlanos(response.data);
+                }
             }
+            setLoad(false);
         }catch (e){
+            setLoad(false);
             console.log('Erro encontrado:', e);
         }
         
@@ -31,124 +65,37 @@ const Planos = () => {
     },[])
 
     return(
+        load?<Loader/>:
         <div>
             <NavBar/>
-            <Grid display={"flex"} style={{paddingTop:"80px"} }>
-                {/* <Typography marginRight={"20px"}marginLeft={"20px"}>Sua conta</Typography>
-                <Typography marginRight={"20px"}marginLeft={"20px"}>Sua conta</Typography>
-                <Typography marginRight={"20px"}marginLeft={"20px"}>Sua conta</Typography>  */}
+            <Grid style={{paddingTop:"80px"} }>
+                <h2 className="planTitle">Planos disponíveis</h2>
+                <p className="subTitle">Para melhor aproveitamento de recursos da plataforma é necessário adquirir um dos planos acima do trial abaixo:</p>
             </Grid>
             <Grid container sx={{ mt: "15px" }}>
-                <Grid className="gridPlans" item xs={12} md={3}>
-                    <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
-                        <StarsIcon color={"success"}/>Trial
-                    </Grid>
-                    <Divider style={{width:"100%"}}/>
-                        <Grid margin={2}>
-                            <Typography fontWeight={600} fontSize={22}>R$ 15,00</Typography>
-                            <button className="planButton" type="submit" onClick={()=> {}}>Contratar</button>
-                            <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>Suporte técnico 24/7
+                {planos.length > 0 &&
+                    planos.map((plano, index) => (
+                        <Grid className="gridPlans" item xs={12} md={3}>
+                            <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
+                                <StarsIcon color={"success"}/>{plano.name}
                             </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>1GB de armazenamento
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>50.000 disparos
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>50 campanhas ativas
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Suporte a integrações
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Gerador de links personalizados
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Relatórios personalizados
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Métricas personalizadas
-                            </Grid>
+                                <Divider style={{width:"100%"}}/>
+                                <Grid margin={2}>
+                                    <Typography fontWeight={600} fontSize={22}>R$ {plano.value}</Typography>
+                                    <button className="planButton" type="submit" onClick={()=> {navigate('/checkout', {state: plano})}}>Contratar</button>
+                                    <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
+                                    <Grid margin={2}> 
+                                        <h4 style={{textAlign: "left", fontWeight: 500}}><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].qtdResumo ?? 'null'}</h4>
+                                    </Grid>
+                                    <Grid margin={2}> 
+                                        <h4 style={{textAlign: "left", fontWeight: 500}}><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].recordTime ?? 'null'}</h4>
+                                    </Grid>
+                                </Grid>
                         </Grid>
-                </Grid>
-
-                <Grid className="gridPlans" item xs={12} md={3}>
-                    <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
-                        <StarsIcon color={"success"}/>Trial
-                    </Grid>
-                    <Divider style={{width:"100%"}}/>
-                        <Grid margin={2}>
-                            <Typography fontWeight={600} fontSize={22}>R$ 15,00</Typography>
-                            <button className="planButton" type="submit" onClick={()=> {}}>Contratar</button>
-                            <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>Suporte técnico 24/7
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>1GB de armazenamento
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>50.000 disparos
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>50 campanhas ativas
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Suporte a integrações
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Gerador de links personalizados
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Relatórios personalizados
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Métricas personalizadas
-                            </Grid>
-                        </Grid>
-                </Grid>
-
-                <Grid className="gridPlans" item xs={12} md={3}>
-                    <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
-                        <StarsIcon color={"success"}/>Trial
-                    </Grid>
-                    <Divider style={{width:"100%"}}/>
-                        <Grid margin={2}>
-                            <Typography fontWeight={600} fontSize={22}>R$ 15,00</Typography>
-                            <button className="planButton" type="submit" onClick={()=> {}}>Contratar</button>
-                            <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>Suporte técnico 24/7
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>1GB de armazenamento
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>50.000 disparos
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"success"}/>50 campanhas ativas
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Suporte a integrações
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Gerador de links personalizados
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Relatórios personalizados
-                            </Grid>
-                            <Grid display={"flex"} justifyContent={"flex-start"} alignItems={"center"} margin={2}> 
-                                <CheckCircleIcon color={"disabled"}/>Métricas personalizadas
-                            </Grid>
-                        </Grid>
-                </Grid>
+                    ))
+                }
             </Grid>
         </div>
-
     )
 
 }

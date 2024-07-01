@@ -7,3 +7,18 @@ export interface ISignUpData {
     password: string;
     confirmPassword: string;
 }
+
+export interface LoginResponse {
+    type: string;
+    token: string;
+    username: string;
+    subscription: SubscriptionData;
+}
+
+export interface SubscriptionData {
+    status?: boolean;
+    limit?: number;
+    subscriptionId?: string;
+    planId?: string;
+    isTrial: boolean;
+}
