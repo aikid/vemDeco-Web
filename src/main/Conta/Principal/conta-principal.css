@@ -4,6 +4,9 @@
     margin: 30px 120px 30px 120px;
     margin-bottom: 20px;
     background-color: white;
+    @media (max-width: 767px){
+      margin: 10px;
+    }
 }
 
 .inputMain{
@@ -57,6 +60,16 @@
     border: 1px solid #1B8D55 !important;
     color: #1B8D55 !important;
     margin-bottom: 50px;
+    @media (max-width: 767px){
+      margin-bottom: 10px;
+      width: 80%;
+    }
+  }
+
+  .formButton{
+    @media (max-width: 767px){
+      width:100% !important;
+    }
   }
 
   .formButton:hover, .backButton:hover{

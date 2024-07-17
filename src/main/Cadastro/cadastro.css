@@ -175,3 +175,9 @@ input[type="checkbox"]:checked::before {
   padding: 10px 30px;
   font-size: 12px;
 }
+
+.mobileCadastroForm {
+  display: block;
+  width: 98%;
+  margin: 0px auto;
+}

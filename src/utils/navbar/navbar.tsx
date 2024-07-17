@@ -1,13 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import "./navbar.css";
 
 function NavBar() {
   const [disableMenu, setDisableMenu] = useState<boolean>(true);
   const [nameDisplayed, setNameDisplayed] = useState<string | null>("Dr. Mobile");
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationsRef = useRef<HTMLDivElement>(null);
   // Verifica se a rota atual é a de login
   const isLoginPage = window.location.pathname === '/login';
   const isDefaultRoute = window.location.pathname === '/atendimento';
   // Se for a página de login, não renderiza a barra de navegação
+
+  const handleBellClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+      setShowNotifications(false);
+    }
+  };
   
   const logOut = () =>{
     localStorage.setItem("authkey","unlogged");
@@ -53,6 +65,18 @@ function NavBar() {
     }
   },[])
 
+  useEffect(() => {
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNotifications]);
+
   if (isLoginPage) {
     return null;
   }
@@ -60,18 +84,18 @@ function NavBar() {
   // Caso contrário, renderiza a barra de navegação
   return (
     <nav className='navContainer'>
-      <div className='iconDiv'>
+      <div className='iconDiv' onClick={()=>redirect('/configuracoes')}>
         <img src="RRIcon.svg" alt="" />
         <img style={{marginLeft:"5px"}}  src="RRINI.svg" alt="" />
         {/* <img style={{marginLeft:"5px", height:"35px", marginTop:"5px"}}  src="logoSC.png" alt="" /> */}
       </div>
       <div className='rightSide'>
-        <img style={{marginLeft:"50px"}} src="Bell_pin.svg" alt="" />
-        <img style={{marginLeft:"5px", marginRight:"5px"}} src="Line 8.svg" alt="" />
+        <img className='bell' src="Bell_pin.svg" alt="Notificações" onClick={handleBellClick}/>
+        <img className='line' src="Line 8.svg" alt="" />
         {disableMenu ? (
           <>
             <div className='accountText'>
-              <button className="buttonLinkCustom" onClick={()=>redirect('/atendimento')}>Voltar para o atendimento</button>
+              <button className="buttonLinkCustom" onClick={()=>redirect('/atendimento')}>Voltar para atendimento</button>
             </div>  
           </>
         ):(
@@ -89,6 +113,44 @@ function NavBar() {
           <button onClick={()=>logOut()}>Sair</button>
         </div>
       </div>
+      {showNotifications && (
+        <div className="notificationsContainer" ref={notificationsRef}>
+          <div className="notificationsHeader">
+            <span>Notificações</span>
+            <button className="markAllReadButton">Marcar como lidas</button>
+          </div>
+          <ul className="notificationsList">
+            <li className="notificationItem">
+              <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
+              <div className="notificationContent">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim, maxime.</p>
+                <span className="notificationTime">16h</span>
+              </div>
+              <button className="notificationOptions">⋮</button>
+            </li>
+            <li className="notificationItem">
+              <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
+              <div className="notificationContent">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim, maxime.</p>
+                <span className="notificationTime">18h</span>
+              </div>
+              <button className="notificationOptions">⋮</button>
+            </li>
+            <li className="notificationItem">
+              <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
+              <div className="notificationContent">
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim, maxime.</p>
+                <span className="notificationTime">19h</span>
+              </div>
+              <button className="notificationOptions">⋮</button>
+            </li>
+            {/* Outras notificações */}
+          </ul>
+          <div className="seeAllButtonContainer">
+            <button className="seeAllButton">Ver todas</button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

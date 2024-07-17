@@ -11,6 +11,7 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Divider from '@mui/material/Divider';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
   const Configuracoes = () => {
     const [logged, setLogged] = useState<boolean>(false);
@@ -51,6 +52,11 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
                 <div className="menuBtnItem">
                     <Button className="menuConfBtn" onClick={()=>navigate('/conta')} variant="contained" startIcon={<AccountCircleIcon />}>
                         Minha Conta
+                    </Button>
+                </div>
+                <div className="menuBtnItem">
+                    <Button className="menuConfBtn" onClick={()=>navigate('/vincular-usuario')} variant="contained" startIcon={<GroupAddIcon />}>
+                        Vincular Usuário
                     </Button>
                 </div>
                 <div className="menuBtnItem">

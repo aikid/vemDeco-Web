@@ -1,5 +1,4 @@
-import {JSXElementConstructor, Key, ReactElement, ReactNode, 
-        ReactPortal, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import "./atendimento.css";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +35,8 @@ function Atendimento() {
 
   const[logged, setLogged] = useState<boolean>(false)
   
+  const socket = useRef<WebSocket | null>(null);
+
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 
@@ -149,18 +150,6 @@ function Atendimento() {
   };
 
   useEffect(()=>{
-    const userPlan = localStorage.getItem("userPlan") ?? '{}'
-    const dataPlan = generalHelper.getUserPlan(JSON.parse(userPlan));
-    if(dataPlan){
-      setNotUserHasPlan(false)
-    }
-  },[])
-
-  useEffect(() => {
-    getMicrophonePermission();
-  });
-
-  useEffect(()=>{
     if(stream && stream.active){
       console.log(stream)
       setIsRecording(true);
@@ -168,11 +157,34 @@ function Atendimento() {
     }
   },[stream])
 
-  useEffect(()=>{
+  useEffect(() => {
+    const userPlan = localStorage.getItem("userPlan") ?? '{}'
+    const dataPlan = generalHelper.getUserPlan(JSON.parse(userPlan));
+
+    if(dataPlan){
+      setNotUserHasPlan(false)
+    }
+    
+    getMicrophonePermission();
     authkey = localStorage.getItem("authkey");
-    setLogged(authkey == 'logged');
+    setLogged(authkey === 'logged');
     setLoading(false);
-  },[])
+
+    // Conecta ao servidor WebSocket
+    socket.current = new WebSocket('ws://localhost:3000');
+
+    socket.current.onopen = () => {
+      console.log('Connected to WebSocket server');
+    };
+
+    socket.current.onclose = () => {
+      console.log('Disconnected from WebSocket server');
+    };
+
+    return () => {
+      socket.current?.close();
+    };
+  }, []);
 
   return (
     loading?<Loader/>:

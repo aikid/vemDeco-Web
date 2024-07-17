@@ -60,7 +60,7 @@ function Cadastro(){
                     <div className="textoLogin">
                         Insira seus dados para criar uma conta.
                     </div>
-                    <form className="mobileForm" onSubmit={handleSubmit((data)=>{signUp(data)})}>
+                    <form className="mobileCadastroForm" onSubmit={handleSubmit((data)=>{signUp(data)})}>
                         <label>
                             <p className="textBox">Selecione o tipo de pessoa para esse cadastro</p>
                             <select {...register("tipoPessoa", {required: 'Selecione um tipo de pessoa'})} className="cadastroSelectBox" id="meu-select" value={tipoPessoa} onChange={handleChange}>

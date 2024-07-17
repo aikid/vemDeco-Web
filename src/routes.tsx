@@ -14,6 +14,7 @@ import Configuracoes from "./main/Configuracoes/configuracoes";
 import HistoricoPlanos from "./main/HistoricoPlanos/historicoPlanos";
 import Checkout from "./main/Checkout/checkout";
 import PlanoContratado from "./main/PlanoContratado/planoContratado";
+import VincularUsuario from "./main/VincularUsuario/vincularUsuario";
 
 const MainRoutes = () => {
     return(
@@ -32,6 +33,7 @@ const MainRoutes = () => {
                 <Route Component = { HistoricoPlanos } path="/historico"/>
                 <Route Component = { Checkout } path="/checkout"/>
                 <Route Component = { PlanoContratado } path="/plano-contratado"/>
+                <Route Component = { VincularUsuario } path="/vincular-usuario"/>
             </Routes>
         </BrowserRouter>
     )

@@ -40,10 +40,10 @@ function RecuperarSenha(){
     
     return(
         <>
-        {token ? (
+        {!token ? (
             <>
-                <div className="loginContainer">
-                    <div className="authBox">
+                <div className="recuperarSenhaContainer">
+                    <div className="recuperarAuthBox">
                         <div className="rricon">
                             <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      
                         </div>
@@ -53,10 +53,10 @@ function RecuperarSenha(){
                         <div className="textoLogin">
                             Insira sua nova senha abaixo.
                         </div>
-                        <form onSubmit={handleSubmit((data)=>{resetPassword(data)})}>
+                        <form className="mobileRecuperarForm" onSubmit={handleSubmit((data)=>{resetPassword(data)})}>
                             <label>
                                 <p className="textBox">Senha</p>
-                                <input {...register("password", {required: 'A Senha é obrigatória'})} className="formBox" type="password" placeholder="••••••••"/>
+                                <input {...register("password", {required: 'A Senha é obrigatória'})} className="recuperarformBox" type="password" placeholder="••••••••"/>
                                 <p className="errorMsg">{errors.password?.message?.toString()}</p>
                                 <ul className="listErrors">
                                     {verificarSenha.resultados.map((resultado, index) => (
@@ -68,7 +68,7 @@ function RecuperarSenha(){
                             </label>
                             <label>
                                 <p className="textBox">Confirmar Senha</p>
-                                <input {...register("confirmPassword", {required: 'Confirme sua senha', validate: value => value === password || "As senhas não coincidem"})} className="formBox" type="password" placeholder="••••••••" />
+                                <input {...register("confirmPassword", {required: 'Confirme sua senha', validate: value => value === password || "As senhas não coincidem"})} className="recuperarformBox" type="password" placeholder="••••••••" />
                                 <p className="errorMsg">{errors.confirmPassword?.message?.toString()}</p>
                             </label>
                             <div>

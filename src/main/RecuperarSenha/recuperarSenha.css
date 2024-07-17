@@ -1,17 +1,26 @@
 
-.cadastroContainer {
+.recuperarSenhaContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #ffffff;
   width: 100vw;
+  @media (max-width: 767px) {
+    margin-top: 100px;
+    width: 100% !important;
+    display: block !important;
+  }
 }
 
-.authBox{
+.recuperarAuthBox{
   width: 398px;
   left: 521px;
   display: flex;
   flex-direction: column;
+  @media (max-width: 767px) {
+    width: 100% !important;
+    display: block !important;
+  }
 }
 
 .rricon{
@@ -45,8 +54,8 @@ img{
   object-fit: cover;
 }
 
-.formBox{
-  width: 360px;
+.recuperarformBox{
+  width: 92%;
   height: 25px;
   padding: 10px 14px 10px 14px;
   gap: 8px;
@@ -56,7 +65,7 @@ img{
 }
 
 .selectBox{
-  width: 390px;
+  width: 92%;
   height: 47px;
   padding: 10px 14px 10px 14px;
   gap: 8px;
@@ -161,4 +170,9 @@ border: 1px solid #ccc;
 border-radius: 5px;
 padding: 10px 30px;
 font-size: 12px;
+}
+.mobileRecuperarForm {
+  display: block;
+  width: 98%;
+  margin: 0px auto;
 }

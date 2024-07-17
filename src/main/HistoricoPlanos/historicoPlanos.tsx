@@ -163,8 +163,9 @@ import { Chip, Divider } from "@mui/material";
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+                <button className="formButton backButton" onClick={()=> navigate('/configuracoes')}>Voltar</button>
             </Paper>
-            <button className="formButton backButton" onClick={()=> navigate('/configuracoes')}>Voltar</button>
+            
         </div>
       </div>
        :

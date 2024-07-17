@@ -50,7 +50,7 @@ function RedefinirSenha(){
 
     return(
         <>
-            <div className="loginContainer">
+            <div className="redefinirSenhaContainer">
                 <div className="authBox">
                     <div className="rricon">
                         <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      
@@ -62,10 +62,10 @@ function RedefinirSenha(){
                     <div className="textoLogin">
                         Insira seu e-mail abaixo para recuperar a senha.
                     </div>
-                    <form onSubmit={handleSubmit((data)=>{signIn(data)})}>
+                    <form className="mobileRedefinirForm" onSubmit={handleSubmit((data)=>{signIn(data)})}>
                         <label>
                             <p className="textBox">E-mail</p>
-                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="formBox" type="text" placeholder="Digite seu e-mail" />
+                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="redefinirSenhaformBox" type="text" placeholder="Digite seu e-mail" />
                             <p className="errorMsg">{errors.email?.message?.toString()}</p>
                         </label>
                         <div>

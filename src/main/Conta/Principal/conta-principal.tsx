@@ -83,6 +83,7 @@ const ContaPrincipal = () => {
             const address = await ResumoRapidoService.getAddressByCep(cepValue);
             if (address.uf) {
               const state = estados.find((s) => s.sigla === address.uf);
+              console.log('Estado: ', state);
               //@ts-ignore
               setValue('state', state.nome);
               //@ts-ignore
@@ -114,28 +115,40 @@ const ContaPrincipal = () => {
         return numericValue.length > 12 ? '+99 (99) 99999-9999' : '+99 (99) 9999-9999';
     };
 
-    const getUserInfo = async(): Promise<void> =>{
-        try{
-            const token = localStorage.getItem("userToken")
-            if(token){
-                let response = await ResumoRapidoService.getUserInfo(token);
-                if(response && response.data){
-                    reset(response.data);
-                }
-            }
-        }catch (e){
-            console.log('Erro encontrado:', e);
-        }
-    }
+   
 
     const handleChangeCity = (event: any) => {
         getBrazilCitiesByState(event.target.value);
     };
 
     useEffect(()=>{
+        const getUserInfo = async(): Promise<void> =>{
+            try{
+                const token = localStorage.getItem("userToken")
+                if(token){
+                    let response = await ResumoRapidoService.getUserInfo(token);
+                    if(response && response.data){
+                        setUserLoggedData(response.data);
+                        reset(response.data);
+                    }
+                }
+            }catch (e){
+                console.log('Erro encontrado:', e);
+            }
+        }
+
         getUserInfo();
+    },[reset])
+
+    useEffect(()=>{
         getBrazilStates();
     },[])
+
+    useEffect(()=>{
+        if(cidades){
+            
+        }
+    },[cidades])
 
     return(
         <div>
@@ -235,14 +248,27 @@ const ContaPrincipal = () => {
                                 </Grid>
                                 <Grid item xs={12} md={4}>
                                     <Typography className="typography">Celular de recados</Typography>
-                                    <PhoneInput {...register("phone", {required: 'O Celular é obrigatório', validate: value => ValidationHelper.validarTelephone(value) || "Telefone inválido"})} className="phonebox" defaultCountry="br" onChange={() => {}} />
+                                    <Controller name="phone" control={control} rules={{ required: 'O Celular é obrigatório' }} render={({ field }) => (
+                                        <PhoneInput
+                                            value={field.value}
+                                            className="phonebox"
+                                            onChange={field.onChange}
+                                            defaultCountry="BR"
+                                        />
+                                    )}/>
                                     <p className="errorMsg">{errors.phone?.message?.toString()}</p>
-                                </Grid> 
-                                <Grid item xs={12} md={4}>
-                                    <Typography className="typography">Telefone</Typography>
-                                    <PhoneInput {...register("secondPhone", {required: 'O Telefone é obrigatório', validate: value => ValidationHelper.validarTelephone(value) || "Telefone inválido"})} className="phonebox" defaultCountry="br" onChange={() => {}} />
-                                    <p className="errorMsg">{errors.secondPhone?.message?.toString()}</p>
                                 </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <Typography className="typography">Celular de recados</Typography>
+                                    <Controller name="secondPhone" control={control} render={({ field }) => (
+                                        <PhoneInput
+                                            value={field.value}
+                                            className="phonebox"
+                                            onChange={field.onChange}
+                                            defaultCountry="BR"
+                                        />
+                                    )}/>
+                                </Grid> 
                                 <Grid item xs={12} md={3}>
                                     <Typography className="typography">CEP</Typography>
                                     <input {...register("zipCode", {required: 'O CEP é obrigatório'})} className="inputMain" type="text" name="cep" id="txt-given-name" disabled={disableInput} onBlur={handleCepBlur}/>
@@ -267,8 +293,8 @@ const ContaPrincipal = () => {
                                     <p className="errorMsg">{errors.city?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={5}>
-                                    <Typography {...register("address", {required: 'O Endereço é obrigatório'})} className="typography">Endereço</Typography>
-                                    <input className="inputMain" type="text" name="endereco" id="txt-given-name" disabled={disableInput}/>
+                                    <Typography className="typography">Endereço</Typography>
+                                    <input {...register("address", {required: 'O Endereço é obrigatório'})} className="inputMain" type="text" name="endereco" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.address?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={2}>

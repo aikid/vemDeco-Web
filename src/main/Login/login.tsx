@@ -80,15 +80,15 @@ function Login(){
                     <div className="textoLogin">
                         Insira seus dados para entrar na sua conta.
                     </div>
-                    <form onSubmit={handleSubmit((data)=>{signIn(data)})}>
+                    <form className="mobileLoginForm" onSubmit={handleSubmit((data)=>{signIn(data)})}>
                         <label>
                             <p className="textBox">E-mail</p>
-                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="formBox" type="text" placeholder="Digite seu e-mail" />
+                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="loginformBox" type="text" placeholder="Digite seu e-mail" />
                             <p className="errorMsg">{errors.email?.message?.toString()}</p>
                         </label>
                         <label>
                             <p className="textBox">Senha</p>
-                            <input {...register("password", {required: 'A Senha é obrigatória'})} className="formBox" type="password" placeholder="••••••••" />
+                            <input {...register("password", {required: 'A Senha é obrigatória'})} className="loginformBox" type="password" placeholder="••••••••" />
                             <p className="errorMsg">{errors.password?.message?.toString()}</p>
                         </label>
                         <div className="trustDeviceForgottenPwd">

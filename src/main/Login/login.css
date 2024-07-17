@@ -15,6 +15,10 @@
     left: 521px;
     display: flex;
     flex-direction: column;
+    @media (max-width: 767px) {
+      width: 100% !important;
+      display: block !important;
+    }
   }
 
   .rricon{
@@ -48,8 +52,8 @@
     object-fit: cover;
   }
 
-  .formBox{
-    width: 360px;
+  .loginformBox{
+    width: 92%;
     height: 25px;
     padding: 10px 14px 10px 14px;
     gap: 8px;
@@ -136,4 +140,10 @@ input[type="checkbox"]:checked::before {
 
 .formButtonLoad{
   background-color: #9dbcad !important;
+}
+
+.mobileLoginForm {
+  display: block;
+  width: 98%;
+  margin: 0px auto;
 }
