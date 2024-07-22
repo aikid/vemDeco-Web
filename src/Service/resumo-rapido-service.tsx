@@ -3,6 +3,7 @@ import FormData from "form-data";
 import { ISignUpData } from "../interfaces/signup.interfaces";
 import { ISignInData } from "../interfaces/signin.interfaces";
 import { IPasswordRequestReset, IPasswordReset } from "../interfaces/passwordReset.interfaces";
+import { IUpdateUserProfileRequest } from "../model/user/update-user-profile-request";
 
 const defaultPath = "transcribe-and-summarize";
 const alternativePath = "summarize-transcription";
@@ -13,6 +14,7 @@ const resetPasswordRequestPath = "/user/update-password";
 const stateIbgePath = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
 const getUserInfoPath = "/user/get-info";
 const getUserPlansPath = "/user/list-plans";
+const updateProfilePath = "/user/update-profile"
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
   const formData = new FormData();
@@ -82,7 +84,6 @@ const getCities = async(stateId: string): Promise<any> =>{
   });
 }
 
-
 const resetPassword = async (data: IPasswordReset): Promise<any> => {
   const formData = new FormData();
   formData.append("email", data.email);
@@ -134,6 +135,19 @@ const getAddressByCep = async (cep: string) => {
   return await response.json();
 };
 
+const updateUserProfile = async(data: IUpdateUserProfileRequest, token: string | null): Promise<any> => {
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key as keyof IUpdateUserProfileRequest]);
+  });
+
+  return await HttpClient.executeRequest({
+    method: "post",
+    url: `${updateProfilePath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
 
 const ResumoRapidoService = {
   postAudio,
@@ -146,7 +160,8 @@ const ResumoRapidoService = {
   requestResetPassword,
   getUserInfo,
   getPlansAvaliable,
-  getAddressByCep
+  getAddressByCep,
+  updateUserProfile
 };
 
 export default ResumoRapidoService;

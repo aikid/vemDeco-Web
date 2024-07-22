@@ -5,15 +5,17 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { PhoneInput } from 'react-international-phone';
 import InputMask from 'react-input-mask';
+import dayjs from 'dayjs';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../utils/navbar/navbar";
 import "./conta-principal.css";
 import ValidationHelper from "../../../helpers/validationHelper";
 import ResumoRapidoService from "../../../Service/resumo-rapido-service";
-import { Cidade, Estado, UserData } from "../../../interfaces/userEdit.interfaces";
+import { Cidade, Estado, UserData, AddressData } from "../../../interfaces/userEdit.interfaces";
 
 const ContaPrincipal = () => {
     const [userLoggedData, setUserLoggedData] = useState<UserData>();
+    const [addressData, setAddressData] = useState<AddressData>();
     const [estados, setEstados] = useState<Estado[]>([]);
     const [cidades, setCidades] = useState<Cidade[]>([]);
     const [load, setLoad] = useState<boolean>(false);
@@ -31,7 +33,7 @@ const ContaPrincipal = () => {
             secondPhone:"",
             type:"",
             document:"",
-            birthdate:"",
+            birthdate: null,
             occupation:"",
             state:"",
             city:"",
@@ -44,9 +46,19 @@ const ContaPrincipal = () => {
     });
 
     const cep = watch('zipCode');
+    const token = localStorage.getItem("userToken");
 
     const updateProfile = async(data: any) => {
+        if (data.birthdate && dayjs.isDayjs(data.birthdate)) {
+            data.birthdate = data.birthdate.format('YYYY-MM-DD');
+        }
+
         console.log('Dados do formulário: ', data);
+        try {
+            let updateData = await ResumoRapidoService.updateUserProfile(data, token)
+        }catch (e){
+            console.log('Erro encontrado:', e);
+        }
     }
 
     const getBrazilStates = async () => {
@@ -82,24 +94,17 @@ const ContaPrincipal = () => {
           try {
             const address = await ResumoRapidoService.getAddressByCep(cepValue);
             if (address.uf) {
+              setAddressData(address);
               const state = estados.find((s) => s.sigla === address.uf);
               console.log('Estado: ', state);
-              //@ts-ignore
-              setValue('state', state.nome);
-              //@ts-ignore
-              const citiesData = await ResumoRapidoService.getCities(state.id);
-              setCidades(citiesData.data);
-              console.log('Cidade: ', cidades);
-              const city = cidades.find((c) => c.nome === address.localidade);
-              //@ts-ignore
-              console.log('Cidade Encontrada: ', city);
-              //@ts-ignore
-              if(city){
-                setValue('city', city.nome);
+              if(state){
+                setValue('state', state.nome);
+                const citiesData = await ResumoRapidoService.getCities(state.id.toString());
+                setCidades(citiesData.data);
+                setValue('address', address.logradouro);
+                setValue('neighborhood', address.bairro);
+                setDisableInput(false);
               }
-              setValue('address', address.logradouro);
-              setValue('neighborhood', address.bairro);
-              setDisableInput(false);
             }
           } catch (error) {
             console.error('Erro ao buscar CEP:', error);
@@ -124,7 +129,6 @@ const ContaPrincipal = () => {
     useEffect(()=>{
         const getUserInfo = async(): Promise<void> =>{
             try{
-                const token = localStorage.getItem("userToken")
                 if(token){
                     let response = await ResumoRapidoService.getUserInfo(token);
                     if(response && response.data){
@@ -145,10 +149,15 @@ const ContaPrincipal = () => {
     },[])
 
     useEffect(()=>{
-        if(cidades){
-            
+        if(cidades && addressData){
+            console.log('Cidade: ', cidades);
+            const city = cidades.find((c) => c.nome === addressData.localidade);
+            if(city){
+                console.log('Cidade Encontrada: ', city);
+                setValue('city', city.nome);
+            }
         }
-    },[cidades])
+    },[cidades, addressData])
 
     return(
         <div>
@@ -187,33 +196,39 @@ const ContaPrincipal = () => {
                                     <Grid item xs={12} md={4}>
                                         <FormControl fullWidth>
                                             <Typography>Data de Nascimento</Typography>
-                                            <Controller
-                                                name="birthdate"
-                                                control={control}
-                                                rules={{ required: 'A data de nascimento é obrigatória' }}
-                                                render={({ field }) => (
-                                                    <DesktopDatePicker className="inputMain"
-                                                        {...field}
-                                                        sx={{
-                                                            '& .MuiOutlinedInput-root': {
-                                                                '& fieldset': {
-                                                                borderColor: '#C1C3C7',
-                                                                borderRadius:2,
-                                                                height: "50px",
-                                                                marginTop:"5px"
-                                                                },
-                                                                '&:hover fieldset': {
-                                                                borderColor: 'black',
-                                                                },
-                                                                '&.Mui-focused fieldset': {
-                                                                borderColor: 'black',
-                                                                },
-                                                                '& legend': { display: 'none' }
-                                                            },
-                                                        }}
-                                                        format={"DD/MM/YYYY"}
-                                                    />
-                                                )} />
+                                                <Controller
+                                                   name="birthdate"
+                                                   control={control}
+                                                   rules={{ required: 'A data de nascimento é obrigatória' }}
+                                                    render={({ field }) => (
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <DesktopDatePicker
+                                                                {...field}
+                                                                className="inputMain"
+                                                                format={"DD/MM/YYYY"}
+                                                                sx={{
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        '& fieldset': {
+                                                                        borderColor: '#C1C3C7',
+                                                                        borderRadius:2,
+                                                                        height: "50px",
+                                                                        marginTop:"5px"
+                                                                        },
+                                                                        '&:hover fieldset': {
+                                                                        borderColor: 'black',
+                                                                        },
+                                                                        '&.Mui-focused fieldset': {
+                                                                        borderColor: 'black',
+                                                                        },
+                                                                        '& legend': { display: 'none' }
+                                                                    },
+                                                                }}
+                                                                value={field.value ? dayjs(field.value) : null}
+                                                                onChange={(date) => field.onChange(date)}
+                                                            />
+                                                        </LocalizationProvider>
+                                                    )}
+                                                />
                                         </FormControl>
                                         <p className="errorMsg">{errors.birthdate?.message?.toString()}</p>
                                     </Grid>
@@ -243,7 +258,7 @@ const ContaPrincipal = () => {
                             <Grid container spacing={3} sx={{ mt: "15px" }}>
                                 <Grid item xs={12} md={4}>
                                         <Typography className="typography">Profissão</Typography>
-                                        <input {...register("occupation", {required: 'A Profissão é obrigatória'})} className="inputMain" type="text" name="profissao" id="txt-given-name" />
+                                        <input {...register("occupation", {required: 'A Profissão é obrigatória'})} className="inputMain" type="text" name="occupation" id="txt-given-name" />
                                         <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={4}>
@@ -253,7 +268,6 @@ const ContaPrincipal = () => {
                                             value={field.value}
                                             className="phonebox"
                                             onChange={field.onChange}
-                                            defaultCountry="BR"
                                         />
                                     )}/>
                                     <p className="errorMsg">{errors.phone?.message?.toString()}</p>
@@ -265,18 +279,17 @@ const ContaPrincipal = () => {
                                             value={field.value}
                                             className="phonebox"
                                             onChange={field.onChange}
-                                            defaultCountry="BR"
                                         />
                                     )}/>
                                 </Grid> 
                                 <Grid item xs={12} md={3}>
                                     <Typography className="typography">CEP</Typography>
-                                    <input {...register("zipCode", {required: 'O CEP é obrigatório'})} className="inputMain" type="text" name="cep" id="txt-given-name" disabled={disableInput} onBlur={handleCepBlur}/>
+                                    <input {...register("zipCode", {required: 'O CEP é obrigatório'})} className="inputMain" type="text" name="zipCode" id="txt-given-name" disabled={disableInput} onBlur={handleCepBlur}/>
                                     <p className="errorMsg">{errors.zipCode?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
                                     <Typography className="typography">Estado</Typography>
-                                    <Select {...register("state", {required: 'Selecione um estado'})} label="estado" fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}} onChange={handleChangeCity}>
+                                    <Select {...register("state", {required: 'Selecione um estado'})} label="estado" name="state" fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}} onChange={handleChangeCity}>
                                         {estados.map((estado) => (
                                              <MenuItem key={estado.id} value={estado.id}>{estado.nome}</MenuItem>
                                         ))}
@@ -285,26 +298,26 @@ const ContaPrincipal = () => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Typography className="typography">Cidade</Typography>
-                                    <Select {...register("city", {required: 'Selecione uma cidade'})} label="city" fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}} disabled={disableCityInput}>
-                                        {cidades.map((estado) => (
-                                             <MenuItem key={estado.id} value={estado.id}>{estado.nome}</MenuItem>
+                                    <Select {...register("city", {required: 'Selecione uma cidade'})} label="city" name="city" fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}} disabled={disableCityInput}>
+                                        {cidades.map((cidade) => (
+                                             <MenuItem key={cidade.id} value={cidade.id}>{cidade.nome}</MenuItem>
                                         ))}
                                     </Select>
                                     <p className="errorMsg">{errors.city?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={5}>
                                     <Typography className="typography">Endereço</Typography>
-                                    <input {...register("address", {required: 'O Endereço é obrigatório'})} className="inputMain" type="text" name="endereco" id="txt-given-name" disabled={disableInput}/>
+                                    <input {...register("address", {required: 'O Endereço é obrigatório'})} className="inputMain" type="text" name="address" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.address?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
                                     <Typography className="typography">Número</Typography>
-                                    <input {...register("number", {required: 'O Número é obrigatório'})} className="inputMain" type="text" name="numero" id="txt-given-name" disabled={disableInput}/>
+                                    <input {...register("number", {required: 'O Número é obrigatório'})} className="inputMain" type="text" name="number" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.number?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
                                     <Typography className="typography">Complemento</Typography>
-                                    <input {...register("complement", {required: 'O Complemento é obrigatório'})} className="inputMain" type="text" name="complemento" id="txt-given-name" disabled={disableInput}/>
+                                    <input {...register("complement", {required: 'O Complemento é obrigatório'})} className="inputMain" type="text" name="complement" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.complement?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
