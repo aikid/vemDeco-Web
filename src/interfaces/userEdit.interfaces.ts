@@ -17,6 +17,8 @@ export interface UserData {
     document: string;
     password: string;
     confirmPassword: string;
+    city: string;
+    state:string;
 }
 
 export interface AddressData {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Divider, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { Alert, Divider, FormControl, Grid, MenuItem, Select, Snackbar, Typography } from "@mui/material";
 import { useForm, Controller } from 'react-hook-form';
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -21,6 +21,7 @@ const ContaPrincipal = () => {
     const [load, setLoad] = useState<boolean>(false);
     const [disableCityInput, setDisableCityInput] = useState<boolean>(true);
     const [disableInput, setDisableInput] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
     let navigate = useNavigate();
     
 
@@ -53,9 +54,9 @@ const ContaPrincipal = () => {
             data.birthdate = data.birthdate.format('YYYY-MM-DD');
         }
 
-        console.log('Dados do formulário: ', data);
         try {
-            let updateData = await ResumoRapidoService.updateUserProfile(data, token)
+            await ResumoRapidoService.updateUserProfile(data, token)
+            setOpen(true);
         }catch (e){
             console.log('Erro encontrado:', e);
         }
@@ -120,11 +121,18 @@ const ContaPrincipal = () => {
         return numericValue.length > 12 ? '+99 (99) 99999-9999' : '+99 (99) 9999-9999';
     };
 
-   
-
     const handleChangeCity = (event: any) => {
         getBrazilCitiesByState(event.target.value);
     };
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
+    
 
     useEffect(()=>{
         const getUserInfo = async(): Promise<void> =>{
@@ -337,6 +345,11 @@ const ContaPrincipal = () => {
                     )}
                 </div>
             </form>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
+                <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
+                    Dado(s) editado(s) com sucesso!
+                </Alert>
+            </Snackbar>
         </div>
 
     )
