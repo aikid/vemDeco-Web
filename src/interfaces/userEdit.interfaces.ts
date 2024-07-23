@@ -1,14 +1,8 @@
 export interface Estado {
-    id: number;
+    _id: number;
     nome: string;
     sigla: string;
 }
-  
-export interface Cidade {
-    id: number;
-    nome: string;
-}
-
 export interface UserData {
     name: string;
     email: string;

@@ -11,7 +11,7 @@ const signUpPath = "/user/create";
 const signInPath = "/user/signin";
 const resetPasswordPath = "/user/send-email";
 const resetPasswordRequestPath = "/user/update-password";
-const stateIbgePath = "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
+const getUserStatePath = "/user/get-states";
 const getUserInfoPath = "/user/get-info";
 const getUserPlansPath = "/user/list-plans";
 const updateProfilePath = "/user/update-profile"
@@ -70,10 +70,11 @@ const signIn = async (data: ISignInData): Promise<any> => {
   });
 };
 
-const getStates = async(): Promise<any> =>{
+const getStates = async(token: string): Promise<any> =>{
   return await HttpClient.executeRequest({
     method: "GET",
-    url: `${stateIbgePath}`,
+    url: `${getUserStatePath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
   });
 }
 

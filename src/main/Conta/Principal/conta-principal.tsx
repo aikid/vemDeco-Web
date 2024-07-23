@@ -4,22 +4,19 @@ import { useForm, Controller } from 'react-hook-form';
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { PhoneInput } from 'react-international-phone';
-import InputMask from 'react-input-mask';
 import dayjs from 'dayjs';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../utils/navbar/navbar";
 import "./conta-principal.css";
 import ValidationHelper from "../../../helpers/validationHelper";
 import ResumoRapidoService from "../../../Service/resumo-rapido-service";
-import { Cidade, Estado, UserData, AddressData } from "../../../interfaces/userEdit.interfaces";
+import { Estado, UserData, AddressData } from "../../../interfaces/userEdit.interfaces";
 
 const ContaPrincipal = () => {
     const [userLoggedData, setUserLoggedData] = useState<UserData>();
     const [addressData, setAddressData] = useState<AddressData>();
     const [estados, setEstados] = useState<Estado[]>([]);
-    const [cidades, setCidades] = useState<Cidade[]>([]);
     const [load, setLoad] = useState<boolean>(false);
-    const [disableCityInput, setDisableCityInput] = useState<boolean>(true);
     const [disableInput, setDisableInput] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     let navigate = useNavigate();
@@ -46,7 +43,6 @@ const ContaPrincipal = () => {
         },      
     });
 
-    const cep = watch('zipCode');
     const token = localStorage.getItem("userToken");
 
     const updateProfile = async(data: any) => {
@@ -62,26 +58,12 @@ const ContaPrincipal = () => {
         }
     }
 
-    const getBrazilStates = async () => {
+    const getBrazilStates = async (token: string) => {
         try{
-            let response = await ResumoRapidoService.getStates();
+            let response = await ResumoRapidoService.getStates(token);
             if(response && response.data){
                 const estadosOrdenados = response.data.sort((a: any, b: any) => a.nome.localeCompare(b.nome));
                 setEstados(estadosOrdenados);
-            }
-        }catch (e){
-            console.log('Erro encontrado:', e);
-        }
-    }
-
-    const getBrazilCitiesByState = async (stateId: string) => {
-        try{
-            let response = await ResumoRapidoService.getCities(stateId);
-            if(response && response.data){
-                console.log('Dados da cidade: ', response.data);
-                const cidadesOrdenadas = response.data.sort((a: any, b: any) => a.nome.localeCompare(b.nome));
-                setCidades(cidadesOrdenadas);
-                setDisableCityInput(false);
             }
         }catch (e){
             console.log('Erro encontrado:', e);
@@ -99,9 +81,8 @@ const ContaPrincipal = () => {
               const state = estados.find((s) => s.sigla === address.uf);
               console.log('Estado: ', state);
               if(state){
-                setValue('state', state.nome);
-                const citiesData = await ResumoRapidoService.getCities(state.id.toString());
-                setCidades(citiesData.data);
+                setValue('state', state.sigla);
+                setValue('city', address.localidade);
                 setValue('address', address.logradouro);
                 setValue('neighborhood', address.bairro);
                 setDisableInput(false);
@@ -114,16 +95,6 @@ const ContaPrincipal = () => {
           }
         }
       };
-    
-    //máscara condicional com DDI
-    const getMask = (value: string): string => {
-        const numericValue = value.replace(/\D/g, '');
-        return numericValue.length > 12 ? '+99 (99) 99999-9999' : '+99 (99) 9999-9999';
-    };
-
-    const handleChangeCity = (event: any) => {
-        getBrazilCitiesByState(event.target.value);
-    };
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -143,6 +114,7 @@ const ContaPrincipal = () => {
                         setUserLoggedData(response.data);
                         reset(response.data);
                     }
+                    getBrazilStates(token);
                 }
             }catch (e){
                 console.log('Erro encontrado:', e);
@@ -152,20 +124,15 @@ const ContaPrincipal = () => {
         getUserInfo();
     },[reset])
 
-    useEffect(()=>{
-        getBrazilStates();
-    },[])
-
-    useEffect(()=>{
-        if(cidades && addressData){
-            console.log('Cidade: ', cidades);
-            const city = cidades.find((c) => c.nome === addressData.localidade);
-            if(city){
-                console.log('Cidade Encontrada: ', city);
-                setValue('city', city.nome);
+    useEffect(() => {
+        // Preencher os dados do usuário ao carregar
+        if (userLoggedData) {
+            
+            if (userLoggedData.state) {
+                setValue("state", userLoggedData.state);
             }
         }
-    },[cidades, addressData])
+    }, [userLoggedData]);
 
     return(
         <div>
@@ -297,20 +264,25 @@ const ContaPrincipal = () => {
                                 </Grid>
                                 <Grid item xs={12} md={3}>
                                     <Typography className="typography">Estado</Typography>
-                                    <Select {...register("state", {required: 'Selecione um estado'})} label="estado" name="state" fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}} onChange={handleChangeCity}>
-                                        {estados.map((estado) => (
-                                             <MenuItem key={estado.id} value={estado.id}>{estado.nome}</MenuItem>
-                                        ))}
-                                    </Select>
+                                    <Controller
+                                        name="state"
+                                        control={control}
+                                        rules={{ required: 'O Celular é obrigatório' }}
+                                        render={({ field }) => (
+                                            <Select {...field} label="Estado" disabled={disableInput} fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}}>
+                                                {estados.map((estado) => (
+                                                    <MenuItem key={estado._id} value={estado.sigla}>
+                                                        {estado.nome}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        )}
+                                    />
                                     <p className="errorMsg">{errors.state?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Typography className="typography">Cidade</Typography>
-                                    <Select {...register("city", {required: 'Selecione uma cidade'})} label="city" name="city" fullWidth className="inputSelect" sx={{'& legend': { display: 'none' }, textAlign: "left"}} disabled={disableCityInput}>
-                                        {cidades.map((cidade) => (
-                                             <MenuItem key={cidade.id} value={cidade.id}>{cidade.nome}</MenuItem>
-                                        ))}
-                                    </Select>
+                                    <input {...register("city", {required: 'A Cidade é obrigatória'})} className="inputMain" type="text" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.city?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={5}>
