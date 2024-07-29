@@ -14,7 +14,8 @@ const resetPasswordRequestPath = "/user/update-password";
 const getUserStatePath = "/user/get-states";
 const getUserInfoPath = "/user/get-info";
 const getUserPlansPath = "/user/list-plans";
-const updateProfilePath = "/user/update-profile"
+const updateProfilePath = "/user/update-profile";
+const getUserNotificationsPath = "/user/find-notification";
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
   const formData = new FormData();
@@ -150,6 +151,14 @@ const updateUserProfile = async(data: IUpdateUserProfileRequest, token: string |
   });
 }
 
+const getNotifications = async(token: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${getUserNotificationsPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
 const ResumoRapidoService = {
   postAudio,
   postTranscribe,
@@ -162,7 +171,8 @@ const ResumoRapidoService = {
   getUserInfo,
   getPlansAvaliable,
   getAddressByCep,
-  updateUserProfile
+  updateUserProfile,
+  getNotifications
 };
 
 export default ResumoRapidoService;

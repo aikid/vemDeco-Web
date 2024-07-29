@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import qs from "qs";
 
-axios.defaults.baseURL = "http://localhost:3000/";
+axios.defaults.baseURL = "http://localhost:4000/";
 //axios.defaults.baseURL = "http://resumorapido.drmobile.com.br:3000";
 //axios.defaults.baseURL = "https://api.resumorapido.ai/";
 
