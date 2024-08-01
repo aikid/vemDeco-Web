@@ -4,6 +4,7 @@ import { ISignUpData } from "../interfaces/signup.interfaces";
 import { ISignInData } from "../interfaces/signin.interfaces";
 import { IPasswordRequestReset, IPasswordReset } from "../interfaces/passwordReset.interfaces";
 import { IUpdateUserProfileRequest } from "../model/user/update-user-profile-request";
+import { IUpdateUserSubscriptionRequest } from "../model/user/update-user-subscription-request";
 
 const defaultPath = "transcribe-and-summarize";
 const alternativePath = "summarize-transcription";
@@ -15,6 +16,7 @@ const getUserStatePath = "/user/get-states";
 const getUserInfoPath = "/user/get-info";
 const getUserPlansPath = "/user/list-plans";
 const updateProfilePath = "/user/update-profile"
+const updateSubscriptionPath = "/user/update-subscription"
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
   const formData = new FormData();
@@ -150,6 +152,18 @@ const updateUserProfile = async(data: IUpdateUserProfileRequest, token: string |
   });
 }
 
+const updateUserSubscription = async(data: IUpdateUserSubscriptionRequest, token: string | null): Promise<any> => {
+  const formData = new FormData();
+  formData.append("planId", data.planId);
+
+  return await HttpClient.executeRequest({
+    method: "post",
+    url: `${updateSubscriptionPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
+
 const ResumoRapidoService = {
   postAudio,
   postTranscribe,
@@ -162,7 +176,8 @@ const ResumoRapidoService = {
   getUserInfo,
   getPlansAvaliable,
   getAddressByCep,
-  updateUserProfile
+  updateUserProfile,
+  updateUserSubscription
 };
 
 export default ResumoRapidoService;

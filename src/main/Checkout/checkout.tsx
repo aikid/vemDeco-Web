@@ -33,7 +33,7 @@ const Checkout = () => {
     zip: '',
     country: '',
   });
-
+  const token = localStorage.getItem("userToken");
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
     billingZip: '',
@@ -92,17 +92,27 @@ const Checkout = () => {
     });
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async(e: { preventDefault: () => void; }) => {
     e.preventDefault();
     // Lógica de envio do checkout
     console.log('Shipping Info:', shippingInfo);
     console.log('Payment Info:', paymentInfo);
     console.log('Billing Info:', billingInfo);
+
+    try{
+        let responseSubscription = await ResumoRapidoService.updateUserSubscription(planoData._id, token);
+        if(responseSubscription){
+            
+        }
+    } catch(e){
+        console.log('Erro encontrado:', e);
+    }
   };
 
   useEffect(() => {
     if (planoData !== undefined) {
-        setPlano(planoData)
+        console.log(planoData);
+        setPlano(planoData);
     }
   }, [planoData]);
 
