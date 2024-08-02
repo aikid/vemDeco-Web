@@ -3,6 +3,7 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 
 import Atendimento from "./main/Atendimento/atendimento";
 import AtendimentoBeta from "./main/AtendimentoBeta/atendimentoBeta";
+import AtendimentoPrompt from "./main/AtendimentoPrompt/atendimentoPrompt";
 import Resumo from "./main/Resumo/resumo";
 import Login from "./main/Login/login";
 import Cadastro from "./main/Cadastro/cadastro";
@@ -34,6 +35,7 @@ const MainRoutes = () => {
                 <Route Component = { Checkout } path="/checkout"/>
                 <Route Component = { PlanoContratado } path="/plano-contratado"/>
                 <Route Component = { VincularUsuario } path="/vincular-usuario"/>
+                <Route Component = { AtendimentoPrompt } path="/atendimento-prompt"/>
             </Routes>
         </BrowserRouter>
     )

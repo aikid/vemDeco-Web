@@ -1,0 +1,94 @@
+.atendimentoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F8F8F8;
+  height: 100vh;
+  width: 100vw;
+}
+
+.recordText {
+  font-size: 24px;
+  color: #1e1e1e70;
+  display: block;
+  margin-bottom: 40px;
+}
+
+.recordingButton {
+  display: block;
+  width: 70vw;
+  height: 115.58px;
+  padding: 12.11px, 18.16px, 12.11px, 18.16px;
+  text-align: center;
+  background-color: #e73f3f;
+  border-radius: 10px;
+  border: none;
+  gap: 9.08px;
+  font-size: 32px;
+  color: #f8f9fb;
+  margin-top: 40px;
+  @media (max-width: 767px){
+    width: 95%;
+    height: 70px;
+    font-size: 24px;
+  }
+}
+
+.recordingArea{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notRecordingButton {
+  display: block;
+  width: 70vw;
+  height: 115.58px;
+  padding: 12.11px, 18.16px, 12.11px, 18.16px;
+  text-align: center;
+  background-color: #1b8d56;
+  border-radius: 10px;
+  border: none;
+  font-size: 32px;
+  color: #f8f9fb;
+  margin-top: 40px;
+}
+
+.audio-container {
+  font-size: 18px;
+  color: #1e1e1e70;
+  margin-bottom: 50px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+
+}
+.audioPlayer {
+  display: block;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+.audioLink {
+  margin-top: 30px;
+  display: block;
+  color: black;
+}
+.summarizeButton {
+  margin: auto;
+  display: block;
+  width: 400px;
+  height: 60px;
+  padding: 12.11px, 18.16px, 12.11px, 18.16px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 32px;
+  margin-top: 30px;
+  background-color: gainsboro;
+}
+
+.promptField{
+    margin-top: 30px !important;
+    width: 70vw;
+}

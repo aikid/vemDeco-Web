@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 import qs from "qs";
 
-//axios.defaults.baseURL = "https://dev.resumorapido.ai:8443";
+//axios.defaults.baseURL = "http://localhost:4000/";
 axios.defaults.baseURL = "https://dev.resumorapido.ai:8443";
+//axios.defaults.baseURL = "https://apidev.resumorapido.ai:8443";
 //axios.defaults.baseURL = "http://resumorapido.drmobile.com.br:3000";
 //axios.defaults.baseURL = "https://api.resumorapido.ai/";
 
@@ -16,7 +17,7 @@ const executeRequest = async (config: AxiosRequestConfig) => {
   const result = await axios
     .request(config)
     .then((r) => {
-      if (r.statusText == "OK") {
+      if (r.status === 200) {
         return r.data;
       }
       throw new Error("Erro");
