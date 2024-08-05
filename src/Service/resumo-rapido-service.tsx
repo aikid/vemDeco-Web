@@ -8,6 +8,7 @@ import { IUpdateUserSubscriptionRequest } from "../model/user/update-user-subscr
 
 const defaultPath = "transcribe-and-summarize";
 const alternativePath = "summarize-transcription";
+const defaultPromptPath = "transcribe-and-summarize-temp"
 const signUpPath = "/user/create";
 const signInPath = "/user/signin";
 const resetPasswordPath = "/user/send-email";
@@ -26,6 +27,18 @@ const postAudio = async (audio: any, userName: string | null = "conversa-medico-
     method: "post",
     url: `${defaultPath}`,
     headers: { "x-api-token": "bc22997835be3d139056f134d1b8cd37d89679c3" },
+    data: formData,
+  });
+};
+
+const postAudioAndPrompt = async (audio: any, prompt: string | null = "conversa-medico-paciente", token: string): Promise<any> => {
+  const formData = new FormData();
+  formData.append("audio", audio);
+  formData.append("prompt", prompt);
+  return await HttpClient.executeRequest({
+    method: "post",
+    url: `${defaultPromptPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "x-api-token": "bc22997835be3d139056f134d1b8cd37d89679c3" },
     data: formData,
   });
 };
@@ -167,6 +180,7 @@ const updateUserSubscription = async(data: IUpdateUserSubscriptionRequest, token
 const ResumoRapidoService = {
   postAudio,
   postTranscribe,
+  postAudioAndPrompt,
   signUp,
   signIn,
   getStates,
