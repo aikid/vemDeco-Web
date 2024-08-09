@@ -1,15 +1,20 @@
 import React, {useState, useEffect, useRef} from 'react';
 import "./navbar.css";
+import { Notifications } from '../../interfaces/notifications.interfaces';
+import ResumoRapidoService from '../../Service/resumo-rapido-service';
+import generalHelper from '../../helpers/generalHelper';
 
 function NavBar() {
   const [disableMenu, setDisableMenu] = useState<boolean>(true);
   const [nameDisplayed, setNameDisplayed] = useState<string | null>("Dr. Mobile");
   const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<Notifications[]>();
   const notificationsRef = useRef<HTMLDivElement>(null);
   // Verifica se a rota atual é a de login
   const isLoginPage = window.location.pathname === '/login';
   const isDefaultRoute = window.location.pathname === '/atendimento';
   // Se for a página de login, não renderiza a barra de navegação
+  const token = localStorage.getItem("userToken");
 
   const handleBellClick = () => {
     setShowNotifications(!showNotifications);
@@ -77,6 +82,22 @@ function NavBar() {
     };
   }, [showNotifications]);
 
+  useEffect(()=>{
+    const getNotifications = async () => {
+      try{
+        if(token){
+          let notifications = await ResumoRapidoService.getNotifications(token);
+          if(notifications && notifications.data){
+              setNotifications(notifications.data);
+          }
+        }
+      }catch (e){
+          console.log('Erro encontrado:', e);
+      }
+    }
+    getNotifications()
+  },[token])
+
   if (isLoginPage) {
     return null;
   }
@@ -120,31 +141,19 @@ function NavBar() {
             <button className="markAllReadButton">Marcar como lidas</button>
           </div>
           <ul className="notificationsList">
-            <li className="notificationItem">
-              <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
-              <div className="notificationContent">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim, maxime.</p>
-                <span className="notificationTime">16h</span>
-              </div>
-              <button className="notificationOptions">⋮</button>
-            </li>
-            <li className="notificationItem">
-              <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
-              <div className="notificationContent">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim, maxime.</p>
-                <span className="notificationTime">18h</span>
-              </div>
-              <button className="notificationOptions">⋮</button>
-            </li>
-            <li className="notificationItem">
-              <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
-              <div className="notificationContent">
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim, maxime.</p>
-                <span className="notificationTime">19h</span>
-              </div>
-              <button className="notificationOptions">⋮</button>
-            </li>
-            {/* Outras notificações */}
+            {notifications && notifications.length > 0 ?
+              notifications.map((notification)=>(
+                <li key={notification._id} className="notificationItem">
+                  <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
+                  <div className="notificationContent">
+                    <p>{generalHelper.getNotificationMessage(notification.notificationType)}</p>
+                    <span className="notificationTime">{generalHelper.formattedDate(notification.createdAt)}</span>
+                  </div>
+                  <button className="notificationOptions">⋮</button>
+                </li>
+              )):(
+              <p className='notificationInfo'>Não há novas notificações</p>
+            )}
           </ul>
           <div className="seeAllButtonContainer">
             <button className="seeAllButton">Ver todas</button>
