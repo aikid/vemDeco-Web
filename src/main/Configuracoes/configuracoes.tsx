@@ -60,7 +60,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
                     </Button>
                 </div>
                 <div className="menuBtnItem">
-                    <Button className="menuConfBtn" variant="contained" startIcon={<SettingsIcon />}>
+                    <Button className="menuConfBtn" onClick={()=>navigate('/configuracao-parametro')} variant="contained" startIcon={<SettingsIcon />}>
                         Configuração de Parâmetros
                     </Button>
                 </div>

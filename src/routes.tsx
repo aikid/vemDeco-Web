@@ -16,6 +16,8 @@ import HistoricoPlanos from "./main/HistoricoPlanos/historicoPlanos";
 import Checkout from "./main/Checkout/checkout";
 import PlanoContratado from "./main/PlanoContratado/planoContratado";
 import VincularUsuario from "./main/VincularUsuario/vincularUsuario";
+import ConfParametros from "./main/Parametros/confParametros";
+import Prompt from "./main/Prompt/prompt";
 
 const MainRoutes = () => {
     return(
@@ -36,6 +38,8 @@ const MainRoutes = () => {
                 <Route Component = { PlanoContratado } path="/plano-contratado"/>
                 <Route Component = { VincularUsuario } path="/vincular-usuario"/>
                 <Route Component = { AtendimentoPrompt } path="/atendimento-prompt"/>
+                <Route Component = { ConfParametros } path="/configuracao-parametro"/>
+                <Route Component = { Prompt } path="/prompt"/>
             </Routes>
         </BrowserRouter>
     )

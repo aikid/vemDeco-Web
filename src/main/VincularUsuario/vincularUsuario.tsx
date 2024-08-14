@@ -9,9 +9,12 @@ import ValidationHelper from '../../helpers/validationHelper';
 import Modal from "../../components/Modal/Modal";
 import EmailIcon from '@mui/icons-material/Email';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-international-phone/style.css';
 import './vincularUsuario.css';
-import { Button, Divider } from "@mui/material";
+import { Alert, Button, Divider, Snackbar } from "@mui/material";
+import { UserData } from "../../interfaces/userEdit.interfaces";
+import { IBindUserSubscriptionRequest } from "../../model/user/update-user-subscription-request";
 
 
 function VincularUsuario(){
@@ -33,21 +36,33 @@ function VincularUsuario(){
     const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
     const [bindSub,setBindSub] = useState<boolean>(false);
     const [bindInvite,setBindInvite] = useState<boolean>(false);
+    const [user, setUser] = useState<IBindUserSubscriptionRequest>();
+    const [open, setOpen] = useState<boolean>(false);
     const verificarSenha = ValidationHelper.verificarSenhaForte(password);
     let navigate = useNavigate();
-
+    const token = localStorage.getItem("userToken");
     const handleChange = (event: any) => {
         setTipoPessoa(event.target.value);
+    };
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+        window.location.reload();      
     };
 
     const signUp = async  (data: ISignUpData) => {
         try{
             setLoad(true);
-            let response = await ResumoRapidoService.signUp(data);
-            if(response && response.data){
-                setModalOpen(true);
-                setLoad(false);
-            }
+            setOpen(true);
+            // let response = await ResumoRapidoService.signUp(data);
+            // if(response && response.data){
+            //     setModalOpen(true);
+            //     setLoad(false);
+            // }
         }catch (e){
             setLoad(false);
             console.log('Erro encontrado:', e);
@@ -70,6 +85,37 @@ function VincularUsuario(){
         setBindInvite(false);
     };
 
+    const finUser = async(data:any) =>{
+        try{
+            if(!token) return;
+            setLoad(true);
+            let user = await ResumoRapidoService.getUserByEmail(token,data.email);
+            if(user && user.data){
+                setUser(user.data);
+                setLoad(false);
+            }
+        }catch (e){
+            setLoad(false);
+            console.log('Erro encontrado:', e);
+        }
+    }
+
+    const bindUserSubscription = async() => {
+        try{
+            setOpen(true);
+            // if(!token || !user) return;
+            // setLoad(true);
+            // let subscriptionResponse = await ResumoRapidoService.bindSubscription(token,user);
+            // if(subscriptionResponse && subscriptionResponse.data){
+            //    console.log('Vinculo gerado: ', subscriptionResponse);
+            // }
+
+        }catch (e){
+            setLoad(false);
+            console.log('Erro encontrado:', e);
+        }
+    }
+
     return(
         <>
             <NavBar></NavBar>
@@ -86,6 +132,11 @@ function VincularUsuario(){
                         <div className="menuBtnItem">
                             <Button className="menuConfBtn" onClick={()=>handleInvite()} variant="contained" startIcon={<EmailIcon />}>
                                 Por convite
+                            </Button>
+                        </div>
+                        <div className="menuBtnItem">
+                            <Button className="menuConfBtn" onClick={()=>navigate("/configuracoes")} variant="contained" startIcon={<ArrowBackIcon />}>
+                                Voltar
                             </Button>
                         </div>
                     </div>
@@ -173,7 +224,20 @@ function VincularUsuario(){
                             <div className="textoVinculo">
                                 Digite o e-mail do usuário para envio do convite
                             </div>
-                            <form className="mobilevinculoForm" onSubmit={handleSubmit((data)=>{signUp(data)})}>
+                            {user &&
+                                <div className="userFindedContent">
+                                    <div className="cardUser">
+                                        <div className="avatarContent">
+                                            <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
+                                        </div>
+                                        <div className="avatarContent">
+                                            <p className="cardInfo">Nome: {user.name}</p>
+                                            <p className="cardInfo">E-mail: {user.email}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <form className="mobilevinculoForm" onSubmit={handleSubmit((data)=>{finUser(data)})}>
                                 <label>
                                     <p className="textBox">E-mail</p>
                                     <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="vinculoFormBox" type="text" placeholder="Digite seu e-mail"/>
@@ -183,6 +247,7 @@ function VincularUsuario(){
                                 <div>
                                     {!load ? (
                                         <>
+                                            {user && <button className="formButton" onClick={()=> bindUserSubscription()}>Enviar Convite</button>}
                                             <button className="formButton" type="submit" onClick={()=> handleSubmit}>Procurar usuário</button>
                                             <button className="formButton backButton" onClick={()=> backOption()}>Voltar</button>
                                         </>
@@ -204,6 +269,11 @@ function VincularUsuario(){
                 <button className="confirmModal" onClick={()=>navigate('/')}>OK</button>
                 }
             />
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
+                <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
+                    Convite de plano enviado ao usuário
+                </Alert>
+            </Snackbar>
         </>
     )
 

@@ -4,7 +4,7 @@ import { ISignUpData } from "../interfaces/signup.interfaces";
 import { ISignInData } from "../interfaces/signin.interfaces";
 import { IPasswordRequestReset, IPasswordReset } from "../interfaces/passwordReset.interfaces";
 import { IUpdateUserProfileRequest } from "../model/user/update-user-profile-request";
-import { IUpdateUserSubscriptionRequest } from "../model/user/update-user-subscription-request";
+import { IUpdateUserSubscriptionRequest, IBindUserSubscriptionRequest } from "../model/user/update-user-subscription-request";
 
 const defaultPath = "transcribe-and-summarize";
 const alternativePath = "summarize-transcription";
@@ -19,6 +19,8 @@ const getUserPlansPath = "/user/list-plans";
 const updateProfilePath = "/user/update-profile"
 const updateSubscriptionPath = "/user/update-subscription"
 const getUserNotificationsPath = "/user/find-notification";
+const getUserByEmailPath = "/user/get-user-by-email";
+const bindSubscriptionPath = "/user/bind-subscription";
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
   const formData = new FormData();
@@ -186,6 +188,30 @@ const getNotifications = async(token: string): Promise<any> =>{
   });
 }
 
+const getUserByEmail = async(token: string, email: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${getUserByEmailPath}?email=${email}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
+const bindSubscription = async(token: string | null, data: IBindUserSubscriptionRequest): Promise<any> => {
+  const formData = new FormData();
+  formData.append("userId", data.userId);
+  formData.append("name", data.name);
+  formData.append("email", data.email);
+
+  return await HttpClient.executeRequest({
+    method: "post",
+    url: `${bindSubscriptionPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
+
+
+
 const ResumoRapidoService = {
   postAudio,
   postTranscribe,
@@ -201,7 +227,9 @@ const ResumoRapidoService = {
   getAddressByCep,
   updateUserProfile,
   updateUserSubscription,
-  getNotifications
+  getNotifications,
+  getUserByEmail,
+  bindSubscription
 };
 
 export default ResumoRapidoService;
