@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { IPasswordReset } from "../../interfaces/passwordReset.interfaces";
 import Modal from "../../components/Modal/Modal";
@@ -20,9 +20,6 @@ function RedefinirSenha(){
         },      
     });
     
-
-    let navigate = useNavigate();
-
     const signIn = async (data: IPasswordReset) => {
         try{
             setLoad(true);
@@ -50,7 +47,7 @@ function RedefinirSenha(){
 
     return(
         <>
-            <div className="redefinirSenhaContainer">
+            <div className="redefinirSenhaContainer animationContainerUp">
                 <div className="authBox">
                     <div className="rricon">
                         <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      
@@ -77,7 +74,7 @@ function RedefinirSenha(){
                         </div>
                     </form>
                     <div className="noAccountText">
-                        Se lembrou do acesso? <a className="links" onClick={()=>navigate('/')} href="">Faça o Login Aqui!</a>
+                        Se lembrou do acesso? <Link className="links" to="/">Faça o Login Aqui!</Link>
                     </div>
                 </div>
             </div>

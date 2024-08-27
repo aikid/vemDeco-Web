@@ -1,0 +1,93 @@
+import React, { createContext, useCallback, useState, useContext } from "react";
+import ResumoRapidoService from "../Service/resumo-rapido-service";
+import { ISignInData } from "../interfaces/signin.interfaces";
+import generalHelper from "../helpers/generalHelper";
+import { SubscriptionData } from "../interfaces/signup.interfaces";
+
+interface UserData {
+    username: string;
+    userPlan: SubscriptionData
+    authkey: string;
+}
+
+interface AuthContextData {
+   user: UserData;
+   signIn(data: ISignInData): Promise<void>;
+   signOut(): void;
+}
+
+interface AuthState {
+    authkey: string;
+    username: string;
+    token: string;
+    loginTime: string;
+    subscription: SubscriptionData;
+}
+
+interface Props {
+    children: React.ReactNode;
+}
+
+const AuthContext =  createContext<AuthContextData>({} as AuthContextData);
+
+const AuthProvider: React.FC<Props> = ({ children }) => {
+    const [data, setData] = useState<AuthState>(() => {
+        const token = localStorage.getItem("@DrMobile:token");
+        const username = localStorage.getItem("@DrMobile:username");
+        const subscription = localStorage.getItem("@DrMobile:subscription");
+        const authkey = localStorage.getItem("@DrMobile:authkey");
+        const loginTime = localStorage.getItem("@DrMobile:loginTime");
+
+        if(token && username){
+            return {
+                token,
+                username,
+                authkey: authkey ? authkey : "unlogged",
+                loginTime: loginTime ? loginTime : "",
+                subscription: subscription ? JSON.parse(subscription) : {}
+            }
+        }
+
+        return {} as AuthState;
+    });
+
+    const signIn = useCallback(async (data: ISignInData)=>{
+        const response = await ResumoRapidoService.signIn(data);
+        const { token, username, subscription } = response.data; 
+        const loginTime = new Date().toISOString();
+        localStorage.setItem("@DrMobile:authkey","logged");
+        localStorage.setItem("@DrMobile:username", username);
+        localStorage.setItem("@DrMobile:token", token);
+        localStorage.setItem('@DrMobile:loginTime', loginTime);
+        localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(subscription));
+
+        setData({ token, username, subscription, loginTime, authkey: "logged" });
+    }, []);
+
+    const signOut = useCallback(() => {
+        localStorage.removeItem("@DrMobile:authkey");
+        localStorage.removeItem("@DrMobile:username");
+        localStorage.removeItem("@DrMobile:token");
+        localStorage.removeItem("@DrMobile:loginTime");
+        localStorage.removeItem("@DrMobile:subscription");
+
+        setData({} as AuthState);
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey}, signIn, signOut }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+function useAuth(): AuthContextData {
+    const context = useContext(AuthContext);
+    if(!context){
+        throw new Error('useAuth must be used within a AuthProvider');
+    }
+
+    return context;
+}
+
+export { AuthProvider, useAuth}

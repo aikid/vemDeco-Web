@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 //import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
@@ -29,7 +29,8 @@ function Cadastro(){
     const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
 
     const verificarSenha = ValidationHelper.verificarSenhaForte(password);
-    let navigate = useNavigate();
+    
+    //let navigate = useNavigate();
 
     const handleChange = (event: any) => {
         setTipoPessoa(event.target.value);
@@ -52,7 +53,7 @@ function Cadastro(){
 
     return(
         <>
-            <div className="cadastroContainer">
+            <div className="cadastroContainer animationContainerUp">
                 <div className="cadastroAuthBox">
                     <div className="bemVindo">
                         <h2>Criar conta</h2>
@@ -131,19 +132,19 @@ function Cadastro(){
                         } }></GoogleLogin>
                     </div> */}
                     <div className="noAccountText">
-                        Já tem uma conta? <a className="links" onClick={()=>navigate('/')} href="">Login</a>
+                        Já tem uma conta? <Link className="links" to="/">Login</Link>
                     </div>
                 </div>
             </div>
-            <Modal
+            {/* <Modal
                 show={isModalOpen}
                 onClose={()=>navigate('/')}
                 title="Cadastro realizado com sucesso!"
                 content={<p>Você sera redirecionado para a página de login.</p>}
                 actions={
-                <button className="confirmModal" onClick={()=>navigate('/')}>OK</button>
+                    <button className="confirmModal" onClick={()=>navigate('/')}>OK</button>
                 }
-            />
+            /> */}
         </>
     )
 
