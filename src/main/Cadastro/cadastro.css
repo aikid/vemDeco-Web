@@ -181,3 +181,20 @@ input[type="checkbox"]:checked::before {
   width: 98%;
   margin: 0px auto;
 }
+
+
+.animationContainerUp{
+  animation: fadeInUp 1s;
+}
+
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(50px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0px); 
+  }
+}

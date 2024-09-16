@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ISignInData } from "../../interfaces/signin.interfaces";
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { useAuth } from "../../context/AuthContext";
 import Modal from "../../components/Modal/Modal";
-import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import ValidationHelper from '../../helpers/validationHelper';
 import generalHelper from "../../helpers/generalHelper";
 import './login.css';
@@ -23,34 +23,13 @@ function Login(){
         },      
     });
     
+    const { user, signIn } = useAuth();
 
-    let navigate = useNavigate();
-
-    const signIn = async (data: ISignInData) => {
+    const handleSignIn = async (data: ISignInData) => {
         try{
             setLoad(true);
-            let response = await ResumoRapidoService.signIn(data);
-            if(response && response.data.token){
-                const loginTime = new Date().toISOString();
-                localStorage.setItem("authkey","logged");
-                localStorage.setItem("userLogger",response.data.username);
-                localStorage.setItem("userToken",response.data.token);
-                localStorage.setItem('loginTime', loginTime);
-                localStorage.setItem("userPlan", generalHelper.setUserPlan(response.data).toString())
-                const dataPlan = generalHelper.getUserPlan(response.data.subscription);
-                if(!dataPlan){
-                    navigate('/planos');
-                }else{
-                    navigate('/atendimento');
-                }
-            }
-            else{
-                setLoad(false);
-                localStorage.setItem("authkey","unlogged");
-                setTitle("Erro Encontrado")
-                setMessage("Usuário ou senha incorretos");
-                setModalOpen(true);
-            }
+            signIn(data);
+            setLoad(false);
         }catch (e){
             setLoad(false);
             setTitle("Erro Encontrado")
@@ -60,15 +39,18 @@ function Login(){
         }
     }
 
-    useEffect(()=>{
-        if(localStorage.getItem("authkey") === "logged" && localStorage.getItem("userToken") !== ""){
-            navigate('/atendimento');
-        }
-    },[])
+    // useEffect(()=>{
+    //     const dataPlan = generalHelper.getUserPlan(user.userPlan);
+    //     if(user.authkey && !dataPlan){
+    //         navigate('/planos');
+    //     }else if(user.authkey && dataPlan){
+    //         navigate('/atendimento');
+    //     }
+    // },[user, navigate]);
 
     return(
         <>
-            <div className="loginContainer">
+            <div className="loginContainer animationContainerDown">
                 <div className="authBox">
                     <div className="rricon">
                         <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      
@@ -80,7 +62,7 @@ function Login(){
                     <div className="textoLogin">
                         Insira seus dados para entrar na sua conta.
                     </div>
-                    <form className="mobileLoginForm" onSubmit={handleSubmit((data)=>{signIn(data)})}>
+                    <form className="mobileLoginForm" onSubmit={handleSubmit((data)=>{handleSignIn(data)})}>
                         <label>
                             <p className="textBox">E-mail</p>
                             <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="loginformBox" type="text" placeholder="Digite seu e-mail" />
@@ -98,7 +80,8 @@ function Login(){
                                 </label>
                                 <p>Confio nesse Dispositivo</p>
                             </div> */}
-                            <a className="links"  href="" onClick={()=>navigate('/redefinir-senha')}>Esqueci a senha</a>
+                            <Link className="links"  to="/redefinir-senha">Esqueci a senha</Link>
+
                         </div>
         
                         <div>
@@ -115,7 +98,7 @@ function Login(){
                         } }></GoogleLogin>
                     </div> */}
                     <div className="noAccountText">
-                        Não tem uma conta? <a className="links" onClick={()=>navigate('/cadastro')} href="">Criar conta</a>
+                        Não tem uma conta? <Link className="links" to="/cadastro">Criar conta</Link>
                     </div>
                 </div>
             </div>
