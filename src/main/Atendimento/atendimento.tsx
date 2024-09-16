@@ -30,7 +30,7 @@ function Atendimento() {
   const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
   let navigate = useNavigate(); 
   let authkey:string | null = "unlogged";
-
+  const token = localStorage.getItem("userToken");
   const [loading, setLoading] = useState(false);
 
   const[logged, setLogged] = useState<boolean>(false)
@@ -140,7 +140,7 @@ function Atendimento() {
     if(audioChunks.length>0){
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
       const userLogged = localStorage.getItem("userLogger");
-      let responseP = await ResumoRapidoService.postAudio(audioBlob,userLogged);
+      let responseP = await ResumoRapidoService.postAudio(audioBlob,userLogged,token);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }

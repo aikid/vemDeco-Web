@@ -5,6 +5,7 @@ import { ISignInData } from "../interfaces/signin.interfaces";
 import { IPasswordRequestReset, IPasswordReset } from "../interfaces/passwordReset.interfaces";
 import { IUpdateUserProfileRequest } from "../model/user/update-user-profile-request";
 import { IUpdateUserSubscriptionRequest, IBindUserSubscriptionRequest } from "../model/user/update-user-subscription-request";
+import { IPromptRequest } from "../model/user/user-prompt-request";
 
 const defaultPath = "transcribe-and-summarize";
 const alternativePath = "summarize-transcription";
@@ -21,15 +22,19 @@ const updateSubscriptionPath = "/user/update-subscription"
 const getUserNotificationsPath = "/user/find-notification";
 const getUserByEmailPath = "/user/get-user-by-email";
 const bindSubscriptionPath = "/user/bind-subscription";
+const savePromptPath = "/user/create-prompt";
+const userPromptPath = "/user/get-user-prompts";
+const updatePromptPath = "/user/update-prompt";
+const setDefaultPromptPath = "/user/set-default-prompt";
 
-const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
+const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente", token: string | null): Promise<any> => {
   const formData = new FormData();
   formData.append("audio", audio);
   formData.append("prompt", userName);
   return await HttpClient.executeRequest({
     method: "post",
     url: `${defaultPath}`,
-    headers: { "x-api-token": "bc22997835be3d139056f134d1b8cd37d89679c3" },
+    headers: { "Authorization": `Bearer ${token}`,"x-api-token": "bc22997835be3d139056f134d1b8cd37d89679c3" },
     data: formData,
   });
 };
@@ -210,6 +215,49 @@ const bindSubscription = async(token: string | null, data: IBindUserSubscription
   });
 }
 
+const savePromptData = async(token: string | null, data: IPromptRequest): Promise<any> => {
+  const formData = new FormData();
+  formData.append("prompt", data.prompt);
+
+  return await HttpClient.executeRequest({
+    method: "post",
+    url: `${savePromptPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
+
+const getUserPrompts = async(token: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${userPromptPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
+const setDefaultPrompts = async(token: string | null, promptId: string): Promise<any> =>{
+  const formData = new FormData();
+  formData.append("id", promptId);
+
+  return await HttpClient.executeRequest({
+    method: "PATCH",
+    url: `${setDefaultPromptPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
+
+const updatePrompt = async(token: string | null, promptId: string, data: IPromptRequest): Promise<any> =>{
+  const formData = new FormData();
+  formData.append("id", promptId);
+  formData.append("prompt", data.prompt);
+  return await HttpClient.executeRequest({
+    method: "PATCH",
+    url: `${updatePromptPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
 
 
 const ResumoRapidoService = {
@@ -229,7 +277,11 @@ const ResumoRapidoService = {
   updateUserSubscription,
   getNotifications,
   getUserByEmail,
-  bindSubscription
+  bindSubscription,
+  savePromptData,
+  getUserPrompts,
+  setDefaultPrompts,
+  updatePrompt
 };
 
 export default ResumoRapidoService;

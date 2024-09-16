@@ -205,3 +205,8 @@ hr {
   font-size: 100%;
   margin-bottom: 0.2%;
 }
+
+.descriptionModal{
+  height: 450px;
+  width: 100%;
+}
