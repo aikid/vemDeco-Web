@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ISignInData } from "../../interfaces/signin.interfaces";
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
@@ -15,7 +15,7 @@ function Login(){
     const [message, setMessage] = useState<string>("");
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
     const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
-
+    let navigate = useNavigate();
     const { register, handleSubmit, formState:{errors} } = useForm({
         defaultValues: {
             email:"",
@@ -39,14 +39,14 @@ function Login(){
         }
     }
 
-    // useEffect(()=>{
-    //     const dataPlan = generalHelper.getUserPlan(user.userPlan);
-    //     if(user.authkey && !dataPlan){
-    //         navigate('/planos');
-    //     }else if(user.authkey && dataPlan){
-    //         navigate('/atendimento');
-    //     }
-    // },[user, navigate]);
+    useEffect(()=>{
+        const dataPlan = generalHelper.getUserPlan(user.userPlan);
+        if(user.authkey && !dataPlan){
+            navigate('/planos');
+        }else if(user.authkey && dataPlan){
+            navigate('/atendimento');
+        }
+    },[user, navigate]);
 
     return(
         <>

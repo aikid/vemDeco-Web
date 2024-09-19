@@ -1,6 +1,6 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Atendimento from "../main/Atendimento/atendimento";
 import AtendimentoBeta from "../main/AtendimentoBeta/atendimentoBeta";
 import AtendimentoPrompt from "../main/AtendimentoPrompt/atendimentoPrompt";
@@ -19,30 +19,33 @@ import VincularUsuario from "../main/VincularUsuario/vincularUsuario";
 import ConfParametros from "../main/Parametros/confParametros";
 import Prompt from "../main/Prompt/prompt";
 
-const MainRoutes = () => {
-    return(
-        <Routes>
-            <Route Component = { Login } path="/" />
-            <Route Component = { Cadastro }  path="/cadastro" />
-            <Route Component = { RedefinirSenha } path="/redefinir-senha"/>
-            <Route Component = { RecuperarSenha }  path="/recuperar-senha" />
-            <Route Component = { Planos }  path="/planos" isPrivate />
-            <Route Component = { Atendimento }  path="/atendimento" isPrivate/>
-            <Route Component = { AtendimentoBeta }  path="/atendimento-beta" isPrivate/>
-            <Route Component = { Resumo }  path="/resumo" isPrivate/>
-            <Route Component = { ContaPrincipal } path="/conta" isPrivate/>
-            <Route Component = { Configuracoes } path="/configuracoes" isPrivate/>
-            <Route Component = { HistoricoPlanos } path="/historico" isPrivate/>
-            <Route Component = { Checkout } path="/checkout" isPrivate/>
-            <Route Component = { PlanoContratado } path="/plano-contratado" isPrivate/>
-            <Route Component = { VincularUsuario } path="/vincular-usuario" isPrivate/>
-            <Route Component = { AtendimentoPrompt } path="/atendimento-prompt" isPrivate/>
-            <Route Component = { ConfParametros } path="/configuracao-parametro" isPrivate/>
-            <Route Component = { Prompt } path="/prompt" isPrivate/>
-        </Routes>
-    )
- }
- 
- export default MainRoutes;
+const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { user } = useAuth();
+    return user.authkey === "logged" ? <>{children}</> : <Navigate to="/" />;
+};
 
- 
+const MainRoutes = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+            <Route path="/recuperar-senha" element={<RecuperarSenha />} />
+            <Route path="/planos" element={<PrivateRoute><Planos /></PrivateRoute>} />
+            <Route path="/atendimento" element={<PrivateRoute><Atendimento /></PrivateRoute>} />
+            <Route path="/atendimento-beta" element={<PrivateRoute><AtendimentoBeta /></PrivateRoute>} />
+            <Route path="/resumo" element={<PrivateRoute><Resumo /></PrivateRoute>} />
+            <Route path="/conta" element={<PrivateRoute><ContaPrincipal /></PrivateRoute>} />
+            <Route path="/configuracoes" element={<PrivateRoute><Configuracoes /></PrivateRoute>} />
+            <Route path="/historico" element={<PrivateRoute><HistoricoPlanos /></PrivateRoute>} />
+            <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+            <Route path="/plano-contratado" element={<PrivateRoute><PlanoContratado /></PrivateRoute>} />
+            <Route path="/vincular-usuario" element={<PrivateRoute><VincularUsuario /></PrivateRoute>} />
+            <Route path="/atendimento-prompt" element={<PrivateRoute><AtendimentoPrompt /></PrivateRoute>} />
+            <Route path="/configuracao-parametro" element={<PrivateRoute><ConfParametros /></PrivateRoute>} />
+            <Route path="/prompt" element={<PrivateRoute><Prompt /></PrivateRoute>} />
+        </Routes>
+    );
+};
+
+export default MainRoutes;

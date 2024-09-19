@@ -8,6 +8,7 @@ interface UserData {
     username: string;
     userPlan: SubscriptionData
     authkey: string;
+    token: string;
 }
 
 interface AuthContextData {
@@ -75,7 +76,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey}, signIn, signOut }}>
+        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token}, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     );

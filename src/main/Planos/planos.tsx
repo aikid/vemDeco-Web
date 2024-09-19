@@ -4,6 +4,7 @@ import NavBar from "../../utils/navbar/navbar";
 import "./planos.css";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { Plans } from "../../interfaces/plans.interfaces";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import StarsIcon from '@mui/icons-material/Stars';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -14,6 +15,7 @@ const Planos = () => {
     const [planos, setPlanos] = useState<Plans[]>([]);
     const [load, setLoad] = useState<boolean>(false);
     let navigate = useNavigate();
+    const { user } = useAuth();
     const planosAtribuites = [
         {
             qtdResumo:"1 Resumo de teste",
@@ -45,7 +47,7 @@ const Planos = () => {
     const getPlans = async () => {
         try{
             setLoad(true);
-            const token = localStorage.getItem("userToken")
+            const token = user.token;
             if(token){
                 let response = await ResumoRapidoService.getPlansAvaliable(token);
                 if(response && response.data){
