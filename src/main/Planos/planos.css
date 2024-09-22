@@ -1,3 +1,5 @@
+
+
 .gridPlans{
   border: 1px solid #C8CFDE;
   border-radius: 10px;
@@ -55,4 +57,8 @@ select::after {
 
 .planTitle, .subTitle{
   text-align: center;
+}
+
+.planosContainer svg{
+  color: #04fccc;
 }

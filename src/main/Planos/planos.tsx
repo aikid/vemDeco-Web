@@ -68,7 +68,7 @@ const Planos = () => {
 
     return(
         load?<Loader/>:
-        <div>
+        <div className="planosContainer">
             <NavBar/>
             <Grid style={{paddingTop:"80px"} }>
                 <h2 className="planTitle">Planos disponíveis</h2>

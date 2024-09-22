@@ -41,7 +41,7 @@
     width: 40px;
     border-radius: 100px;
     background-color: #E9F5EF;
-    color: #1B8D56;
+    color: #04fccc;
     font-size: 16px;
     display: flex;
     justify-content: center;
@@ -81,7 +81,7 @@
     margin-left: 5px;
     margin-right: 5px;
     font-size: 14px;
-    color: #1B8D56;
+    color: #04fccc;
     font-weight: 600;
 }
 
@@ -138,7 +138,7 @@
   .markAllReadButton {
     background: none;
     border: none;
-    color: #1B8D56;
+    color: #04fccc;
     cursor: pointer;
     font-size: 14px;
   }
@@ -200,7 +200,7 @@
   .seeAllButton {
     background: none;
     border: none;
-    color: #1B8D56;
+    color: #04fccc;
     cursor: pointer;
     font-size: 14px;
   }

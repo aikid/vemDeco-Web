@@ -53,14 +53,10 @@ function Login(){
             <div className="loginContainer animationContainerDown">
                 <div className="authBox">
                     <div className="rricon">
-                        <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      
-                    </div>
-                    
-                    <div className="bemVindo">
-                        <h2>Bem vindo!</h2>
+                        <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />      
                     </div>
                     <div className="textoLogin">
-                        Insira seus dados para entrar na sua conta.
+                        Bem vindo! Faça o login para começar o atendimento.
                     </div>
                     <form className="mobileLoginForm" onSubmit={handleSubmit((data)=>{handleSignIn(data)})}>
                         <label>

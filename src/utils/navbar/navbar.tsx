@@ -106,9 +106,7 @@ function NavBar() {
   return (
     <nav className='navContainer'>
       <div className='iconDiv' onClick={()=>redirect('/configuracoes')}>
-        <img src="RRIcon.svg" alt="" />
-        <img style={{marginLeft:"5px"}}  src="RRINI.svg" alt="" />
-        {/* <img style={{marginLeft:"5px", height:"35px", marginTop:"5px"}}  src="logoSC.png" alt="" /> */}
+        <img src="resumo-rapido-atendimento-medico-logo-small.svg" alt="Resumo Rapido Logo Small" />
       </div>
       <div className='rightSide'>
         <img className='bell' src="Bell_pin.svg" alt="Notificações" onClick={handleBellClick}/>

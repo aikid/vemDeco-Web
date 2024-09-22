@@ -50,11 +50,7 @@ function RedefinirSenha(){
             <div className="redefinirSenhaContainer animationContainerUp">
                 <div className="authBox">
                     <div className="rricon">
-                        <img width={"120px"} height={"120px"} src="resumorapido.svg" alt="Icone do Resumo Rápido" />      
-                    </div>
-                    
-                    <div className="bemVindo">
-                        <h2>Recuperação de Senha</h2>
+                        <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />        
                     </div>
                     <div className="textoLogin">
                         Insira seu e-mail abaixo para recuperar a senha.
