@@ -18,11 +18,13 @@ import {
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import NavBar from "../../utils/navbar/navbar";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from '../../context/AuthContext';
 
 const Checkout = () => {
   let navigate = useNavigate();
   let location = useLocation();
   const planoData = location.state;
+  const { user, updateSubscription } = useAuth();
   const [shippingInfo, setShippingInfo] = useState({
     firstName: '',
     lastName: '',
@@ -33,7 +35,7 @@ const Checkout = () => {
     zip: '',
     country: '',
   });
-  const token = localStorage.getItem("userToken");
+  const token = user.token;
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
     billingZip: '',
@@ -92,8 +94,7 @@ const Checkout = () => {
     });
   };
 
-  const handleSubmit = async(e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+  const handleSubmit = async() => {
     // Lógica de envio do checkout
     console.log('Shipping Info:', shippingInfo);
     console.log('Payment Info:', paymentInfo);
@@ -101,8 +102,15 @@ const Checkout = () => {
 
     try{
         let responseSubscription = await ResumoRapidoService.updateUserSubscription(planoData._id, token);
-        if(responseSubscription){
-            
+        if(responseSubscription && responseSubscription?.data?._id){
+            updateSubscription({
+                subscriptionId: responseSubscription?.data?._id,
+                isTrial: false,
+                planId: planoData?._id,
+                limit: planoData?.limit,
+                status: planoData?.status
+            })
+            navigate('/plano-contratado')
         }
     } catch(e){
         console.log('Erro encontrado:', e);
@@ -420,7 +428,7 @@ const Checkout = () => {
                     </Grid>
                 )}
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                    <button className="formButton" type="submit" onClick={()=> navigate('/plano-contratado')}>Fechar Pedido</button>
+                    <button className="formButton" type="submit" onClick={()=> handleSubmit()}>Fechar Pedido</button>
                 </Box>
                 </form>
             </Paper>

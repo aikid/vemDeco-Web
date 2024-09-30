@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
 import { PhoneInput } from 'react-international-phone';
@@ -9,6 +9,7 @@ import ValidationHelper from '../../helpers/validationHelper';
 import Modal from "../../components/Modal/Modal";
 import 'react-international-phone/style.css';
 import './cadastro.css';
+import { Alert, AlertProps, Snackbar } from "@mui/material";
 
 
 function Cadastro(){
@@ -27,10 +28,12 @@ function Cadastro(){
     const [load, setLoad] = useState<boolean>(false);    const password = watch("password");
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
-
+    const [open, setOpen] = useState<boolean>(false);
+    const [severity, setSeverity] = useState<AlertProps["severity"]>('error');
+    const [message, setMessage] = useState<string>('Ocorreu um erro ao executar a operação, contate o suporte');
     const verificarSenha = ValidationHelper.verificarSenhaForte(password);
     
-    //let navigate = useNavigate();
+    let navigate = useNavigate();
 
     const handleChange = (event: any) => {
         setTipoPessoa(event.target.value);
@@ -41,22 +44,35 @@ function Cadastro(){
             setLoad(true);
             let response = await ResumoRapidoService.signUp(data);
             if(response && response.data){
-                setModalOpen(true);
+                setSeverity("success");
+                setMessage("Cadastro realizado, você já pode se logar!");
+                setOpen(true);
                 setLoad(false);
             }
         }catch (e){
             setLoad(false);
+            setOpen(true);
             console.log('Erro encontrado:', e);
         }
         
     }
 
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+        if(severity === 'success'){
+            navigate("/");
+        }
+    };
+
     return(
         <>
             <div className="cadastroContainer animationContainerUp">
                 <div className="cadastroAuthBox">
-                    <div className="bemVindo">
-                        <h2>Criar conta</h2>
+                    <div className="rricon">
+                        <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />      
                     </div>
                     <div className="textoLogin">
                         Insira seus dados para criar uma conta.
@@ -136,15 +152,11 @@ function Cadastro(){
                     </div>
                 </div>
             </div>
-            {/* <Modal
-                show={isModalOpen}
-                onClose={()=>navigate('/')}
-                title="Cadastro realizado com sucesso!"
-                content={<p>Você sera redirecionado para a página de login.</p>}
-                actions={
-                    <button className="confirmModal" onClick={()=>navigate('/')}>OK</button>
-                }
-            /> */}
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
+                <Alert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </>
     )
 

@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { PhoneInput } from 'react-international-phone';
+import { useAuth } from "../../../context/AuthContext";
 import dayjs from 'dayjs';
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../utils/navbar/navbar";
@@ -43,7 +44,7 @@ const ContaPrincipal = () => {
         },      
     });
 
-    const token = localStorage.getItem("userToken");
+    const { user } = useAuth();
 
     const updateProfile = async(data: any) => {
         if (data.birthdate && dayjs.isDayjs(data.birthdate)) {
@@ -51,7 +52,7 @@ const ContaPrincipal = () => {
         }
 
         try {
-            await ResumoRapidoService.updateUserProfile(data, token)
+            await ResumoRapidoService.updateUserProfile(data, user.token)
             setOpen(true);
         }catch (e){
             console.log('Erro encontrado:', e);
@@ -108,13 +109,13 @@ const ContaPrincipal = () => {
     useEffect(()=>{
         const getUserInfo = async(): Promise<void> =>{
             try{
-                if(token){
-                    let response = await ResumoRapidoService.getUserInfo(token);
+                if(user){
+                    let response = await ResumoRapidoService.getUserInfo(user.token);
                     if(response && response.data){
                         setUserLoggedData(response.data);
                         reset(response.data);
                     }
-                    getBrazilStates(token);
+                    getBrazilStates(user.token);
                 }
             }catch (e){
                 console.log('Erro encontrado:', e);

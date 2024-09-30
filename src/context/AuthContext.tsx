@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useState, useContext } from "react";
 import ResumoRapidoService from "../Service/resumo-rapido-service";
 import { ISignInData } from "../interfaces/signin.interfaces";
 import generalHelper from "../helpers/generalHelper";
-import { SubscriptionData } from "../interfaces/signup.interfaces";
+import { LoginResponse, SubscriptionData } from "../interfaces/signup.interfaces";
 
 interface UserData {
     username: string;
@@ -13,7 +13,8 @@ interface UserData {
 
 interface AuthContextData {
    user: UserData;
-   signIn(data: ISignInData): Promise<void>;
+   signIn(data: ISignInData): Promise<boolean>;
+   updateSubscription(data: SubscriptionData): void;
    signOut(): void;
 }
 
@@ -53,16 +54,21 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     });
 
     const signIn = useCallback(async (data: ISignInData)=>{
-        const response = await ResumoRapidoService.signIn(data);
-        const { token, username, subscription } = response.data; 
-        const loginTime = new Date().toISOString();
-        localStorage.setItem("@DrMobile:authkey","logged");
-        localStorage.setItem("@DrMobile:username", username);
-        localStorage.setItem("@DrMobile:token", token);
-        localStorage.setItem('@DrMobile:loginTime', loginTime);
-        localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(subscription));
-
-        setData({ token, username, subscription, loginTime, authkey: "logged" });
+        try{
+            const response = await ResumoRapidoService.signIn(data);
+            const { token, username, subscription } = response.data; 
+            const loginTime = new Date().toISOString();
+            localStorage.setItem("@DrMobile:authkey","logged");
+            localStorage.setItem("@DrMobile:username", username);
+            localStorage.setItem("@DrMobile:token", token);
+            localStorage.setItem('@DrMobile:loginTime', loginTime);
+            localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(subscription));
+            setData({ token, username, subscription, loginTime, authkey: "logged" });
+            return true;
+        } catch(e){
+            console.log('Erro encontrado:', e);
+            return false;
+        }
     }, []);
 
     const signOut = useCallback(() => {
@@ -75,8 +81,13 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         setData({} as AuthState);
     }, []);
 
+    const updateSubscription = useCallback((data: SubscriptionData)=>{
+        localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(data));
+        setData((prevUser) => prevUser ? { ...prevUser, subscription: data}: {} as AuthState );
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token}, signIn, signOut }}>
+        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token}, signIn, signOut, updateSubscription }}>
             {children}
         </AuthContext.Provider>
     );

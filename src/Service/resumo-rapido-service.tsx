@@ -26,6 +26,7 @@ const savePromptPath = "/user/create-prompt";
 const userPromptPath = "/user/get-user-prompts";
 const updatePromptPath = "/user/update-prompt";
 const setDefaultPromptPath = "/user/set-default-prompt";
+const getPaymentLinkPath = "/user/get-payment-link";
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente", token: string | null): Promise<any> => {
   const formData = new FormData();
@@ -173,9 +174,9 @@ const updateUserProfile = async(data: IUpdateUserProfileRequest, token: string |
   });
 }
 
-const updateUserSubscription = async(data: IUpdateUserSubscriptionRequest, token: string | null): Promise<any> => {
+const updateUserSubscription = async(planId: string, token: string | null): Promise<any> => {
   const formData = new FormData();
-  formData.append("planId", data.planId);
+  formData.append("planId", planId);
 
   return await HttpClient.executeRequest({
     method: "post",
@@ -259,6 +260,14 @@ const updatePrompt = async(token: string | null, promptId: string, data: IPrompt
   });
 }
 
+const getPaymentLink = async(token: string, gatewayCode: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${getPaymentLinkPath}?id=${gatewayCode}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
 
 const ResumoRapidoService = {
   postAudio,
@@ -281,7 +290,8 @@ const ResumoRapidoService = {
   savePromptData,
   getUserPrompts,
   setDefaultPrompts,
-  updatePrompt
+  updatePrompt,
+  getPaymentLink
 };
 
 export default ResumoRapidoService;

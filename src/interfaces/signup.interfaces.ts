@@ -20,5 +20,5 @@ export interface SubscriptionData {
     limit?: number;
     subscriptionId?: string;
     planId?: string;
-    isTrial: boolean;
+    isTrial?: boolean;
 }

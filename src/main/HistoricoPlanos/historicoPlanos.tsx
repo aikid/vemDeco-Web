@@ -108,11 +108,9 @@ import { Chip, Divider } from "@mui/material";
   
     return (
       loading?<Loader/>:
-      logged?
       <div>
         <NavBar/>
         <div className="atendimentoContainer">
-            
             <Paper sx={{ width: '85%', overflow: 'hidden', marginTop: 10 }}>
                 <h3 className="titlePlan">Cobrança</h3>
                 <p className="subtitlePlan">Veja seu histórico de pagamentos</p>
@@ -165,12 +163,7 @@ import { Chip, Divider } from "@mui/material";
                 />
                 <button className="formButton backButton" onClick={()=> navigate('/configuracoes')}>Voltar</button>
             </Paper>
-            
         </div>
-      </div>
-       :
-      <div>
-        Acesso não autorizado
       </div>
     );
   };

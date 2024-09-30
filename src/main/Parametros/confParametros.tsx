@@ -36,7 +36,7 @@ function ConfParametros(){
                         </Button>
                     </div>
                     <div className="menuBtnItem">
-                        <Button className="menuConfBtn" onClick={()=>{}} variant="contained" startIcon={<ArrowBackIcon />}>
+                        <Button className="menuConfBtn" onClick={()=> navigate('/configuracoes')} variant="contained" startIcon={<ArrowBackIcon />}>
                             Voltar
                         </Button>
                     </div>

@@ -1,4 +1,4 @@
-import { LoginResponse, SubscriptionData } from "../interfaces/signup.interfaces";
+import { SubscriptionData } from "../interfaces/signup.interfaces";
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -9,9 +9,9 @@ const prepareErrorMessage = (dataMessage: any ): string => {
     return "Ocorreu um erro ao realizar a operação, caso persista contate a administração do sistema"
 }
 
-const setUserPlan = (data: LoginResponse): string => {
-    if(data.subscription && data.subscription.planId){
-        return JSON.stringify(data.subscription)
+const setUserPlan = (data: SubscriptionData): string => {
+    if(data && data.planId){
+        return JSON.stringify(data)
     }
     return JSON.stringify({isTrial:false})
 }

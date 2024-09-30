@@ -57,8 +57,8 @@
   .backButton{
     margin-right: 20px;
     background: #fff !important;
-    border: 1px solid #1B8D55 !important;
-    color: #1B8D55 !important;
+    border: 1px solid #04cda6 !important;
+    color: #04cda6 !important;
     margin-bottom: 50px;
     @media (max-width: 767px){
       margin-bottom: 10px;

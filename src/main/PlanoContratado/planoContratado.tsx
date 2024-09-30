@@ -39,7 +39,6 @@ import { Button, Typography } from "@mui/material";
   
     return (
       loading?<Loader/>:
-      logged?
       <div>
         <NavBar></NavBar>
         <div className="atendimentoContainer">
@@ -61,10 +60,6 @@ import { Button, Typography } from "@mui/material";
             </Card>
             </div>
         </div>
-      </div>
-       :
-      <div>
-        Acesso não autorizado
       </div>
     );
   };

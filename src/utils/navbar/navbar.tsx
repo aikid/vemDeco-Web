@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import "./navbar.css";
 import { Notifications } from '../../interfaces/notifications.interfaces';
+import { useAuth } from "../../context/AuthContext";
 import ResumoRapidoService from '../../Service/resumo-rapido-service';
 import generalHelper from '../../helpers/generalHelper';
 
@@ -10,12 +11,11 @@ function NavBar() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notifications[]>();
   const notificationsRef = useRef<HTMLDivElement>(null);
+  const { user, signOut } = useAuth();
   // Verifica se a rota atual é a de login
   const isLoginPage = window.location.pathname === '/login';
   const isDefaultRoute = window.location.pathname === '/atendimento';
   // Se for a página de login, não renderiza a barra de navegação
-  const token = localStorage.getItem("userToken");
-
   const handleBellClick = () => {
     setShowNotifications(!showNotifications);
   };
@@ -27,12 +27,7 @@ function NavBar() {
   };
   
   const logOut = () =>{
-    localStorage.setItem("authkey","unlogged");
-    localStorage.setItem("userLogger","");
-    localStorage.setItem("userToken","");
-    localStorage.setItem("loginTime","");
-    localStorage.setItem("userPlan","");
-    window.location.href = "/";
+    signOut();
   }
 
   const redirect = (route: string) => {
@@ -49,7 +44,7 @@ function NavBar() {
       const diffInMinutes = (currentDate.getTime() - loginDate.getTime()) / 1000 / 60;
 
       if (diffInMinutes > 60) {
-        logOut();
+        signOut();
       }
     }
     };
@@ -62,13 +57,6 @@ function NavBar() {
       setDisableMenu(false);
     } 
   },[isDefaultRoute])
-
-  useEffect(()=>{
-    if(localStorage.getItem("userLogger") !== null && localStorage.getItem("userLogger") !== ""){
-      var fullName = localStorage.getItem("userLogger")?.split(' ');
-      setNameDisplayed(fullName && fullName[0] ? fullName[0] : "Dr.Mobile");
-    }
-  },[])
 
   useEffect(() => {
     if (showNotifications) {
@@ -83,10 +71,14 @@ function NavBar() {
   }, [showNotifications]);
 
   useEffect(()=>{
+    if(user && user.username !== ""){
+      var fullName = user.username.split(' ');
+      setNameDisplayed(fullName && fullName[0] ? fullName[0] : "Dr.Mobile");
+    }
     const getNotifications = async () => {
       try{
-        if(token){
-          let notifications = await ResumoRapidoService.getNotifications(token);
+        if(user){
+          let notifications = await ResumoRapidoService.getNotifications(user.token);
           if(notifications && notifications.data){
               setNotifications(notifications.data);
           }
@@ -96,7 +88,7 @@ function NavBar() {
       }
     }
     getNotifications()
-  },[token])
+  },[user])
 
   if (isLoginPage) {
     return null;
@@ -135,7 +127,7 @@ function NavBar() {
       {showNotifications && (
         <div className="notificationsContainer" ref={notificationsRef}>
           <div className="notificationsHeader">
-            <span>Notificações</span>
+            <span className="notificationTitle">Notificações</span>
             <button className="markAllReadButton">Marcar como lidas</button>
           </div>
           <ul className="notificationsList">

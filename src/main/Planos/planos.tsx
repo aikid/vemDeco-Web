@@ -9,11 +9,17 @@ import { useNavigate } from "react-router-dom";
 import StarsIcon from '@mui/icons-material/Stars';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Loader from "../../utils/loader/loader";
+import Modal from "../../components/Modal/Modal";
 
 const Planos = () => {
 
     const [planos, setPlanos] = useState<Plans[]>([]);
     const [load, setLoad] = useState<boolean>(false);
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
+    const [title, setTitle] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
+    const [planoID, setPlanoID] = useState<string>("");
     let navigate = useNavigate();
     const { user } = useAuth();
     const planosAtribuites = [
@@ -62,6 +68,26 @@ const Planos = () => {
         
     }
 
+    const prepareCheckoutPlan = (_id: string, name: string) =>{
+        setPlanoID(_id);
+        setTitle("Contratação de plano");
+        setMessage(`Você confirma a contratação do plano ${name}?`);
+        setModalOpen(true);
+    }
+
+    const prepareBindSubscription = async() => {
+        try{
+           const response = await ResumoRapidoService.updateUserSubscription(planoID,user.token);
+           if(response && response.data.gatewaySubscripitionId){
+            console.log(response);
+            const paymentLink = ResumoRapidoService.getPaymentLink(user.token, response.data.gatewaySubscripitionId);
+            if()
+           }
+        } catch(e){
+            
+        }
+    }
+
     useEffect(()=>{
         getPlans();
     },[])
@@ -77,26 +103,38 @@ const Planos = () => {
             <Grid container sx={{ mt: "15px" }}>
                 {planos.length > 0 &&
                     planos.map((plano, index) => (
-                        <Grid className="gridPlans" item xs={12} md={3}>
+                        <Grid className="gridPlans" item xs={12} md={3} key={plano._id}>
                             <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
-                                <StarsIcon color={"success"}/>{plano.name}
+                                <StarsIcon color={"success"}/><span className="planBoxTitle">{plano.name}</span>
                             </Grid>
-                                <Divider style={{width:"100%"}}/>
-                                <Grid margin={2}>
-                                    <Typography fontWeight={600} fontSize={22}>R$ {plano.value}</Typography>
-                                    <button className="planButton" type="submit" onClick={()=> {navigate('/checkout', {state: plano})}}>Contratar</button>
-                                    <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
-                                    <Grid margin={2}> 
-                                        <h4 style={{textAlign: "left", fontWeight: 500}}><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].qtdResumo ?? 'null'}</h4>
-                                    </Grid>
-                                    <Grid margin={2}> 
-                                        <h4 style={{textAlign: "left", fontWeight: 500}}><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].recordTime ?? 'null'}</h4>
-                                    </Grid>
+                            <Divider style={{width:"100%"}}/>
+                            <Grid margin={2}>
+                                <Typography fontWeight={600} fontSize={22}>R$ {plano.value}</Typography>
+                                <button className="planButton" type="submit" onClick={()=> prepareCheckoutPlan(plano._id, plano.name)}>Contratar</button>
+                                <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
+                                <Grid margin={2}> 
+                                    <h4 className="planBoxInfo"><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].qtdResumo ?? 'null'}</h4>
                                 </Grid>
+                                <Grid margin={2}> 
+                                    <h4 className="planBoxInfo"><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].recordTime ?? 'null'}</h4>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     ))
                 }
             </Grid>
+            <Modal
+                show={isModalOpen}
+                onClose={()=>setModalOpen(false)}
+                title={title}
+                content={<p>{message}</p>}
+                actions={
+                    <div className="actions">
+                       <button className="confirmModal" onClick={()=>prepareBindSubscription()}>Contratar</button>
+                       <button className="confirmModal" onClick={()=>setModalOpen(false)}>Calcelar</button>
+                    </div>
+                }
+            />
         </div>
     )
 

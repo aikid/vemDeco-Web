@@ -188,7 +188,6 @@ function Atendimento() {
 
   return (
     loading?<Loader/>:
-    logged?
     <>
       <div>
         <NavBar></NavBar>
@@ -216,10 +215,6 @@ function Atendimento() {
           }
       />
     </>
-     :
-    <div>
-      Acesso não autorizado
-    </div>
   );
 }
 

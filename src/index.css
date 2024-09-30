@@ -9,3 +9,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.links{
+  color: #555555;
+}
+
+.links:hover{
+  text-decoration: underline;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 21px;
+}

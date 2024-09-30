@@ -77,7 +77,7 @@
     gap: 8px;
     border-radius: 8px ;
     color: #ffffff;
-    background-color: #04fccc;
+    background-color: #04cda6;
     border: 0px;
     margin-top: 20px;
   }
@@ -150,6 +150,10 @@ input[type="checkbox"]:checked::before {
 
 .animationContainerDown{
   animation: fadeInDown 1s;
+}
+
+.confirmModal{
+  cursor: pointer;
 }
 
 @keyframes fadeInDown {

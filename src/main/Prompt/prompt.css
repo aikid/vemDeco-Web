@@ -16,7 +16,7 @@
     width: 320px;
     height: 50px;
     justify-content: flex-start !important;
-    background-color: #1B8D55 !important;
+    background-color: #04cda6 !important;
 }
 
 .menuConfBtn .MuiButton-icon svg {
@@ -47,7 +47,7 @@
 }
 
 .bt-add-prompt {
-    background: #04fccc !important;
+    background: #04cda6 !important;
     font-size: 16px !important;
 }
 
@@ -76,7 +76,7 @@
   gap: 8px;
   border-radius: 8px ;
   color: #ffffff;
-  background-color: #04fccc;
+  background-color: #04cda6;
   border: 0px;
   cursor: pointer;
 }
@@ -91,14 +91,14 @@
 
 .editButton {
     text-transform: capitalize !important;
-    background: #04fccc !important;
+    background: #04cda6 !important;
     color: #fff !important;
     font-size: 16px !important;
 }
 
 .defaltuButton {
     text-transform: capitalize !important;
-    background: #04fccc !important;
+    background: #04cda6 !important;
     color: #fff !important;
     font-size: 16px !important;
 }

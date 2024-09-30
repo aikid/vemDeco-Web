@@ -60,5 +60,20 @@ select::after {
 }
 
 .planosContainer svg{
-  color: #04fccc;
+  color: #04cda6;
+}
+
+.planBoxTitle{
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+.planBoxInfo{
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.actions .confirmModal{
+  margin-left: 10px;
 }

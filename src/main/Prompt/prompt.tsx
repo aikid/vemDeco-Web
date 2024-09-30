@@ -153,7 +153,6 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
   
     return (
       loading?<Loader/>:
-      logged?
       <div>
         <NavBar/>
         <div className="atendimentoContainer">
@@ -272,10 +271,6 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
                 {message}
             </Alert>
         </Snackbar>
-      </div>
-       :
-      <div>
-        Acesso não autorizado
       </div>
     );
   };

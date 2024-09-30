@@ -26,17 +26,16 @@ function Login(){
     const { user, signIn } = useAuth();
 
     const handleSignIn = async (data: ISignInData) => {
-        try{
-            setLoad(true);
-            signIn(data);
+        setLoad(true);
+        const loginAction = await signIn(data);
+        console.log('Esse foi o retorno: ', loginAction);
+        if(!loginAction){
             setLoad(false);
-        }catch (e){
-            setLoad(false);
-            setTitle("Erro Encontrado")
-            setMessage("Ocorreu um erro ao fazer a autenticação, caso persista tente redefinir sua senha");
+            setTitle("Erro ao realizar o login");
+            setMessage("Ocorreu um erro ao fazer a autenticação, caso persista tente redefinir sua senha ou contate o suporte.");
             setModalOpen(true);
-            console.log('Erro encontrado:', e);
         }
+        setLoad(false);
     }
 
     useEffect(()=>{
@@ -104,7 +103,7 @@ function Login(){
                 title={title}
                 content={<p>{message}</p>}
                 actions={
-                <button className="confirmModal" onClick={()=>setModalOpen(false)}>OK</button>
+                    <button className="confirmModal" onClick={()=>setModalOpen(false)}>OK</button>
                 }
             />
         </>
