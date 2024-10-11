@@ -15,6 +15,7 @@ import './vincularUsuario.css';
 import { Alert, Button, Divider, Snackbar } from "@mui/material";
 import { UserData } from "../../interfaces/userEdit.interfaces";
 import { IBindUserSubscriptionRequest } from "../../model/user/update-user-subscription-request";
+import { useAuth } from "../../context/AuthContext";
 
 
 function VincularUsuario(){
@@ -36,11 +37,11 @@ function VincularUsuario(){
     const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
     const [bindSub,setBindSub] = useState<boolean>(false);
     const [bindInvite,setBindInvite] = useState<boolean>(false);
-    const [user, setUser] = useState<IBindUserSubscriptionRequest>();
+    const [userData, setUserData] = useState<IBindUserSubscriptionRequest>();
     const [open, setOpen] = useState<boolean>(false);
     const verificarSenha = ValidationHelper.verificarSenhaForte(password);
     let navigate = useNavigate();
-    const token = localStorage.getItem("userToken");
+    const { user } = useAuth();
     const handleChange = (event: any) => {
         setTipoPessoa(event.target.value);
     };
@@ -58,11 +59,11 @@ function VincularUsuario(){
         try{
             setLoad(true);
             setOpen(true);
-            // let response = await ResumoRapidoService.signUp(data);
-            // if(response && response.data){
-            //     setModalOpen(true);
-            //     setLoad(false);
-            // }
+            let response = await ResumoRapidoService.signUp(data);
+            if(response && response.data){
+                setModalOpen(true);
+                setLoad(false);
+            }
         }catch (e){
             setLoad(false);
             console.log('Erro encontrado:', e);
@@ -87,11 +88,10 @@ function VincularUsuario(){
 
     const finUser = async(data:any) =>{
         try{
-            if(!token) return;
             setLoad(true);
-            let user = await ResumoRapidoService.getUserByEmail(token,data.email);
-            if(user && user.data){
-                setUser(user.data);
+            let userFind = await ResumoRapidoService.getUserByEmail(user.token,data.email);
+            if(user && userFind.data){
+                setUserData(userFind.data);
                 setLoad(false);
             }
         }catch (e){
@@ -102,20 +102,18 @@ function VincularUsuario(){
 
     const bindUserSubscription = async() => {
         try{
-            setOpen(true);
-            // if(!token || !user) return;
-            // setLoad(true);
-            // let subscriptionResponse = await ResumoRapidoService.bindSubscription(token,user);
-            // if(subscriptionResponse && subscriptionResponse.data){
-            //    console.log('Vinculo gerado: ', subscriptionResponse);
-            // }
-
-        }catch (e){
+            if(!user.token || !userData) return;
+            setLoad(true);
+            console.log('Usuario: ', user);
+            let subscriptionResponse = await ResumoRapidoService.createUserNotification(user.token,userData.userId,user.username,"invite-subscription");
+            if(subscriptionResponse && subscriptionResponse.data){
+                setOpen(true);
+            }
+        }catch(e){
             setLoad(false);
             console.log('Erro encontrado:', e);
         }
     }
-
     return(
         <>
             <NavBar></NavBar>
@@ -224,15 +222,15 @@ function VincularUsuario(){
                             <div className="textoVinculo">
                                 Digite o e-mail do usuário para envio do convite
                             </div>
-                            {user &&
+                            {userData &&
                                 <div className="userFindedContent">
                                     <div className="cardUser">
                                         <div className="avatarContent">
                                             <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
                                         </div>
                                         <div className="avatarContent">
-                                            <p className="cardInfo">Nome: {user.name}</p>
-                                            <p className="cardInfo">E-mail: {user.email}</p>
+                                            <p className="cardInfo">Nome: {userData?.name}</p>
+                                            <p className="cardInfo">E-mail: {userData?.email}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -247,7 +245,7 @@ function VincularUsuario(){
                                 <div>
                                     {!load ? (
                                         <>
-                                            {user && <button className="formButton" onClick={()=> bindUserSubscription()}>Enviar Convite</button>}
+                                            {userData && <button className="formButton" onClick={()=> bindUserSubscription()}>Enviar Convite</button>}
                                             <button className="formButton" type="submit" onClick={()=> handleSubmit}>Procurar usuário</button>
                                             <button className="formButton backButton" onClick={()=> backOption()}>Voltar</button>
                                         </>

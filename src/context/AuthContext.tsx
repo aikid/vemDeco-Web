@@ -2,13 +2,15 @@ import React, { createContext, useCallback, useState, useContext } from "react";
 import ResumoRapidoService from "../Service/resumo-rapido-service";
 import { ISignInData } from "../interfaces/signin.interfaces";
 import generalHelper from "../helpers/generalHelper";
-import { LoginResponse, SubscriptionData } from "../interfaces/signup.interfaces";
+import { SubscriptionData } from "../interfaces/signup.interfaces";
 
 interface UserData {
     username: string;
     userPlan: SubscriptionData
     authkey: string;
     token: string;
+    gatewayCustomerId: string;
+    loginTime: string;
 }
 
 interface AuthContextData {
@@ -16,6 +18,7 @@ interface AuthContextData {
    signIn(data: ISignInData): Promise<boolean>;
    updateSubscription(data: SubscriptionData): void;
    signOut(): void;
+   verifySubscription(userToken: string): void;
 }
 
 interface AuthState {
@@ -24,6 +27,7 @@ interface AuthState {
     token: string;
     loginTime: string;
     subscription: SubscriptionData;
+    gatewayCustomerId: string;
 }
 
 interface Props {
@@ -39,6 +43,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         const subscription = localStorage.getItem("@DrMobile:subscription");
         const authkey = localStorage.getItem("@DrMobile:authkey");
         const loginTime = localStorage.getItem("@DrMobile:loginTime");
+        const gatewayCustomerId = localStorage.getItem("@DrMobile:gatewayCustomerId");
 
         if(token && username){
             return {
@@ -46,7 +51,8 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
                 username,
                 authkey: authkey ? authkey : "unlogged",
                 loginTime: loginTime ? loginTime : "",
-                subscription: subscription ? JSON.parse(subscription) : {}
+                subscription: subscription ? JSON.parse(subscription) : {},
+                gatewayCustomerId: gatewayCustomerId ? gatewayCustomerId : ""
             }
         }
 
@@ -56,14 +62,15 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     const signIn = useCallback(async (data: ISignInData)=>{
         try{
             const response = await ResumoRapidoService.signIn(data);
-            const { token, username, subscription } = response.data; 
+            const { token, username, subscription, gatewayCustomerId } = response.data; 
             const loginTime = new Date().toISOString();
             localStorage.setItem("@DrMobile:authkey","logged");
             localStorage.setItem("@DrMobile:username", username);
             localStorage.setItem("@DrMobile:token", token);
             localStorage.setItem('@DrMobile:loginTime', loginTime);
             localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(subscription));
-            setData({ token, username, subscription, loginTime, authkey: "logged" });
+            localStorage.setItem("@DrMobile:gatewayCustomerId", gatewayCustomerId);
+            setData({ token, username, subscription, loginTime, authkey: "logged", gatewayCustomerId });
             return true;
         } catch(e){
             console.log('Erro encontrado:', e);
@@ -86,8 +93,28 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         setData((prevUser) => prevUser ? { ...prevUser, subscription: data}: {} as AuthState );
     }, []);
 
+    const verifySubscription = useCallback(async (userToken: string)=>{
+        try{
+            const response = await ResumoRapidoService.getUserSubscription(userToken);
+            const subscription: SubscriptionData = {
+                status: response.data?.status && !response.data?.paymentData?.paymentPending,
+                limit: response.data?.planId?.limit,
+                subscriptionId: response.data?._id,
+                planId: response.data?.planId?._id,
+                planName: response.data?.planId?.name,
+                isTrial: response.data?.planId?.isTrial,
+                consumption: response.data?.consumption
+            }
+            localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(subscription));
+            setData((prevUser) => prevUser ? { ...prevUser, subscription: subscription}: {} as AuthState );
+        } catch(e){
+            console.log('Erro encontrado:', e);
+            return false;
+        }
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token}, signIn, signOut, updateSubscription }}>
+        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token, gatewayCustomerId: data.gatewayCustomerId, loginTime: data.loginTime}, signIn, signOut, updateSubscription, verifySubscription }}>
             {children}
         </AuthContext.Provider>
     );

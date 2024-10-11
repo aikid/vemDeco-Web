@@ -210,3 +210,25 @@
     font-size: 12px;
     margin-top: 20px;
   }
+
+  .buttonContent{
+    margin-top: 5px;
+    text-align: left;
+  }
+
+  .refuseBtn, .acceptBtn{
+    border: 0px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  .acceptBtn{
+    background: #04cda6;
+    color: #fff;
+  }
+
+  .refuseBtn{
+    background: #dd5151;
+    color: #fff;
+  }
+

@@ -20,5 +20,8 @@ export interface SubscriptionData {
     limit?: number;
     subscriptionId?: string;
     planId?: string;
+    planName?: string;
     isTrial?: boolean;
+    paymentPending?: boolean;
+    consumption?: number
 }

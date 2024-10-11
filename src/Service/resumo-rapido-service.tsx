@@ -27,6 +27,10 @@ const userPromptPath = "/user/get-user-prompts";
 const updatePromptPath = "/user/update-prompt";
 const setDefaultPromptPath = "/user/set-default-prompt";
 const getPaymentLinkPath = "/user/get-payment-link";
+const getPaymentsPath = "/user-payments";
+const deleteSubscriptionPath = "/user/delete-subscription";
+const getUserSubscriptionPath = "/user/find-subscription";
+const createNotificationPath = "/user/create-notification";
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente", token: string | null): Promise<any> => {
   const formData = new FormData();
@@ -52,14 +56,14 @@ const postAudioAndPrompt = async (audio: any, prompt: string | null = "conversa-
   });
 };
 
-const postTranscribe = async (transcription: any, userName: string | null = "conversa-medico-paciente"): Promise<any> => {
+const postTranscribe = async (transcription: any, userName: string | null = "conversa-medico-paciente", token: string): Promise<any> => {
   const formData = new FormData();
   formData.append("transcription", transcription);
   formData.append("prompt", userName);
   return await HttpClient.executeRequest({
     method: "post",
     url: `${alternativePath}`,
-    headers: { "x-api-token": "bc22997835be3d139056f134d1b8cd37d89679c3", "Content-Type": "application/json" },
+    headers: { "Authorization": `Bearer ${token}`, "x-api-token": "bc22997835be3d139056f134d1b8cd37d89679c3" },
     data: formData,
   });
 };
@@ -174,7 +178,7 @@ const updateUserProfile = async(data: IUpdateUserProfileRequest, token: string |
   });
 }
 
-const updateUserSubscription = async(planId: string, token: string | null): Promise<any> => {
+const updateUserSubscription = async(planId: string | undefined, token: string | null): Promise<any> => {
   const formData = new FormData();
   formData.append("planId", planId);
 
@@ -189,7 +193,7 @@ const updateUserSubscription = async(planId: string, token: string | null): Prom
 const getNotifications = async(token: string): Promise<any> =>{
   return await HttpClient.executeRequest({
     method: "GET",
-    url: `${getUserNotificationsPath}`,
+    url: `${getUserNotificationsPath}?active=yes`,
     headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
   });
 }
@@ -268,6 +272,44 @@ const getPaymentLink = async(token: string, gatewayCode: string): Promise<any> =
   });
 }
 
+const deleteUserSubscription = async(token: string | null): Promise<any> => {
+  return await HttpClient.executeRequest({
+    method: "DELETE",
+    url: `${deleteSubscriptionPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
+const getUserPayments = async(token: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${getPaymentsPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
+const getUserSubscription = async(token: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${getUserSubscriptionPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
+const createUserNotification = async(token: string | null, userId: string, username: string, notificationType: string): Promise<any> => {
+  const formData = new FormData();
+  const userData = {name:username}
+  formData.append("userId", userId);
+  formData.append("notificationType", notificationType);
+  formData.append("data", JSON.stringify(userData));
+
+  return await HttpClient.executeRequest({
+    method: "post",
+    url: `${createNotificationPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+    data: formData,
+  });
+}
 
 const ResumoRapidoService = {
   postAudio,
@@ -291,7 +333,11 @@ const ResumoRapidoService = {
   getUserPrompts,
   setDefaultPrompts,
   updatePrompt,
-  getPaymentLink
+  getPaymentLink,
+  deleteUserSubscription,
+  getUserPayments,
+  getUserSubscription,
+  createUserNotification
 };
 
 export default ResumoRapidoService;

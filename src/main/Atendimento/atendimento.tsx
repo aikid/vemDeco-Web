@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import "./atendimento.css";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";
 import Loader from "../../utils/loader/loader";
@@ -29,11 +30,8 @@ function Atendimento() {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
   let navigate = useNavigate(); 
-  let authkey:string | null = "unlogged";
-  const token = localStorage.getItem("userToken");
   const [loading, setLoading] = useState(false);
-
-  const[logged, setLogged] = useState<boolean>(false)
+  const { user } = useAuth();
   
   const socket = useRef<WebSocket | null>(null);
 
@@ -139,8 +137,7 @@ function Atendimento() {
   const sendAudioToSummarize = async () => {
     if(audioChunks.length>0){
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
-      const userLogged = localStorage.getItem("userLogger");
-      let responseP = await ResumoRapidoService.postAudio(audioBlob,userLogged,token);
+      let responseP = await ResumoRapidoService.postAudio(audioBlob,user.username,user.token);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
@@ -151,39 +148,34 @@ function Atendimento() {
 
   useEffect(()=>{
     if(stream && stream.active){
-      console.log(stream)
       setIsRecording(true);
       startRecording();
     }
   },[stream])
 
   useEffect(() => {
-    const userPlan = localStorage.getItem("userPlan") ?? '{}'
-    const dataPlan = generalHelper.getUserPlan(JSON.parse(userPlan));
-
-    if(dataPlan){
+    const userPlan = user.userPlan ?? '{}'
+    console.log('Plano do usuario: ', userPlan)
+    if(userPlan && userPlan.status){
       setNotUserHasPlan(false)
     }
     
     getMicrophonePermission();
-    authkey = localStorage.getItem("authkey");
-    setLogged(authkey === 'logged');
-    setLoading(false);
 
     // Conecta ao servidor WebSocket
-    socket.current = new WebSocket('ws://localhost:3000');
+    // socket.current = new WebSocket('ws://localhost:3000');
 
-    socket.current.onopen = () => {
-      console.log('Connected to WebSocket server');
-    };
+    // socket.current.onopen = () => {
+    //   console.log('Connected to WebSocket server');
+    // };
 
-    socket.current.onclose = () => {
-      console.log('Disconnected from WebSocket server');
-    };
+    // socket.current.onclose = () => {
+    //   console.log('Disconnected from WebSocket server');
+    // };
 
-    return () => {
-      socket.current?.close();
-    };
+    // return () => {
+    //   socket.current?.close();
+    // };
   }, []);
 
   return (
@@ -212,7 +204,7 @@ function Atendimento() {
           content={<p>{message}</p>}
           actions={
           <button className="confirmModal" onClick={()=> navigate('/planos')}>Ver Planos</button>
-          }
+        }
       />
     </>
   );

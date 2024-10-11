@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import { useAuth } from "../../context/AuthContext";
 import NavBar from "../../utils/navbar/navbar";
 import Loader from "../../utils/loader/loader";
 import Paper from '@mui/material/Paper';
@@ -33,9 +34,8 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
     const [openSnack, setOpenSnack] = useState<boolean>(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const token = localStorage.getItem("userToken");
     let navigate = useNavigate();
-    let authkey:string | null = "unlogged";
+    const { user } = useAuth();
 
     const { register, handleSubmit, formState:{errors}, reset, setValue } = useForm({
       defaultValues: {
@@ -74,7 +74,7 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
       try{
         setLoad(true);
         if(selectedPromptID){
-          await ResumoRapidoService.updatePrompt(token, selectedPromptID, data);
+          await ResumoRapidoService.updatePrompt(user.token, selectedPromptID, data);
           setLoad(false);
           setSelectedPromptID("");
           setSelectedPrompt("");
@@ -82,7 +82,7 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
           setOpen(false);
           setOpenSnack(true);
         }else{
-          await ResumoRapidoService.savePromptData(token, data);
+          await ResumoRapidoService.savePromptData(user.token, data);
           setMessage('Prompt criado com sucesso');
           setOpen(false);
           setOpenSnack(true);
@@ -111,7 +111,7 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
     
     const handleSetDefault = async(id: string) => {
       try{
-        await ResumoRapidoService.setDefaultPrompts(token, id);
+        await ResumoRapidoService.setDefaultPrompts(user.token, id);
         setMessage('Prompt atualizado para padrão');
         setOpenSnack(true);
       }catch(e){
@@ -129,16 +129,10 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
 
     
     useEffect(()=>{
-        authkey = localStorage.getItem("authkey");
-        setLogged(authkey == 'logged');
-        setLoading(false);
-    },[])
-
-    useEffect(()=>{
       const getUserPromptsData = async(): Promise<void> =>{
         try{
-            if(token){
-                let response = await ResumoRapidoService.getUserPrompts(token);
+            if(user.token){
+                let response = await ResumoRapidoService.getUserPrompts(user.token);
                 if(response && response.data){
                   setPrompts(response.data);
                 }
@@ -148,7 +142,7 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
         }
       }
       getUserPromptsData();
-    },[])
+    },[user.token])
   
   
     return (

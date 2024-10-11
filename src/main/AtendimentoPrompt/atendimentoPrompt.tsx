@@ -8,6 +8,7 @@ import Loader from "../../utils/loader/loader";
 import generalHelper from "../../helpers/generalHelper";
 import Modal from "../../components/Modal/Modal";
 import TextField from '@mui/material/TextField';
+import { useAuth } from "../../context/AuthContext";
 
 function AtendimentoPrompt() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -33,7 +34,7 @@ function AtendimentoPrompt() {
 
   let navigate = useNavigate(); 
   let authkey:string | null = "unlogged";
-  const token = localStorage.getItem("userToken");
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const[logged, setLogged] = useState<boolean>(false)
@@ -143,9 +144,9 @@ function AtendimentoPrompt() {
   };
 
   const sendAudioToSummarize = async () => {
-    if(audioChunks.length>0 && token){
+    if(audioChunks.length>0 && user.token){
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
-      let responseP = await ResumoRapidoService.postAudioAndPrompt(audioBlob,prompt,token);
+      let responseP = await ResumoRapidoService.postAudioAndPrompt(audioBlob,prompt,user.token);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
@@ -163,17 +164,14 @@ function AtendimentoPrompt() {
   },[stream])
 
   useEffect(() => {
-    const userPlan = localStorage.getItem("userPlan") ?? '{}'
-    const dataPlan = generalHelper.getUserPlan(JSON.parse(userPlan));
+    const userPlan = user.userPlan ?? '{}'
+    const dataPlan = generalHelper.getUserPlan(userPlan);
 
     if(dataPlan){
       setNotUserHasPlan(false)
     }
     
     getMicrophonePermission();
-    authkey = localStorage.getItem("authkey");
-    setLogged(authkey === 'logged');
-    setLoading(false);
 
     // Conecta ao servidor WebSocket
     socket.current = new WebSocket('ws://localhost:3000');

@@ -9,33 +9,13 @@ import CardContent from '@mui/material/CardContent';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import "./planoContratado.css";
 import { Button, Typography } from "@mui/material";
+import { useAuth } from "../../context/AuthContext";
 
   const PlanoContratado = () => {
-    const [logged, setLogged] = useState<boolean>(false);
-    const [isRecord, setIsRecord] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<any>();
     let navigate = useNavigate();
-    let authkey:string | null = "unlogged";
-
-
-    const logOut = () =>{
-        localStorage.setItem("authkey","unlogged");
-        localStorage.setItem("userLogger","");
-        localStorage.setItem("userToken","");
-        localStorage.setItem("loginTime","");
-        localStorage.setItem("userPlan","");
-        navigate('/');
-    }
-  
-   
-  
-    useEffect(()=>{
-        authkey = localStorage.getItem("authkey");
-        setLogged(authkey == 'logged');
-        setLoading(false);
-    },[])
-  
+    const { user } = useAuth();
   
     return (
       loading?<Loader/>:

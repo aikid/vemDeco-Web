@@ -4,6 +4,7 @@ import useSpeechToText, { ResultType } from 'react-hook-speech-to-text';
 import "./atendimentoBeta.css";
 import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import SoundWave from "../../utils/soundwave/soundwave";
 import NavBar from "../../utils/navbar/navbar";
 import Loader from "../../utils/loader/loader";
@@ -19,6 +20,7 @@ const AtendimentoBeta = () => {
   const recordingText = "Seu atendimento já está sendo gravado, ao termino do atendimento clique em “finalizar” para gerar o relatório.";
   let navigate = useNavigate();
   let authkey:string | null = "unlogged";
+  const { user } = useAuth();
 
   const {
     error,
@@ -78,8 +80,7 @@ const AtendimentoBeta = () => {
 
   const sendAudioToSummarize = async (transcription: string) => {
     if(transcription !== ""){
-      const userLogged = localStorage.getItem("userLogger");
-      let responseP = await ResumoRapidoService.postTranscribe(transcription,userLogged);
+      let responseP = await ResumoRapidoService.postTranscribe(transcription,user.username,user.token);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
@@ -91,12 +92,6 @@ const AtendimentoBeta = () => {
   useEffect(() => {
     getMicrophonePermission();
   });
-
-  useEffect(()=>{
-    authkey = localStorage.getItem("authkey");
-    setLogged(authkey == 'logged');
-    setLoading(false);
-  },[])
 
   useEffect(() => {
     let timer: any;
@@ -173,7 +168,6 @@ const AtendimentoBeta = () => {
 
   return (
     loading?<Loader/>:
-    logged?
     <div>
       <NavBar></NavBar>
       <div className="atendimentoContainer">
@@ -191,10 +185,6 @@ const AtendimentoBeta = () => {
         */}
       </div>
     </div>
-    </div>
-     :
-    <div>
-      Acesso não autorizado
     </div>
   );
 };

@@ -11,7 +11,7 @@ function NavBar() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notifications[]>();
   const notificationsRef = useRef<HTMLDivElement>(null);
-  const { user, signOut } = useAuth();
+  const { user, signOut, verifySubscription } = useAuth();
   // Verifica se a rota atual é a de login
   const isLoginPage = window.location.pathname === '/login';
   const isDefaultRoute = window.location.pathname === '/atendimento';
@@ -36,20 +36,22 @@ function NavBar() {
 
   useEffect(()=>{
     const checkSession = async () => {
-      const loginTime = localStorage.getItem('loginTime');
-
-    if (loginTime) {
-      const loginDate = new Date(loginTime);
+    if (user.loginTime) {
+      const loginDate = new Date(user.loginTime);
       const currentDate = new Date();
       const diffInMinutes = (currentDate.getTime() - loginDate.getTime()) / 1000 / 60;
 
-      if (diffInMinutes > 60) {
+      if (diffInMinutes > 720) {
         signOut();
       }
     }
     };
 
     checkSession();
+
+    if(user){
+      verifySubscription(user.token)
+    }
   },[])
 
   useEffect(()=>{
@@ -74,13 +76,14 @@ function NavBar() {
     if(user && user.username !== ""){
       var fullName = user.username.split(' ');
       setNameDisplayed(fullName && fullName[0] ? fullName[0] : "Dr.Mobile");
+      //verifySubscription(user.token)
     }
     const getNotifications = async () => {
       try{
         if(user){
           let notifications = await ResumoRapidoService.getNotifications(user.token);
           if(notifications && notifications.data){
-              setNotifications(notifications.data);
+            setNotifications(notifications.data);
           }
         }
       }catch (e){
@@ -136,10 +139,15 @@ function NavBar() {
                 <li key={notification._id} className="notificationItem">
                   <img src="user-avatar.png" alt="User Avatar" className="notificationAvatar" />
                   <div className="notificationContent">
-                    <p>{generalHelper.getNotificationMessage(notification.notificationType)}</p>
+                    <p>{generalHelper.getNotificationMessage(notification)}</p>
                     <span className="notificationTime">{generalHelper.formattedDate(notification.createdAt)}</span>
+                    {notification.notificationType === 'invite-subscription' &&
+                      <div className="buttonContent">
+                        <button className='acceptBtn'>Aceitar</button>
+                        <button className='refuseBtn'>Recusar</button>
+                      </div>
+                    }
                   </div>
-                  <button className="notificationOptions">⋮</button>
                 </li>
               )):(
               <p className='notificationInfo'>Não há novas notificações</p>

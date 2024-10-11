@@ -4,4 +4,5 @@ export interface Plans {
     gatewayId: string;
     value: number;
     active: boolean;
+    limit: number;
 }

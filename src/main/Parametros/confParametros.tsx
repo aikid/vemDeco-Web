@@ -1,27 +1,16 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../utils/navbar/navbar";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-international-phone/style.css';
 import './confParametros.css';
-import { Alert, Button, Divider, Snackbar } from "@mui/material";
+import { Button, Divider } from "@mui/material";
+import { useAuth } from "../../context/AuthContext";
 
 
 function ConfParametros(){
-    const [open, setOpen] = useState<boolean>(false);
     let navigate = useNavigate();
-    const token = localStorage.getItem("userToken");
-
-    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-    
-        setOpen(false);
-        window.location.reload();      
-    };
-
+    const { user } = useAuth();
 
     return(
         <>
@@ -42,11 +31,6 @@ function ConfParametros(){
                     </div>
                 </div>
             </div>
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
-                <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
-                    Convite de plano enviado ao usuário
-                </Alert>
-            </Snackbar>
         </>
     )
 

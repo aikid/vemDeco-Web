@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import "./configuracoes.css";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../utils/navbar/navbar";
-import Loader from "../../utils/loader/loader";
-import { Button, Grid } from "@mui/material";
+import { Button } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
@@ -12,22 +11,9 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
   const Configuracoes = () => {
-    const [logged, setLogged] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     let navigate = useNavigate();
-    let authkey:string | null = "unlogged";
 
-
-  
-    useEffect(()=>{
-        authkey = localStorage.getItem("authkey");
-        setLogged(authkey == 'logged');
-        setLoading(false);
-    },[])
-  
-  
     return (
-      loading?<Loader/>:
       <div>
         <NavBar></NavBar>
         <div className="atendimentoContainer">

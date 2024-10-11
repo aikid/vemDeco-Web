@@ -17,19 +17,29 @@ const setUserPlan = (data: SubscriptionData): string => {
 }
 
 const getUserPlan = (data: SubscriptionData): boolean => {
-    if(data && data.planId && !data.isTrial){
+    if(data && data.planId && data.consumption && data.limit){
+        if(data.limit - data.consumption <= 0){
+            return false
+        }
         return true
     }
     return false
 }
 
-const getNotificationMessage = (type: string) => {
+
+const getDiference = (num1: number | undefined, num2: number | undefined) => {
+    return num1 !== undefined && num2 !== undefined 
+      ? Math.max(0, num1 - num2) 
+      : 0;
+};
+
+const getNotificationMessage = (notification: any) => {
     const notificationMessages: { [key: string]: string } = {
-        'invite-subscription': 'Voce foi convidado a participar de um plano',
+        'invite-subscription': `Voce foi convidado por ${notification.data.name} a participar de um plano`,
         'payment-error': 'Houve um erro no pagamento, por favor atualize seus dados bancários em configurações',
         'plan-expires': 'O seu plano está prestes a expirar, por favor faça a renovação',
     };
-    return notificationMessages[type] || 'Notificação desconhecida.';
+    return notificationMessages[notification.notificationType] || 'Notificação desconhecida.';
 }
 
 const formattedDate = (date:string) => {
@@ -41,7 +51,8 @@ const generalHelper = {
     setUserPlan,
     getUserPlan,
     getNotificationMessage,
-    formattedDate
+    formattedDate,
+    getDiference
 };
   
 export default generalHelper;

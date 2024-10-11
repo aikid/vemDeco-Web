@@ -24,7 +24,7 @@ const Checkout = () => {
   let navigate = useNavigate();
   let location = useLocation();
   const planoData = location.state;
-  const { user, updateSubscription } = useAuth();
+  const { user } = useAuth();
   const [shippingInfo, setShippingInfo] = useState({
     firstName: '',
     lastName: '',
@@ -103,13 +103,6 @@ const Checkout = () => {
     try{
         let responseSubscription = await ResumoRapidoService.updateUserSubscription(planoData._id, token);
         if(responseSubscription && responseSubscription?.data?._id){
-            updateSubscription({
-                subscriptionId: responseSubscription?.data?._id,
-                isTrial: false,
-                planId: planoData?._id,
-                limit: planoData?.limit,
-                status: planoData?.status
-            })
             navigate('/plano-contratado')
         }
     } catch(e){
