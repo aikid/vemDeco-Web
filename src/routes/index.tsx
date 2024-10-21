@@ -18,6 +18,7 @@ import PlanoContratado from "../main/PlanoContratado/planoContratado";
 import VincularUsuario from "../main/VincularUsuario/vincularUsuario";
 import ConfParametros from "../main/Parametros/confParametros";
 import Prompt from "../main/Prompt/prompt";
+import Initial from "../main/Initial/initial";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
@@ -27,7 +28,8 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 const MainRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Initial />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/redefinir-senha" element={<RedefinirSenha />} />
             <Route path="/recuperar-senha" element={<RecuperarSenha />} />

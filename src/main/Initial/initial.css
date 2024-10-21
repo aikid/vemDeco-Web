@@ -1,0 +1,209 @@
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+
+    height:100vh;
+    width: 100vw;
+  }
+
+  .authBox{
+    width: 398px;
+    left: 521px;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 767px) {
+      width: 100% !important;
+      display: block !important;
+    }
+  }
+
+  .rricon{
+    flex: 1;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .bemVindo{
+        font-family:Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 0px;
+        text-align: center;
+        margin-top: -20px;
+  }
+
+  .textoLogin{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 0px;
+    text-align: center;
+    color: #667085;
+    margin-top: 10px;
+    margin-bottom: 30px;
+
+  }
+
+  img{
+    object-fit: cover;
+  }
+
+  .loginformBox{
+    width: 92%;
+    height: 25px;
+    padding: 10px 14px 10px 14px;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid #C1C3C7;
+    margin-bottom: 15px;
+  }
+
+  .textBox{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 520;
+    line-height: 15px;
+    text-align: left;
+  }
+
+  .formButton{
+    width: 390px;
+    height: 45px;
+    padding: 10px 18px 10px 18px;
+    gap: 8px;
+    border-radius: 8px ;
+    color: #ffffff;
+    background-color: #04cda6;
+    border: 0px;
+    margin-top: 20px;
+  }
+
+  .googleButton{
+    width: 390px;
+    height: 45px;
+    border-radius: 8px ;
+    margin-top: 20px;
+    margin-left: 4px;
+  }
+
+  .noAccountText{
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 00;
+    line-height: 20px;
+    justify-content: center;
+    align-items: center;
+    color: #667085;
+    margin-top: 20px;
+  }
+
+  .links{
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+
+
+
+input[type="checkbox"]:checked::before {
+    background-color: #175CC4;
+}
+
+.checkBoxContainer{
+    font-size: small;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.trustDeviceForgottenPwd{
+    width: 390px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.errorMsg {
+  color: red;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.formButtonLoad{
+  background-color: #9dbcad !important;
+}
+
+.mobileLoginForm {
+  display: block;
+  width: 98%;
+  margin: 0px auto;
+}
+
+.animationContainerDown{
+  animation: fadeInDown 1s;
+}
+
+.confirmModal{
+  cursor: pointer;
+}
+
+.welcomeText{
+  font-family: 'Verdana';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  text-align: center;
+  color: #293056;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.welcomeSubText{
+  font-family: 'Verdana';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #3E4784;
+  margin-bottom: 50px;
+}
+
+.signInButton{
+  background-image: linear-gradient(to right, #444CE7 , #2E90FA);
+  color: #fff !important;
+  padding: 10px 24px;
+  gap: 8px;
+  width: 376px;
+  height: 48px;
+  margin-bottom: 10px !important;
+}
+
+.signUpButton{
+  border: 1px solid #C7D7FE !important;
+  color: #363F72 !important;
+  padding: 10px 24px;
+  gap: 8px;
+  width: 376px;
+  height: 48px;
+}
+
+@keyframes fadeInDown {
+  from { 
+    opacity: 0;
+    transform: translateY(-50px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0px); 
+  }
+}
