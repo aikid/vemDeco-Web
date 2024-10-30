@@ -1,0 +1,65 @@
+.registerContainer{ 
+    height: 85vh;
+}
+
+.loginOptionText{ 
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.linkCreatAccount{
+    font-family: 'Verdana';
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    margin-left: 5px;
+    color: #444CE7;
+}
+
+.signUpButton{
+    background-image: linear-gradient(to right, #444CE7 , #2E90FA);
+    color: #fff !important;
+    padding: 10px 24px;
+    gap: 8px;
+    width: 376px;
+    height: 48px;
+    border-radius: 8px;
+    border: 0px;
+    margin-top: 20px;
+    cursor: pointer
+}
+
+.loginOptionText{
+    margin-top: 20px !important;
+}
+
+.backButtonArrow{
+    position: absolute !important;
+    left: 2rem !important;
+    top: 5rem !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+}
+
+.animationContainerDown{
+    animation: fadeInDown 1s;
+}
+
+.errorMsg {
+    color: red;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+@keyframes fadeInDown {
+    from { 
+      opacity: 0;
+      transform: translateY(-50px); 
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0px); 
+    }
+  }
+  

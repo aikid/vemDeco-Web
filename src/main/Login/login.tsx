@@ -7,6 +7,8 @@ import { useAuth } from "../../context/AuthContext";
 import Modal from "../../components/Modal/Modal";
 import ValidationHelper from '../../helpers/validationHelper';
 import generalHelper from "../../helpers/generalHelper";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import './login.css';
 
 function Login(){
@@ -54,34 +56,39 @@ function Login(){
                     <div className="rricon">
                         <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />      
                     </div>
-                    <div className="textoLogin">
-                        Bem vindo! Faça o login para começar o atendimento.
+                    <div>
+                        <h3 className="tituloLogin">Bem vindo (a)!</h3> 
+                        <p className="subTituloLogin">Insira seus dados para continuar</p>
                     </div>
                     <form className="mobileLoginForm" onSubmit={handleSubmit((data)=>{handleSignIn(data)})}>
                         <label>
-                            <p className="textBox">E-mail</p>
-                            <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="loginformBox" type="text" placeholder="Digite seu e-mail" />
+                            <div className="inputIcon">
+                                <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="loginformBox" type="text" placeholder="Digite seu e-mail" />
+                                <VisibilityOutlinedIcon className="iconStyle"/>
+                            </div>
                             <p className="errorMsg">{errors.email?.message?.toString()}</p>
                         </label>
                         <label>
-                            <p className="textBox">Senha</p>
-                            <input {...register("password", {required: 'A Senha é obrigatória'})} className="loginformBox" type="password" placeholder="••••••••" />
+                            <div className="inputIcon">
+                                <input {...register("password", {required: 'A Senha é obrigatória'})} className="loginformBox" type="password" placeholder="Digite sua senha" />
+                                <MailOutlineIcon className="iconStyle"/>
+                            </div>
                             <p className="errorMsg">{errors.password?.message?.toString()}</p>
                         </label>
                         <div className="trustDeviceForgottenPwd">
-                            {/* <div className="checkBoxContainer">
+                            <div className="checkBoxContainer">
                                 <label>
                                     <input type="checkbox"/>
                                 </label>
                                 <p>Confio nesse Dispositivo</p>
-                            </div> */}
-                            <Link className="links"  to="/redefinir-senha">Esqueci a senha</Link>
+                            </div>
+                            <Link className="linkCreatAccount"  to="/redefinir-senha">Esqueci a senha</Link>
 
                         </div>
         
                         <div>
                         {!load ? (
-                            <button className="formButton" type="submit" onClick={()=> handleSubmit}>Entrar</button>
+                            <button className="signButton" type="submit" onClick={()=> handleSubmit}>Entrar</button>
                         ):(
                             <button className="formButton formButtonLoad" type="submit" disabled>Aguarde...</button>
                         )}
@@ -93,7 +100,7 @@ function Login(){
                         } }></GoogleLogin>
                     </div> */}
                     <div className="noAccountText">
-                        Não tem uma conta? <Link className="links" to="/cadastro">Criar conta</Link>
+                        Não tem uma conta? <Link className="linkCreatAccount" to="/registro">Criar conta</Link>
                     </div>
                 </div>
             </div>
