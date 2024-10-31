@@ -16,7 +16,7 @@
     color: #444CE7;
 }
 
-.signUpButton{
+.formsignUpButton{
     background-image: linear-gradient(to right, #444CE7 , #2E90FA);
     color: #fff !important;
     padding: 10px 24px;
@@ -25,7 +25,8 @@
     height: 48px;
     border-radius: 8px;
     border: 0px;
-    margin-top: 20px;
+    margin-top: 0px;
+    margin-bottom: 10px;
     cursor: pointer
 }
 
@@ -50,6 +51,37 @@
     font-size: 12px;
     font-weight: 600;
     margin-bottom: 15px;
+}
+
+.errorsTitle {
+    text-align: left;
+    font-size: 12px;
+    font-family: 'Verdana';
+}
+
+.errorListItem span {
+    font-size: 12px !important;
+}
+
+.errorListAvatarGreen{
+    background-color: #12B76A !important;
+}
+
+.errorListAvatarRed{
+    background-color: #cccccc !important;
+}
+
+.errorListAvatarGreen, .errorListAvatarRed {
+    width: 25px !important;
+    height: 25px !important;
+}
+
+.errorIcon{
+    font-size: 18px !important;
+}
+
+.css-1e9lk82-MuiListItemAvatar-root {
+    min-width: 40px !important;
 }
 
 @keyframes fadeInDown {

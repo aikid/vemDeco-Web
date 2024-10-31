@@ -37,8 +37,9 @@
 }
 
 .signUpButton{
-  border: 1px solid #C7D7FE !important;
-  color: #363F72 !important;
+  background: #fff !important;
+  border: 1px solid #2E90FA !important;
+  color: #000 !important;
   padding: 10px 24px;
   gap: 8px;
   width: 376px;
