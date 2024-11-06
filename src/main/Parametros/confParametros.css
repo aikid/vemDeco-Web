@@ -91,10 +91,10 @@
     gap: 8px;
     border-radius: 8px ;
     color: #ffffff;
-    background-color: #04cda6;
+    background-color: #007aff;
     border: 0px;
     margin-top: 10px;
-
+    margin-bottom: 50px;
     @media (max-width: 767px) {
       width: 100% !important;
     }

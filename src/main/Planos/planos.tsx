@@ -10,6 +10,7 @@ import StarsIcon from '@mui/icons-material/Stars';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Loader from "../../utils/loader/loader";
 import Modal from "../../components/Modal/Modal";
+import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const Planos = () => {
     type OperationType = "subscribe" | "cancel";
@@ -26,27 +27,39 @@ const Planos = () => {
     const planosAtribuites = [
         {
             qtdResumo:"1 Resumo de teste",
-            recordTime:"Máximo 5 minutos de gravação para um único atendimento",
+            recordTime:"5 minutos de gravação",
+            integrationSuport: "Suporte a integrações",
+            customMetrics: "Métricas personalizadas" 
         },
         {
             qtdResumo:"100 resumos mês",
-            recordTime:"Máximo 60 minutos de gravação por atendimento",
+            recordTime:"60 minutos de gravação",
+            integrationSuport: "Suporte a integrações",
+            customMetrics: "Métricas personalizadas"
         },
         {
             qtdResumo:"200 resumos mês",
-            recordTime:"Máximo 60 minutos de gravação por atendimento",
+            recordTime:"60 minutos de gravação",
+            integrationSuport: "Suporte a integrações",
+            customMetrics: "Métricas personalizadas"
         },
         {
             qtdResumo:"500 resumos mês",
-            recordTime:"Máximo 60 minutos de gravação por atendimento",
+            recordTime:"60 minutos de gravação",
+            integrationSuport: "Suporte a integrações",
+            customMetrics: "Métricas personalizadas"
         },
         {
             qtdResumo:"Resumos ilimitados",
-            recordTime:"Máximo 60 minutos de gravação por atendimento",
+            recordTime:"60 minutos de gravação",
+            integrationSuport: "Suporte a integrações",
+            customMetrics: "Métricas personalizadas"
         },
         {
             qtdResumo:"Resumos ilimitados",
             recordTime:"Sem limite de tempo",
+            integrationSuport: "Suporte a integrações",
+            customMetrics: "Métricas personalizadas"
         }
     ]
 
@@ -152,62 +165,63 @@ const Planos = () => {
     },[])
 
     return(
-        load?<Loader/>:
-        <div className="planosContainer">
-            <NavBar/>
-            <Grid style={{paddingTop:"80px"} }>
-                <h2 className="planTitle">Planos disponíveis</h2>
-                <p className="subTitle">Para melhor aproveitamento de recursos da plataforma é necessário adquirir um dos planos acima do trial abaixo:</p>
-            </Grid>
-            <Grid container sx={{ mt: "15px" }}>
-                {planos.length > 0 &&
-                    planos.map((plano, index) => (
-                        <Grid className="gridPlans" item xs={12} md={3} key={plano._id}>
-                            <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
-                                <StarsIcon color={"success"}/><span className="planBoxTitle">{plano.name}</span>
-                            </Grid>
-                            <Divider style={{width:"100%"}}/>
-                            <Grid margin={2}>
-                                <Typography fontWeight={600} fontSize={22}>R$ {plano.value}</Typography>
-                                {plano.name !== "Trial" &&
-                                    <>
-                                    {plano._id !== user.userPlan.planId ? (
-                                        <button className="planButton" type="submit" onClick={()=> prepareCheckoutPlan(plano)}>Contratar</button>
-                                    ):(
+        <DashboardLayout title="Planos">
+            <div className="planosContainer">
+                <Grid>
+                    <p className="subTitle">Para melhor aproveitamento de recursos da plataforma é necessário adquirir um dos planos acima do trial abaixo:</p>
+                </Grid>
+                <Grid container>
+                    {planos.length > 0 &&
+                        planos.map((plano, index) => (
+                            <Grid className="gridPlans" item xs={12} md={2} key={plano._id}>
+                                <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
+                                    <img className="icon" src="crow-icon.svg" alt="planos" title="planos"/><span className="planBoxTitle">{plano.name}</span>
+                                </Grid>
+                                <Divider style={{width:"100%"}}/>
+                                <Grid margin={2}>
+                                    <Typography fontWeight={600} fontSize={22} style={{textAlign: 'center'}}>R$ {plano.value}</Typography>
+                                    {plano.name !== "Trial" ?
                                         <>
-                                            <button disabled className="planActual" type="submit">Seu plano atual</button>
-                                            <button className="planCancel" onClick={()=> prepareCancelPlan(plano)} type="submit">Cancelar plano</button>
+                                        {plano._id !== user.userPlan.planId ? (
+                                            <button className="planButton" type="submit" onClick={()=> prepareCheckoutPlan(plano)}>Contratar</button>
+                                        ):(
+                                            <>
+                                                <button disabled className="planActual" type="submit">Seu plano atual</button>
+                                                <button className="planCancel" onClick={()=> prepareCancelPlan(plano)} type="submit">Cancelar plano</button>
+                                            </>
+                                        )}
                                         </>
+                                    : (
+                                        <button disabled className="planActual" type="submit">Seu plano atual</button>
                                     )}
-                                    </>
-                                }
-                                <Divider style={{width:"100%", marginTop: 25,marginBottom: 25}}/>
-                                <Grid margin={2}> 
-                                    <h4 className="planBoxInfo"><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].qtdResumo ?? 'null'}</h4>
-                                </Grid>
-                                <Grid margin={2}> 
-                                    <h4 className="planBoxInfo"><CheckCircleIcon color={"success"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].recordTime ?? 'null'}</h4>
+                                    <Divider style={{width:"100%", marginTop: 10,marginBottom: 10}}/>
+                                    <Grid margin={2}> 
+                                        <h4 className="planBoxInfo"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].qtdResumo ?? 'null'}</h4>
+                                        <h4 className="planBoxInfo"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].recordTime ?? 'null'}</h4>
+                                        <h4 className="planBoxInfo planosDisabled"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].integrationSuport ?? 'null'}</h4>
+                                        <h4 className="planBoxInfo planosDisabled"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].customMetrics ?? 'null'}</h4>
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    ))
-                }
-            </Grid>
-            <Modal
-                show={isModalOpen}
-                onClose={()=>setModalOpen(false)}
-                title={title}
-                content={<p>{message}</p>}
-                actions={
-                    showButton && (
-                        <div className="actions">
-                        <button className="confirmModal" onClick={()=>prepareBindSubscription(typeUpdate)}>Sim</button>
-                        <button className="confirmModal" onClick={()=>setModalOpen(false)}>Não</button>
-                        </div>
-                    )
-                }
-            />
-        </div>
+                        ))
+                    }
+                </Grid>
+                <Modal
+                    show={isModalOpen}
+                    onClose={()=>setModalOpen(false)}
+                    title={title}
+                    content={<p>{message}</p>}
+                    actions={
+                        showButton && (
+                            <div className="actions">
+                            <button className="confirmModal" onClick={()=>prepareBindSubscription(typeUpdate)}>Sim</button>
+                            <button className="confirmModal" onClick={()=>setModalOpen(false)}>Não</button>
+                            </div>
+                        )
+                    }
+                />
+            </div>
+        </DashboardLayout>
     )
 
 }

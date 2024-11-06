@@ -21,7 +21,7 @@ import { useAuth } from "../../context/AuthContext";
       loading?<Loader/>:
       <div>
         <NavBar></NavBar>
-        <div className="atendimentoContainer">
+        <div className="planoContainer">
             <div className="buttons-container">
             <Card variant="outlined">
                 <CardContent>

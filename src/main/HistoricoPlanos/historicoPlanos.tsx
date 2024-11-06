@@ -16,6 +16,8 @@ import "./historicoPlanos.css";
 import { Button, Divider } from "@mui/material";
 import { Payment, PaymentsData } from "../../interfaces/payment.interfaces";
 import generalHelper from "../../helpers/generalHelper";
+import DashboardLayout from "../DashboardLayout/DashboardLayout";
+import SaveAltOutlinedIcon from '@mui/icons-material/SaveAltOutlined';
 
   const HistoricoPlanos = () => {
     const [payments, setPayments] = useState<PaymentsData[]>();
@@ -36,9 +38,9 @@ import generalHelper from "../../helpers/generalHelper";
     
     //Para formatar um registro use: format: (value: number) => value.toFixed(2)
     const columns: readonly Column[] = [
-      { id: 'id', label: 'ID', minWidth: 60 },
+      { id: 'id', label: 'Identificação', minWidth: 60 },
+      { id: 'dateCreated',label: 'Data de Pagamento',minWidth: 60,align: 'center'},
       { id: 'dueDate',label: 'Vencimento',minWidth: 60,align: 'right' },
-      { id: 'dateCreated',label: 'Pagamento',minWidth: 60,align: 'right'},
       { id: 'value',label: 'Valor',minWidth: 60,align: 'right'},
       { id: 'status',label: 'Status',minWidth: 60,align: 'center'},
       { id: 'description',label: 'Plano',minWidth: 120,align: 'center'},
@@ -79,86 +81,88 @@ import generalHelper from "../../helpers/generalHelper";
   
   
     return (
-      loading?<Loader/>:
-      <div>
-        <NavBar/>
-        <div className="atendimentoContainer">
-            <Paper sx={{ width: '85%', overflow: 'hidden', marginTop: 10 }}>
-                <div className="promptTableHeader">
-                  <div className="promptDescription">
-                    <h3 className="titlePlan">Consumo</h3>
-                    <p className="subtitlePlan">Seu plano atual é o: <b>{user.userPlan.planName}</b><br/> Você tem direito há: {generalHelper.getDiference(user.userPlan.limit, user.userPlan.consumption)} resumo(s)</p>
+        <DashboardLayout title="Configuração">
+          <div className="confMenu">
+              <a href="/conta">Conta</a>
+              <a className="active" href="/historico">Consumo</a>
+          </div>
+          <div className="historicoContainer">
+              <Paper sx={{ width: '85%', overflow: 'hidden', marginTop: 5 }}>
+                  <div className="promptTableHeader">
+                    <div className="promptDescription">
+                      <h3 className="titlePlan">Consumo</h3>
+                      <p className="subtitlePlan">Seu plano atual é o: <b>{user.userPlan.planName}</b><br/> Você tem direito há: {generalHelper.getDiference(user.userPlan.limit, user.userPlan.consumption)} resumo(s)</p>
+                    </div>
                   </div>
-                </div>
-            </Paper>
-            <Paper sx={{ width: '85%', overflow: 'hidden', marginTop: 10 }}>
-                <div className="promptTableHeader">
-                  <div className="promptDescription">
-                    <h3 className="titlePlan">Cobranças</h3>
-                    <p className="subtitlePlan">Veja seu histórico de pagamentos</p>
+              </Paper>
+              <Paper sx={{ width: '85%', overflow: 'hidden', marginTop: 5 }}>
+                  <div className="promptTableHeader">
+                    <div className="promptDescription">
+                      <h3 className="titlePlan">Últimas Cobranças</h3>
+                      <p className="subtitlePlan">Veja seu histórico de pagamentos</p>
+                    </div>
                   </div>
-                </div>
-                <Divider/>
-                <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                        {columns.map((column) => (
-                            <TableCell
-                            key={column.id}
-                            align={column.align}
-                            style={{ minWidth: column.minWidth }}
-                            >
-                            {column.label}
-                            </TableCell>
-                        ))}
-                        </TableRow>
-                    </TableHead>
-                    {payments && payments.length > 0 &&
-                      <TableBody>
-                        {payments
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row) => (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={row.payment.id}>
-                              {columns.map((column) => {
-                                const value = row.payment[column.id as keyof Payment];
-
-                                // Verifica se é o campo 'invoiceUrl' e se o valor está presente
-                                return (
-                                  <TableCell key={column.id} align={column.align}>
-                                    {column.id === 'transactionReceiptUrl' && row.payment.transactionReceiptUrl ? (
-                                      <Button
-                                        className="btnReceipt"
-                                        onClick={() => window.open(row.payment.transactionReceiptUrl, '_blank')}
-                                      >
-                                        Ver Comprovante
-                                      </Button>
-                                    ) : (
-                                      value
-                                    )}
-                                  </TableCell>
-                                );
-                              })}
-                            </TableRow>
+                  <Divider/>
+                  <TableContainer sx={{ maxHeight: 440 }}>
+                      <Table stickyHeader aria-label="sticky table">
+                      <TableHead>
+                          <TableRow>
+                          {columns.map((column) => (
+                              <TableCell
+                              key={column.id}
+                              align={column.align}
+                              style={{ minWidth: column.minWidth }}
+                              >
+                              {column.label}
+                              </TableCell>
                           ))}
-                      </TableBody>
-                    }
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={payments ? payments.length : 0}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-                <button className="formButton backButton" onClick={()=> navigate('/configuracao-parametro')}>Voltar</button>
-            </Paper>
-            
-        </div>
-      </div>
+                          </TableRow>
+                      </TableHead>
+                      {payments && payments.length > 0 &&
+                        <TableBody>
+                          {payments
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row) => (
+                              <TableRow hover role="checkbox" tabIndex={-1} key={row.payment.id}>
+                                {columns.map((column) => {
+                                  const value = row.payment[column.id as keyof Payment];
+
+                                  // Verifica se é o campo 'invoiceUrl' e se o valor está presente
+                                  return (
+                                    <TableCell key={column.id} align={column.align}>
+                                      {column.id === 'transactionReceiptUrl' && row.payment.transactionReceiptUrl ? (
+                                        <Button
+                                          className="btnReceipt"
+                                          onClick={() => window.open(row.payment.transactionReceiptUrl, '_blank')}
+                                          startIcon={<SaveAltOutlinedIcon />}
+                                        >
+                                          Baixar
+                                        </Button>
+                                      ) : (
+                                        value
+                                      )}
+                                    </TableCell>
+                                  );
+                                })}
+                              </TableRow>
+                            ))}
+                        </TableBody>
+                      }
+                      </Table>
+                  </TableContainer>
+                  <TablePagination
+                      rowsPerPageOptions={[10, 25, 100]}
+                      component="div"
+                      count={payments ? payments.length : 0}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+              </Paper>
+              
+          </div>
+        </DashboardLayout>
     );
   };
   

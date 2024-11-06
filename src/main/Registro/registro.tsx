@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ValidationHelper from '../../helpers/validationHelper';
 import { ISignUpData } from '../../interfaces/signup.interfaces';
 import ResumoRapidoService from '../../Service/resumo-rapido-service';
-import { Box, Grid, Typography, Divider, IconButton, AlertProps, List, Avatar, ListItemAvatar, ListItemText, ListItem } from '@mui/material';
+import { Box, Grid, Typography, Divider, IconButton, AlertProps, List, Avatar, ListItemAvatar, ListItemText, ListItem, Snackbar, Alert } from '@mui/material';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { PhoneInput } from 'react-international-phone';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -32,6 +32,8 @@ function Registro() {
   const [tipoPessoa, setTipoPessoa] = useState<string>();
   const [load, setLoad] = useState<boolean>(false);    
   const password = watch("password");
+  const [open, setOpen] = useState<boolean>(false);
+  const [severity, setSeverity] = useState<AlertProps["severity"]>('error');
   const [message, setMessage] = useState<string>('Ocorreu um erro ao executar a operação, contate o suporte');
   const verificarSenha = ValidationHelper.verificarSenhaForte(password);
   
@@ -41,18 +43,31 @@ function Registro() {
     setTipoPessoa(event.target.value);
   };
 
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+    if(severity === 'success'){
+        navigate("/login");
+    }
+};
+
   const signUp = async  (data: ISignUpData) => {
-      try{
-          setLoad(true);
-          let response = await ResumoRapidoService.signUp(data);
-          if(response && response.data){
-              setLoad(false);
-          }
-      }catch (e){
-          setLoad(false);
-          console.log('Erro encontrado:', e);
-      }
-      
+    try{
+        setLoad(true);
+        let response = await ResumoRapidoService.signUp(data);
+        if(response && response.data){
+            setSeverity("success");
+            setMessage("Cadastro realizado, você já pode se logar!");
+            setOpen(true);
+            setLoad(false);
+        }
+    }catch (e){
+        setLoad(false);
+        setOpen(true);
+        console.log('Erro encontrado:', e);
+    }
   }
 
   const goToNextStep = async () => {
@@ -237,6 +252,11 @@ function Registro() {
           }
         </Box>
       </Grid>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
+          <Alert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
+              {message}
+          </Alert>
+      </Snackbar>
     </Grid>
   );
 }

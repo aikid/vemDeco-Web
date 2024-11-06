@@ -5,6 +5,7 @@ export interface IPromptRequest{
 export interface PromptData{
     _id: string
     prompt: string
+    createdAt: string
     email: string
     default: boolean
 }

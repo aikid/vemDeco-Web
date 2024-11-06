@@ -4,6 +4,7 @@ import "./resumo.css";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../utils/navbar/navbar";
 import { Box, Modal, Typography } from "@mui/material";
+import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 
 function Resumo() {
@@ -145,8 +146,7 @@ const renderResponses = () => {
   };
 
   return(
-    <div>
-      <NavBar></NavBar>
+    <DashboardLayout title="Atendimento">
       <div className="maincontainer">
         <div className="mainBox">
           {renderResponses()}
@@ -183,7 +183,7 @@ const renderResponses = () => {
           </Typography>
         </Box>
       </Modal>
-    </div>
+    </DashboardLayout>
   );
 
 }

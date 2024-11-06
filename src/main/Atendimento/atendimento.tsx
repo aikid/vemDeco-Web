@@ -4,17 +4,18 @@ import ResumoRapidoService from "../../Service/resumo-rapido-service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import SoundWave from "../../utils/soundwave/soundwave";
-import NavBar from "../../utils/navbar/navbar";
-import Loader from "../../utils/loader/loader";
-import generalHelper from "../../helpers/generalHelper";
 import Modal from "../../components/Modal/Modal";
+import DashboardLayout from '../DashboardLayout/DashboardLayout';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import { Button } from "@mui/material";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const notRecordingText =
     "Para iniciar o atendimento clique em “iniciar atendimento”. Verifique se seu microfone está conectado!";
-  const recordingText =
-    "Seu atendimento já está sendo gravado, ao termino do atendimento clique em “finalizar” para gerar o relatório.";
+  const [recordingText, setRecordingText] = useState("Fique tranquilo, estamos ouvindo e anotando tudo ✍️");
   const [permission, setPermission] = useState(false);
   const [recordingStatus, setRecordingStatus] = useState("inactive");
   const [stream, setStream] = useState<MediaStream>(new MediaStream());
@@ -109,40 +110,58 @@ function Atendimento() {
     setPermission(false);
     await stopRecording();
     await sendAudioToSummarize();
-    setLoading(false);
   };
 
   const recordinTextRender = (isRecording: boolean) => {
+    if (loading) {
+      return (
+        <>
+          <div className="startRecord">
+            <SoundWave></SoundWave>
+            <p className="recordText">{recordingText}</p>
+          </div>
+        </>
+      );
+    }
     if (isRecording) {
       return (
-        <div className="recordingArea"> 
-          <p className="recordText">{recordingText}</p>
-          <SoundWave></SoundWave>
-          <button onClick={stopRecord} className="recordingButton">
-            Finalizar atendimento
-          </button>
-        </div>
+        <>
+          <div className="recordingArea">
+            <Button onClick={stopRecord} className="recordingButton" startIcon={<CheckCircleOutlineIcon />}>
+              Finalizar atendimento
+            </Button>
+          </div>
+          <div className="startRecord">
+            <SoundWave></SoundWave>
+            <p className="recordText">{recordingText}</p>
+          </div>
+        </>
       );
     }
     return (
       <div className="recordingArea">
-        <p className="recordText">{notRecordingText}</p>
-        <button onClick={() => beginRecord()} className="notRecordingButton">
-          Iniciar atendimento &rarr;
-        </button>
+        {/* <p className="recordText">{notRecordingText}</p> */}
+        <Button onClick={() => beginRecord()} className="notRecordingButton" startIcon={<AutoAwesomeOutlinedIcon />}>
+          Novo atendimento
+        </Button>
+        <Button onClick={() => navigate('/resumos')} className="notRecordingButton" startIcon={<TextSnippetIcon />}>
+          Resumos Anteriores
+        </Button >
       </div>
     );
   };
 
   const sendAudioToSummarize = async () => {
     if(audioChunks.length>0){
+      setRecordingText("Gerando seu resumo, por favor aguarde!.... ");
       const audioBlob = new Blob(audioChunks, { type: "audio/ogg" });
       let responseP = await ResumoRapidoService.postAudio(audioBlob,user.username,user.token);
+      setLoading(false);
       setResponse(responseP);
       navigate('/resumo', {state:{response:responseP}})
     }
     else{
-      alert("Seu audio não foi gravado")
+      setRecordingText("Ocorreu um erro ao processar o audio, por favor tente novamente");
     }
   };
 
@@ -179,14 +198,11 @@ function Atendimento() {
   }, []);
 
   return (
-    loading?<Loader/>:
-    <>
-      <div>
-        <NavBar></NavBar>
-        <div className="atendimentoContainer">
-        {recordinTextRender(isRecording)}
+    <DashboardLayout title="Atendimento">
+      <div className="atendimentoContainer">
+      {recordinTextRender(isRecording)}
 
-        <div className="audio-container">
+      <div className="audio-container">
           {/* <audio className="audioPlayer" src={audio} controls></audio> */}
           {/* <a className="audioLink" download href={audio}>
             Download Recording
@@ -195,7 +211,6 @@ function Atendimento() {
             Resumir Audio
           </button> */}
         </div>
-      </div>
       </div>
       <Modal
           show={isModalOpen}
@@ -206,7 +221,7 @@ function Atendimento() {
           <button className="confirmModal" onClick={()=> navigate('/planos')}>Ver Planos</button>
         }
       />
-    </>
+    </DashboardLayout>
   );
 }
 

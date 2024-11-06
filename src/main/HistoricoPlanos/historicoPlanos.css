@@ -1,11 +1,9 @@
-.atendimentoContainer {
+.historicoContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #F8F8F8;
-    height: 100vh;
-    width: 100vw;
 }
 
 .menuBtnItem {
@@ -98,7 +96,8 @@
 
 .btnReceipt {
     text-transform: capitalize !important;
-    background: #04cda6 !important;
-    color: #fff !important;
+    background: #fff !important;
+    color: #686f95 !important;
+    border: 1px solid #686f95 !important;
     font-size: 16px !important;
 }

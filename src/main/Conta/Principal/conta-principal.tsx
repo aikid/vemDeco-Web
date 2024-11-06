@@ -12,6 +12,7 @@ import "./conta-principal.css";
 import ValidationHelper from "../../../helpers/validationHelper";
 import ResumoRapidoService from "../../../Service/resumo-rapido-service";
 import { Estado, UserData, AddressData } from "../../../interfaces/userEdit.interfaces";
+import DashboardLayout from "../../DashboardLayout/DashboardLayout";
 
 const ContaPrincipal = () => {
     const [userLoggedData, setUserLoggedData] = useState<UserData>();
@@ -136,13 +137,11 @@ const ContaPrincipal = () => {
     }, [userLoggedData]);
 
     return(
-        <div>
-            <NavBar/>
-            <Grid display={"flex"} style={{paddingTop:"80px"} }>
-                {/* <Typography marginRight={"20px"}marginLeft={"20px"}>Sua conta</Typography>
-                <Typography marginRight={"20px"}marginLeft={"20px"}>Sua conta</Typography>
-                <Typography marginRight={"20px"}marginLeft={"20px"}>Sua conta</Typography>  */}
-            </Grid>
+        <DashboardLayout title="Configuração">
+            <div className="confMenu">
+                <a className="active" href="/conta">Conta</a>
+                <a href="/historico">Consumo</a>
+            </div>
             <form onSubmit={handleSubmit((data)=>{updateProfile(data)})}>
                 <Grid className="gridPersonal">
                     <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}> 
@@ -310,7 +309,6 @@ const ContaPrincipal = () => {
                         </Grid>
                 </Grid>
                 <div>
-                    <button className="formButton backButton" onClick={()=> navigate('/configuracoes')}>Voltar</button>
                     {!load ? (
                         <button className="formButton" type="submit" onClick={()=> handleSubmit}>Salvar</button>
                     ):(
@@ -323,7 +321,7 @@ const ContaPrincipal = () => {
                     Dado(s) editado(s) com sucesso!
                 </Alert>
             </Snackbar>
-        </div>
+        </DashboardLayout>
 
     )
 

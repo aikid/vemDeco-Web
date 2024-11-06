@@ -19,6 +19,8 @@ import StarIcon from '@mui/icons-material/Star';
 import { Alert, Box, Button, Chip, Divider, Modal, Snackbar, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request";
+import DashboardLayout from "../DashboardLayout/DashboardLayout";
+import moment from "moment";
 
   const Prompt = () => {
     const [message, setMessage] = useState<string>("");
@@ -44,7 +46,7 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
   });
 
     interface Column {
-      id: '_id' | 'prompt' | 'email' | 'default' | 'actions';
+      id: '_id' | 'prompt' | 'default' | 'createdAt' | 'email' | 'actions';
       label: string;
       minWidth?: number;
       align?: 'left' | 'right' | 'center';
@@ -54,10 +56,11 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
     //Para formatar um registro use: format: (value: number) => value.toFixed(2)
     const columns: Column[] = [
       { id: '_id', label: 'ID', minWidth: 50 },
-      { id: 'prompt', label: 'Prompt', minWidth: 200 },
-      { id: 'email', label: 'Usuario Criador', minWidth: 150 },
-      { id: 'default', label: 'Prompt Padrão?', minWidth: 50, align: 'center' },
-      { id: 'actions', label: 'Ações', minWidth: 150, align: 'center' }
+      { id: 'prompt', label: 'Título', minWidth: 100 },
+      { id: 'default', label: 'Status', minWidth: 50, align: 'center' },
+      { id: 'createdAt', label: 'Data de criação', minWidth: 50, align: 'center' },
+      { id: 'email', label: 'Criado por', minWidth: 150, align: 'center' },
+      { id: 'actions', label: 'Opções', minWidth: 150, align: 'center' }
     ];
       
       
@@ -146,19 +149,16 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
   
   
     return (
-      loading?<Loader/>:
-      <div>
-        <NavBar/>
-        <div className="atendimentoContainer">
-            
-            <Paper sx={{ width: '85%', overflow: 'hidden', marginTop: 10 }}>
+      <DashboardLayout title="Prompt">
+        <div className="promptContainer">
+            <div className="promptActions">
+              <Button className="btAddPrompt" onClick={handleOpen}>+ Novo</Button>
+            </div>
+            <Paper sx={{ width: '95%', overflow: 'hidden', marginTop: 5 }}>
                 <div className="promptTableHeader">
                   <div className="promptDescription">
-                    <h3 className="titlePlan">Configuração de Prompt</h3>
-                    <p className="subtitlePlan">Gerenciamento os Prompt's que podem ser usados nas consultas</p>
-                  </div>
-                  <div className="promptActions">
-                    <Button className="bt-add-prompt" variant="contained" onClick={handleOpen}>+</Button>
+                    <h3 className="titlePlan">Prompts</h3>
+                    <p className="subtitlePlan">Veja todos os seus prompts criados</p>
                   </div>
                 </div>
                 <Divider/>
@@ -195,24 +195,31 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
                                           >
                                             <CreateIcon />
                                           </Button>
-                        
-                                          <Button
-                                            className="defaltuButton"
-                                            onClick={() => handleSetDefault(row._id)}
-                                            style={{ marginLeft: '10px' }}
-                                          >
-                                            <StarIcon />
-                                          </Button>
                                         </div>
                                       </TableCell>
                                     );
                                   }
                                   const value = row[column.id];
+                                  if (column.id === 'default') {
+                                    return (
+                                      <TableCell key={column.id} align={column.align}>
+                                        {
+                                          <button onClick={() => handleSetDefault(row._id)} className={value ? 'defaultPBtn pointGreen' : 'defaultPBtn pointRed'}>{value ? 'Padrão' : 'Desativado'}</button>
+                                        }
+                                      </TableCell>
+                                    );
+                                  }
+                                  if (column.id === 'createdAt') {
+                                    return (
+                                      <TableCell key={column.id} align={column.align}>
+                                        {column.id === 'createdAt' && typeof value === 'string' ? moment(value).format('DD/MM/YYYY') : 'N/D'}
+                                      </TableCell>
+                                    );
+                                  }
                                   return (
                                     <TableCell key={column.id} align={column.align}>
                                       {
-                                        column.id === 'default' ? (value ? 'Sim' : 'Não') :
-                                        column.id === 'prompt' && typeof value === 'string' ? truncateText(value, 60) : value
+                                        column.id === 'prompt' && typeof value === 'string' ? truncateText(value, 40) : value
                                       }
                                     </TableCell>
                                   );
@@ -233,7 +240,6 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-                <button className="formButton backButton" onClick={()=> navigate('/configuracao-parametro')}>Voltar</button>
             </Paper>
             
         </div>
@@ -265,7 +271,7 @@ import { IPromptRequest, PromptData } from "../../model/user/user-prompt-request
                 {message}
             </Alert>
         </Snackbar>
-      </div>
+      </DashboardLayout>
     );
   };
   

@@ -1,59 +1,34 @@
 .atendimentoContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #F8F8F8;
+  justify-content: flex-start;
+  background-color: #eef4ff !important;
   height: 100vh;
-  width: 100vw;
+  align-items: flex-start;
 }
 
 .recordText {
-  font-size: 24px;
+  font-size: 18px;
   color: #1e1e1e70;
   display: block;
-  margin-bottom: 40px;
 }
 
 .recordingButton {
-  display: block;
-  width: 70vw;
-  height: 115.58px;
-  padding: 12.11px, 18.16px, 12.11px, 18.16px;
-  text-align: center;
-  background-color: #e73f3f;
-  border-radius: 10px;
-  border: none;
-  gap: 9.08px;
-  font-size: 32px;
-  color: #f8f9fb;
-  margin-top: 40px;
-  @media (max-width: 767px){
-    width: 95%;
-    height: 70px;
-    font-size: 24px;
-  }
-}
-
-.recordingArea{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  background-image: linear-gradient(to right, #b53737 , #f01515);
+  color: #f8f9fb !important;
+  padding: 15px !important;
+  width: 230px !important;
+  margin-top: 20px !important;
+  margin-left: 20px !important;
 }
 
 .notRecordingButton {
-  display: block;
-  width: 70vw;
-  height: 115.58px;
-  padding: 12.11px, 18.16px, 12.11px, 18.16px;
-  text-align: center;
-  background-color: #04cda6;
-  border-radius: 10px;
-  border: none;
-  font-size: 32px;
-  color: #f8f9fb;
-  margin-top: 40px;
+  background-image: linear-gradient(to right, #444CE7 , #2E90FA);
+  color: #f8f9fb !important;
+  padding: 15px !important;
+  width: 230px !important;
+  margin-top: 20px !important;
+  margin-left: 20px !important;
 }
 
 .audio-container {
@@ -63,18 +38,20 @@
   display: block;
   justify-content: center;
   align-items: center;
-
 }
+
 .audioPlayer {
   display: block;
   margin: 0 auto;
   margin-top: 30px;
 }
+
 .audioLink {
   margin-top: 30px;
   display: block;
   color: black;
 }
+
 .summarizeButton {
   margin: auto;
   display: block;
@@ -86,4 +63,20 @@
   font-size: 32px;
   margin-top: 30px;
   background-color: gainsboro;
+}
+
+.startRecord {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-start;
+  background: #fff;
+  width: 98%;
+  margin-left: 20px;
+  padding: 15px;
+  border: 2px solid #0d99ff;
+  border-radius: 9px;
+  margin-top: 20px;
+  box-shadow: 0px 2px 4px #C7D7FE;
 }

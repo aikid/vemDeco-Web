@@ -15,7 +15,7 @@ function ConfParametros(){
     return(
         <>
             <NavBar></NavBar>
-            <div className="atendimentoContainer">
+            <div className="confParametrosContainer">
                 <div className="buttons-container">
                     <h2 style={{marginBottom: 10}}>Configuração de Parâmetros</h2>
                     <Divider style={{marginBottom: 20}} aria-hidden="true" />

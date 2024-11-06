@@ -117,7 +117,7 @@ function VincularUsuario(){
     return(
         <>
             <NavBar></NavBar>
-            <div className="atendimentoContainer">
+            <div className="vinculoContainer">
                 {!bindSub && !bindInvite ? (
                     <div className="buttons-container">
                         <h2 style={{marginBottom: 10}}>Vincular Usuário ao Plano</h2>

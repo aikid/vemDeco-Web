@@ -57,8 +57,8 @@
   .backButton{
     margin-right: 20px;
     background: #fff !important;
-    border: 1px solid #04cda6 !important;
-    color: #04cda6 !important;
+    border: 1px solid #007aff !important;
+    color: #007aff !important;
     margin-bottom: 50px;
     @media (max-width: 767px){
       margin-bottom: 10px;
@@ -75,3 +75,29 @@
   .formButton:hover, .backButton:hover{
     cursor: pointer;
   }
+
+  .confMenu {
+    height: 50px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.confMenu a {
+    margin: 0px 20px;
+    color: rgb(0 0 0 / 54%);
+    text-decoration: none;
+}
+
+.active{
+    color: #007aff !important;
+}
+
+.active::before {
+    content: '';
+    display: block;
+    border: 2px solid #007aff;
+    width: 100%;
+    position: relative;
+    top: 35px;
+}

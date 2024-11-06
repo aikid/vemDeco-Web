@@ -1,0 +1,39 @@
+.mainMenu{
+    width: 60px;
+    flex-shrink: 0;
+    border: 1px solid #E0EAFF;
+}
+
+.mainMenu .MuiDrawer-paper{
+    width: 60px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.mainContainer{
+    flex-grow: 1;
+    background: #f5faff;
+}
+
+.headerBar{
+    padding: 16px;
+    border: 1px solid #E0EAFF;
+    background-color: #fff !important;
+}
+
+.menuTitle{
+    font-family: 'Verdana';
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0px;
+}
+
+.menuLogo{
+    width: 40px;
+    margin: 35px 0px;
+}
+
+.bottomItens {
+    position: absolute;
+    bottom: 40px;
+}

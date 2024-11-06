@@ -2,8 +2,6 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Atendimento from "../main/Atendimento/atendimento";
-import AtendimentoBeta from "../main/AtendimentoBeta/atendimentoBeta";
-import AtendimentoPrompt from "../main/AtendimentoPrompt/atendimentoPrompt";
 import Resumo from "../main/Resumo/resumo";
 import Login from "../main/Login/login";
 import Cadastro from "../main/Cadastro/cadastro";
@@ -20,6 +18,8 @@ import ConfParametros from "../main/Parametros/confParametros";
 import Prompt from "../main/Prompt/prompt";
 import Initial from "../main/Initial/initial";
 import Registro from "../main/Registro/registro";
+import Dashboard from "../main/Dashboard/dashboard";
+import Resumos from "../main/Resumos/resumos";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
@@ -35,17 +35,17 @@ const MainRoutes = () => {
             <Route path="/registro" element={<Registro />} />
             <Route path="/redefinir-senha" element={<RedefinirSenha />} />
             <Route path="/recuperar-senha" element={<RecuperarSenha />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/planos" element={<PrivateRoute><Planos /></PrivateRoute>} />
             <Route path="/atendimento" element={<PrivateRoute><Atendimento /></PrivateRoute>} />
-            <Route path="/atendimento-beta" element={<PrivateRoute><AtendimentoBeta /></PrivateRoute>} />
             <Route path="/resumo" element={<PrivateRoute><Resumo /></PrivateRoute>} />
+            <Route path="/resumos" element={<PrivateRoute><Resumos /></PrivateRoute>} />
             <Route path="/conta" element={<PrivateRoute><ContaPrincipal /></PrivateRoute>} />
             <Route path="/configuracoes" element={<PrivateRoute><Configuracoes /></PrivateRoute>} />
             <Route path="/historico" element={<PrivateRoute><HistoricoPlanos /></PrivateRoute>} />
             <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
             <Route path="/plano-contratado" element={<PrivateRoute><PlanoContratado /></PrivateRoute>} />
             <Route path="/vincular-usuario" element={<PrivateRoute><VincularUsuario /></PrivateRoute>} />
-            <Route path="/atendimento-prompt" element={<PrivateRoute><AtendimentoPrompt /></PrivateRoute>} />
             <Route path="/configuracao-parametro" element={<PrivateRoute><ConfParametros /></PrivateRoute>} />
             <Route path="/prompt" element={<PrivateRoute><Prompt /></PrivateRoute>} />
         </Routes>
