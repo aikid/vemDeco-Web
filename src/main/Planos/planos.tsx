@@ -114,7 +114,7 @@ const Planos = () => {
             setTitle("Processando Pedido");
             setMessage(`Aguarde...`);
            const response = await ResumoRapidoService.updateUserSubscription(plano?._id,user.token);
-           if(response && response.data.gatewaySubscripitionId){
+           if(response && response.data.paymentData.gatewaySubscripitionId){
             updateSubscription({
                 subscriptionId: response?.data?._id,
                 isTrial: false,

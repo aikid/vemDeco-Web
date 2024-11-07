@@ -1,212 +1,115 @@
-html {background-color: #F8F8F8;}
+.confMenu {
+  height: 50px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
 
-.maincontainer{
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    
-  }
+.confMenu a {
+  margin: 0px 20px;
+  color: rgb(0 0 0 / 54%);
+  text-decoration: none;
+}
 
-.mainBox{
+.active{
+  color: #007aff !important;
+}
+
+.active::before {
+  content: '';
+  display: block;
+  border: 2px solid #007aff;
+  width: 100%;
+  position: relative;
+  top: 35px;
+}
+
+.boxContainer {
   width: 98%;
-  height: 100%;
+  margin: 0px 1%;
+}
+
+.boxAtestado, .boxResumo{
+  height: 600px !important;
+}
+.atestadoContainer, .resumoContainer{
+  margin-top: 25px;
+}
+
+.btnPreview{
+  text-transform: capitalize !important;
+  background: #fff !important;
+  color: #686f95 !important;
+  border: 1px solid #686f95 !important;
+  font-size: 16px !important;
+  padding: 10px 30px !important;
+  margin-top: 0px !important;
+}
+
+.btnCopy{
+  text-transform: capitalize !important;
+  background: #fff !important;
+  color: #686f95 !important;
+  border: 1px solid #686f95 !important;
+  font-size: 16px !important;
+  padding: 10px 30px !important;
+  margin-top: 35px !important;
+
+}
+
+
+.titleSwitch {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
 }
-  
-.responseContainer {
+
+.buttonRecordingArea {
   display: flex;
-  flex-direction: column;
-  background-color: white;
-  border-radius: 5px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 4%;
-  height: 80%;
-  width: 23%;
-  min-width: 250px;
-  border: 1px solid #D0D5DD;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
-
-.responseContainerCompletion {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border-radius: 5px;
-  align-items: center;
-  justify-content: center;
-  width: 23%;
-  margin-top: 4%;
-  min-width: 330px;
-  height: 80%;
-  border: 1px solid #D0D5DD;
-  margin-left: 15px;
+.trashButton {
+  background-image: linear-gradient(to right, #e73636 , #ff0000);
+  color: #f8f9fb !important;
+  padding: 15px !important;
+  width: 75px !important;
+  margin-top: 20px !important;
+  margin-right: 20px !important;
 }
 
-.responseGlobalContainerCompletion{
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-  height: 80%;
-  margin-bottom: -1%;
+.trashButton span{
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
-.responseGlobalContainer {
-  display: flex;
-  height: 80%;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  margin-bottom: -1%;
+.tabsSummary {
+  border: 1px solid #E0EAFF;
+  background: #f3f3f3;
+  padding: 0px;
+  border-radius: 5px 5px 0px 0px;
 }
 
-.responseArea {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.responseDataArea {
-  min-height: 40%;
-  height: 100%;
-  width: 100%;
-}
-
-.textResponse {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 2%;
-}
-
-p {
-  text-align: left;
-  margin: 5px;
+.tabsSummary .Mui-selected {
+  background: #fff !important;
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid #ccc;
   color: #323539;
 }
 
-textarea{
-    box-sizing:border-box;
-    height: 98%;
-    width: 91%;
-    resize: none;
-    border: 1px solid #D0D5DD;
-    border-radius: 8px;
+.tabContent {
+  padding: 15px;
 }
 
-.buttonAct{
-  min-width: 65px;
-  width: 30%;
-  min-height: 30px;
-  max-height: 60px;
-  height: 85%;
-  border: 1px solid #E5E5E7;
-  background-color: white;
-  border-radius: 5px;
-  color: #344054;
-  font-size: 15px;
-  font-weight: 500;
+.textContent {
+  height: 335px;
 }
 
-.buttonsDiv{
-  width: 90%;
-  height: 15%;
-  max-height: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-hr {
-  border-top: 1px solid #D0D5DD;
-  width: 99%;
-  margin-top: -2px;
-  margin-bottom: 25px;
-}
-
-.saveAllButtonsDiv{
-  width: 95%;
-
-  display: flex;
-  margin-bottom: 10px;
-  margin-right: 20px;
-  margin-left: 20px;
-  justify-content: space-between;
-  height: 8%;
- 
-}
-
-.saveAllButton{
-  width:49%;
-  min-height: 50px;
-  height: 80%;
-  border: 1px solid #E5E5E7;
-  background-color: white;
-  border-radius: 5px;
-  color: #344054;
-  font-size: 15px;
-  font-weight: 500;
-  margin-top: 15px;
-  font-size: 100%;
-}
-
-
-.saveAllButtonsCompletionDiv{
-  margin-top: 10px;
+.textareaContent {
   width: 100%;
-  height: 8%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-}
-
-.saveAllButtonCompletion{
-  width: 23%;
-  min-width: 330px;
-  margin-left: 15px;
-  min-height: 50px;
-  height: 80%;
-  border: 1px solid #E5E5E7;
-  background-color: white;
+  height: 335px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  color: #344054;
-  font-size: 100%;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.leaveButton{
-  background-color: #E73F3F;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  height: 90%;
-  width: 18%;
-  min-width: 200px;
-  margin-top: 0.3%;
-  font-size: 100%;
-}
-.footDiv{
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  align-items: start;
-  align-content: start;
-  width: 98%;
-  height: 15%;
-  max-height: 100px;
-  font-size: 100%;
-  margin-bottom: 0.2%;
-}
-
-.descriptionModal{
-  height: 450px;
-  width: 100%;
+  resize: none;
 }

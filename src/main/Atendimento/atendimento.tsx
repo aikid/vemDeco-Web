@@ -110,6 +110,7 @@ function Atendimento() {
     setPermission(false);
     await stopRecording();
     await sendAudioToSummarize();
+    setLoading(false);
   };
 
   const recordinTextRender = (isRecording: boolean) => {
