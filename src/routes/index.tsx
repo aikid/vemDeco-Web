@@ -18,7 +18,7 @@ import ConfParametros from "../main/Parametros/confParametros";
 import Prompt from "../main/Prompt/prompt";
 import Initial from "../main/Initial/initial";
 import Registro from "../main/Registro/registro";
-import Dashboard from "../main/Dashboard/dashboard";
+import Notification from "../main/Notification/notification";
 import Resumos from "../main/Resumos/resumos";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -35,7 +35,7 @@ const MainRoutes = () => {
             <Route path="/registro" element={<Registro />} />
             <Route path="/redefinir-senha" element={<RedefinirSenha />} />
             <Route path="/recuperar-senha" element={<RecuperarSenha />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/notifications" element={<Notification />} />
             <Route path="/planos" element={<PrivateRoute><Planos /></PrivateRoute>} />
             <Route path="/atendimento" element={<PrivateRoute><Atendimento /></PrivateRoute>} />
             <Route path="/resumo" element={<PrivateRoute><Resumo /></PrivateRoute>} />
