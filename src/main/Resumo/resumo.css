@@ -27,6 +27,7 @@
 .boxContainer {
   width: 98%;
   margin: 0px 1%;
+  height: 81vh;
 }
 
 .boxAtestado, .boxResumo{

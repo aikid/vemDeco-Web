@@ -14,7 +14,7 @@
     width: 320px;
     height: 50px;
     justify-content: flex-start !important;
-    background-color: #04cda6 !important;
+    background-color: #007aff !important;
 }
 
 .menuConfBtn .MuiButton-icon svg {
@@ -45,7 +45,7 @@
 }
 
 .bt-add-prompt {
-    background: #04cda6 !important;
+    background: #007aff !important;
     font-size: 16px !important;
 }
 
@@ -74,7 +74,7 @@
   gap: 8px;
   border-radius: 8px ;
   color: #ffffff;
-  background-color: #04cda6;
+  background-color: #007aff;
   border: 0px;
   cursor: pointer;
 }
@@ -89,14 +89,14 @@
 
 .editButton {
     text-transform: capitalize !important;
-    background: #04cda6 !important;
+    background: #007aff !important;
     color: #fff !important;
     font-size: 16px !important;
 }
 
 .btnReceipt {
     text-transform: capitalize !important;
-    background: #04cda6 !important;
+    background: #007aff !important;
     color: #fff !important;
     font-size: 16px !important;
 }
@@ -108,7 +108,7 @@
     gap: 8px;
     border-radius: 8px;
     color: #ffffff;
-    background-color: #04cda6;
+    background-color: #007aff;
     border: 0px;
     margin-top: 10px;
     margin-bottom: 20px;

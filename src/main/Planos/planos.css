@@ -1,4 +1,6 @@
-
+.planosContainer{
+  height: 100vh;
+}
 
 .gridPlans{
   border: 1px solid #C8CFDE;

@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: flex-start;
     background-color: #eef4ff;
+    height: 100vh;
 }
 
 .menuBtnItem {
@@ -105,7 +106,7 @@
 
 .defaltuButton {
     text-transform: capitalize !important;
-    background: #04cda6 !important;
+    background: #007aff !important;
     color: #fff !important;
     font-size: 16px !important;
 }

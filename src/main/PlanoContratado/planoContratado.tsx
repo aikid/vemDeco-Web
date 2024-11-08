@@ -10,6 +10,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import "./planoContratado.css";
 import { Button, Typography } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
+import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
   const PlanoContratado = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -18,14 +19,12 @@ import { useAuth } from "../../context/AuthContext";
     const { user } = useAuth();
   
     return (
-      loading?<Loader/>:
-      <div>
-        <NavBar></NavBar>
+      <DashboardLayout title="Planos Contratado">
         <div className="planoContainer">
             <div className="buttons-container">
             <Card variant="outlined">
                 <CardContent>
-                    <CheckCircleIcon color={"success"} style={{fontSize: 80}}/>
+                    <CheckCircleIcon color={"primary"} style={{fontSize: 80}}/>
                     <Typography sx={{ fontSize: 24, textAlign: 'center' }} gutterBottom>
                         Plano contratado com sucesso!
                     </Typography>
@@ -35,12 +34,12 @@ import { useAuth } from "../../context/AuthContext";
                     <Typography variant="body2" sx={{ textAlign: 'center' }}>
                         Você inclusive pode iniciar um atendimento agora mesmo!
                     </Typography>
-                    <Button size="small" color="success" onClick={()=> {navigate('/atendimento')}} sx={{ textAlign: 'center', marginTop: 3 }}>Iniciar atendimento</Button>
+                    <Button size="small" color="primary" onClick={()=> {navigate('/atendimento')}} sx={{ textAlign: 'center', marginTop: 3 }}>Iniciar atendimento</Button>
                 </CardContent>
             </Card>
             </div>
         </div>
-      </div>
+      </DashboardLayout>
     );
   };
   

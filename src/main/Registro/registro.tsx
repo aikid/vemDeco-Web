@@ -239,12 +239,12 @@ function Registro() {
           
           {step <= 1 &&
             <>
-              <Divider style={{ margin: '2rem 0' }}>Ou continue com</Divider>
+              {/* <Divider style={{ margin: '2rem 0' }}>Ou continue com</Divider>
               <div className="googleButton">
                 <GoogleLogin logo_alignment={"center"} text="signin_with" onSuccess={function (credentialResponse: CredentialResponse): void {
                     throw new Error("Function not implemented.");
                 } }></GoogleLogin>
-              </div>
+              </div> */}
               <Typography variant="body2" className="loginOptionText">
                 Já tem uma conta? <a className="linkCreatAccount" href="/login">Entrar na conta</a>
               </Typography>

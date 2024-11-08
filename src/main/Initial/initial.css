@@ -65,6 +65,11 @@
   }
 }
 
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 @keyframes fadeInDown {
   from { 
     opacity: 0;

@@ -33,7 +33,8 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
       setActiveDetailTab(newValue);
     };
 
-    const handleCopy = (text:string) => {
+    const handleCopy = (tabNumber:number) => {
+      let text = tabNumber === 0 ? summaryLines : transcriptionLines;
       navigator.clipboard.writeText(text)
         .then(() => {
           console.log('Texto copiado com sucesso!');
@@ -45,12 +46,12 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 
     const renderAtestadoTab = (certificateLines: string) => (
       <div className="tabContent">
-        <TextField
+        {/* <TextField
           fullWidth
           label="Nome do paciente: "
           variant="outlined"
           sx={{ mb: 2 }}
-        />
+        /> */}
         <textarea className="textareaContent" defaultValue={certificateLines}></textarea>
       </div>
     );
@@ -118,9 +119,9 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
                   {activeTab === 1 && renderReceitaTab(prescriptionLines)}
                   {activeTab === 2 && renderAnotacaoTab()}
                   </Box>
-                  <Button className="btnPreview" startIcon={<ContentCopyIcon />} sx={{ mt: 2 }} disabled>
+                  {/* <Button className="btnPreview" startIcon={<ContentCopyIcon />} sx={{ mt: 2 }} disabled>
                     Preview
-                  </Button>
+                  </Button> */}
                 </Paper>
               </Box>
 
@@ -139,7 +140,7 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
                     {activeDetailTab === 1 && renderTranscricaoTab(transcriptionLines)}
                   </Box>
                   <Divider style={{width:"100%"}}/>
-                  <Button className="btnCopy" startIcon={<ContentCopyIcon />} sx={{ mt: 2 }}>
+                  <Button className="btnCopy" onClick={()=> handleCopy(activeDetailTab)} startIcon={<ContentCopyIcon />} sx={{ mt: 2 }}>
                     Copiar
                   </Button>
                 </Paper>

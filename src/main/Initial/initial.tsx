@@ -29,12 +29,14 @@ function Initial(){
                 <p className="welcomeSubText">
                   Como você deseja continuar?
                 </p>
-                <Button className="signInButton" onClick={() => navigate('/login')}>
-                  Já sou cliente
-                </Button>
-                <Button className="signUpButton" onClick={() => navigate('/registro')}>
-                  Criar uma conta
-                </Button>
+                <div className="buttonsContainer">
+                  <Button className="signInButton" onClick={() => navigate('/login')}>
+                    Já sou cliente
+                  </Button>
+                  <Button className="signUpButton" onClick={() => navigate('/registro')}>
+                    Criar uma conta
+                  </Button>
+                </div>
               </div>
             </Box>
           </Grid>
