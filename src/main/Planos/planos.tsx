@@ -11,9 +11,11 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Loader from "../../utils/loader/loader";
 import Modal from "../../components/Modal/Modal";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
+import { SubscriptionData } from "../../interfaces/signup.interfaces";
 
 const Planos = () => {
     type OperationType = "subscribe" | "cancel";
+    const [userPlan, setUserPlan] = useState<SubscriptionData>({});
     const [planos, setPlanos] = useState<Plans[]>([]);
     const [load, setLoad] = useState<boolean>(false);
     const [showButton, setShowButton] = useState<boolean>(false);
@@ -123,7 +125,7 @@ const Planos = () => {
                 status: response?.data?.paymentData?.paymentStatus,
                 paymentPending: response?.data?.paymentData?.paymentPending
             });
-            const paymentLink = await ResumoRapidoService.getPaymentLink(user.token, response.data.gatewaySubscripitionId);
+            const paymentLink = await ResumoRapidoService.getPaymentLink(user.token, response.data.paymentData.gatewaySubscripitionId);
             if(paymentLink && paymentLink.data.invoiceUrl){
                 setMessage(`Aguarde...você será redirecionado para finalizar o pagamento`);
                 setTimeout(() => {
@@ -132,6 +134,13 @@ const Planos = () => {
             }
            }
         } catch(e){
+            updateSubscription({
+                subscriptionId: userPlan?.subscriptionId,
+                isTrial: true,
+                planId: userPlan?.planId,
+                limit: userPlan?.limit,
+                status: userPlan.status,
+            });
             setTitle("Erro ao processar Pedido");
             setMessage(`Tente novamente, caso persista contate o suporte`);
         }
@@ -142,18 +151,18 @@ const Planos = () => {
             setShowButton(false)
             setTitle("Processando Cancelamento");
             setMessage(`Aguarde...`);
-            // const response = await ResumoRapidoService.deleteUserSubscription(user.token);
-            // if(response && response.data){
-            // updateSubscription({
-            //     subscriptionId: response?.data?._id,
-            //     isTrial: false,
-            //     planId: plano?._id,
-            //     limit: plano?.limit,
-            //     status: response?.data?.paymentData?.paymentStatus,
-            //     paymentPending: response?.data?.paymentData?.paymentPending
-            // });
-            setMessage(`Plano cancelado com sucesso, para voltar a usar os resumos é necessário contratar um plano novamente`);
-           //}
+            const response = await ResumoRapidoService.deleteUserSubscription(user.token);
+            if(response && response.data){
+                updateSubscription({
+                    subscriptionId: response?.data?._id,
+                    isTrial: false,
+                    planId: plano?._id,
+                    limit: plano?.limit,
+                    status: response?.data?.paymentData?.paymentStatus,
+                    paymentPending: response?.data?.paymentData?.paymentPending
+                });
+                setMessage(`Plano cancelado com sucesso, para voltar a usar os resumos é necessário contratar um plano novamente`);
+            }
         } catch(e){
             setTitle("Erro ao processar cancelamento");
             setMessage(`Tente novamente, caso persista contate o suporte`);
@@ -161,6 +170,9 @@ const Planos = () => {
     }
 
     useEffect(()=>{
+        if(user && user.userPlan){
+            setUserPlan(user.userPlan);
+        }
         getPlans();
     },[])
 

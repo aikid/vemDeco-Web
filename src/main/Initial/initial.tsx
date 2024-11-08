@@ -41,14 +41,15 @@ function Initial(){
     
           {/* Coluna da Direita */}
           <Grid item xs={12} md={7} className="contentSlide">
-              <Swiper
+              <img src="./banners/resumo-rapido-inteligencia-medica-banner-1.png" className="imgBanner" alt="Dr Mobile Banner" />
+              {/* <Swiper
                 slidesPerView={1}
                 pagination={{clickable: true}}
               >
                 {data.map((item)=> (
                   <SwiperSlide key={item.id}><img src={item.image} className="slide-item" alt="Dr Mobile Banner" /></SwiperSlide>
                 ))}
-              </Swiper>
+              </Swiper> */}
           </Grid>
         </Grid>
       );

@@ -175,7 +175,6 @@ function Atendimento() {
 
   useEffect(() => {
     const userPlan = user.userPlan ?? '{}'
-    console.log('Plano do usuario: ', userPlan)
     if(userPlan && userPlan.status){
       setNotUserHasPlan(false)
     }
