@@ -22,17 +22,20 @@
   width: 230px !important;
   margin-top: 20px !important;
   margin-left: 20px !important;
+  text-transform: capitalize !important;
+  font-size: 16px !important;
 }
 
 .notRecordingButton {
-  background-image: linear-gradient(to right, #444CE7 , #2E90FA);
+  background-image: linear-gradient(to right, #444CE7, #2E90FA);
   color: #f8f9fb !important;
   padding: 15px !important;
   width: 230px !important;
   margin-top: 20px !important;
   margin-left: 20px !important;
+  text-transform: capitalize !important;
+  font-size: 16px !important;
 }
-
 .audio-container {
   font-size: 18px;
   color: #1e1e1e70;

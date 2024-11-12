@@ -8,7 +8,7 @@
 }
 
 .linkCreatAccount{
-    font-family: 'Verdana';
+    font-family: "Inter", sans-serif;
     text-decoration: none;
     font-weight: 600;
     font-size: 13px;
@@ -56,7 +56,7 @@
 .errorsTitle {
     text-align: left;
     font-size: 12px;
-    font-family: 'Verdana';
+    font-family: "Inter", sans-serif;
 }
 
 .errorListItem span {

@@ -97,7 +97,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         try{
             const response = await ResumoRapidoService.getUserSubscription(userToken);
             const subscription: SubscriptionData = {
-                status: response.data?.status && !response.data?.paymentData?.paymentPending,
+                status: response.data?.status,
                 limit: response.data?.planId?.limit,
                 subscriptionId: response.data?._id,
                 planId: response.data?.planId?._id,

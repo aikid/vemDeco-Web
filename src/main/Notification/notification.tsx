@@ -31,12 +31,8 @@ function Notification() {
     <DashboardLayout title="Notificações">
       {/* Conteúdo específico do Dashboard aqui */}
       <div className="notificationContainer">
-        {notifications && notifications?.length < 1 ? (
-          <div className="noNotificationBox">
-            <p>Ainda não há notificações</p>
-          </div>
-        ):(
-          notifications?.map((notification)=>(
+        {notifications && notifications?.length > 0 ? (
+          notifications.map((notification)=>(
             <div className="noNotificationBox">
               <p>{generalHelper.getNotificationMessage(notification)}</p>
               <span className="notificationTime">{generalHelper.formattedDate(notification.createdAt)}</span>
@@ -48,6 +44,10 @@ function Notification() {
               } */}
             </div>
           ))
+        ):(
+          <div className="noNotificationBox">
+            <p>Ainda não há notificações</p>
+          </div>
         )}
       </div>
     </DashboardLayout>

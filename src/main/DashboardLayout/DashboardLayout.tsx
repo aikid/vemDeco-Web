@@ -1,24 +1,33 @@
-import React from 'react';
-import { AppBar, Box, Button, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography } from '@mui/material';
-import { Home, Notifications, CalendarToday, Note } from '@mui/icons-material';
+import React, { useEffect } from 'react';
+import { AppBar, Box, CssBaseline, Drawer, IconButton, Toolbar } from '@mui/material';
 import { useAuth } from "../../context/AuthContext";
-import AddIcon from '@mui/icons-material/Add';
-import PauseIcon from '@mui/icons-material/Pause';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import DeleteIcon from '@mui/icons-material/Delete';
-import MonitorHeartOutlinedIcon from '@mui/icons-material/MonitorHeartOutlined';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
-import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import { Activity, Bell, LogOut, NotepadText, Settings, Wallet } from 'lucide-react';
 import './DashboardLayout.css';
-
-const drawerWidth = 50;
 
 const DashboardLayout: React.FC<{ children: React.ReactNode, title?: string }> = ({ children, title }) => {
   title = title !== "" ? title : "Atendimento"
-  const { signOut } = useAuth();
+  const { user, signOut, verifySubscription } = useAuth();
+
+  useEffect(()=>{
+    const checkSession = async () => {
+    if (user.loginTime) {
+      const loginDate = new Date(user.loginTime);
+      const currentDate = new Date();
+      const diffInMinutes = (currentDate.getTime() - loginDate.getTime()) / 1000 / 60;
+
+      if (diffInMinutes > 720) {
+        signOut();
+      }
+    }
+    };
+
+    checkSession();
+
+    if(user){
+      verifySubscription(user.token)
+    }
+  },[])
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -31,23 +40,23 @@ const DashboardLayout: React.FC<{ children: React.ReactNode, title?: string }> =
         <Box sx={{ overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <a href="/atendimento"><img src='dr-mobile-inteligencia-medica-logo.png' alt='Dr.Mobile Logo' title='Dr.Mobile Logo' className="menuLogo" /></a>
           <IconButton href="/atendimento" size="large">
-            <MonitorHeartOutlinedIcon />
+            <Activity />
           </IconButton>
-          <IconButton href="/dashboard" size="large">
-            <NotificationsOutlinedIcon />
+          <IconButton href="/notifications" size="large">
+            <Bell />
           </IconButton>
           <IconButton href="/prompt" size="large">
-            <EventNoteOutlinedIcon />
+            <NotepadText />
           </IconButton>
           <IconButton href="/planos" size="large">
-            <AccountBalanceWalletOutlinedIcon />
+            <Wallet />
           </IconButton>
           <div className="bottomItens">
             <IconButton href="/conta" size="large">
-              <SettingsOutlinedIcon />
+              <Settings />
             </IconButton>
             <IconButton onClick={()=> signOut()} size="large">
-              <LogoutOutlinedIcon />
+              <LogOut />
             </IconButton>
           </div>
         </Box>
@@ -59,20 +68,6 @@ const DashboardLayout: React.FC<{ children: React.ReactNode, title?: string }> =
         <AppBar position="static" color="transparent" elevation={0} className="headerBar">
           <Toolbar sx={{ justifyContent: 'space-between' }}>
             <h5 className="menuTitle">{title}</h5>
-            <Box>
-              {/* <Button variant="contained" startIcon={<AddIcon />} color="primary" sx={{ mr: 1 }}>
-                Novo atendimento
-              </Button>
-              <Button variant="outlined" startIcon={<PauseIcon />} color="primary" sx={{ mr: 1 }}>
-                Pausar
-              </Button>
-              <Button variant="outlined" startIcon={<FileDownloadIcon />} color="primary" sx={{ mr: 1 }}>
-                Exportar
-              </Button>
-              <Button variant="outlined" startIcon={<DeleteIcon />} color="primary">
-                Excluir
-              </Button> */}
-            </Box>
           </Toolbar>
         </AppBar>
 

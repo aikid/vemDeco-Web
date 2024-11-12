@@ -70,7 +70,7 @@ function RedefinirSenha(){
                         </div>
                     </form>
                     <div className="noAccountText">
-                        Se lembrou do acesso? <Link className="links" to="/">Faça o Login Aqui!</Link>
+                        Se lembrou do acesso? <Link className="links" to="/login">Faça o Login Aqui!</Link>
                     </div>
                 </div>
             </div>

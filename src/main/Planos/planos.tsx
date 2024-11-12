@@ -185,7 +185,7 @@ const Planos = () => {
                 <Grid container>
                     {planos.length > 0 &&
                         planos.map((plano, index) => (
-                            <Grid className="gridPlans" item xs={12} md={2} key={plano._id}>
+                            <Grid className="gridPlans" item xs={3} md={2} key={plano._id}>
                                 <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}>
                                     <img className="icon" src="crow-icon.svg" alt="planos" title="planos"/><span className="planBoxTitle">{plano.name}</span>
                                 </Grid>

@@ -10,6 +10,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useState } from 'react';
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import { Sparkles, Trash2 } from "lucide-react";
 
   const Resumo = () => {
     let navigate = useNavigate();
@@ -52,19 +53,19 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
           variant="outlined"
           sx={{ mb: 2 }}
         /> */}
-        <textarea className="textareaContent" defaultValue={certificateLines}></textarea>
+        <textarea className="textareaContentEdit" defaultValue={certificateLines}></textarea>
       </div>
     );
   
     const renderReceitaTab = (prescriptionLines: string) => (
       <div className="tabContent">
-        <textarea className="textareaContent" defaultValue={prescriptionLines}></textarea>
+        <textarea className="textareaContentEdit" defaultValue={prescriptionLines}></textarea>
       </div>
     );
   
     const renderAnotacaoTab = () => (
       <div className="tabContent">
-        <textarea className="textareaContent"></textarea>
+        <textarea className="textareaContentEdit"></textarea>
       </div>
     );
 
@@ -100,10 +101,10 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
     return (
         <DashboardLayout title="Resumo">
           <div className="buttonRecordingArea">
-            <Button onClick={() => navigate('/atendimento')} className="notRecordingButton" startIcon={<AutoAwesomeOutlinedIcon />}>
+            <Button onClick={() => navigate('/atendimento')} className="notRecordingButton" startIcon={<Sparkles />}>
               Novo atendimento
             </Button>
-            <Button onClick={() => navigate('/atendimento')} className="trashButton" startIcon={<DeleteIcon />}></Button>
+            <Button onClick={() => navigate('/atendimento')} className="trashButton" startIcon={<Trash2 />}></Button>
           </div>
           <Box sx={{ display: 'flex', gap: 2 }} className="boxContainer">
               <Box flex={1} className="atestadoContainer">

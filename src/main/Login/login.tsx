@@ -30,7 +30,6 @@ function Login(){
     const handleSignIn = async (data: ISignInData) => {
         setLoad(true);
         const loginAction = await signIn(data);
-        console.log('Esse foi o retorno: ', loginAction);
         if(!loginAction){
             setLoad(false);
             setTitle("Erro ao realizar o login");

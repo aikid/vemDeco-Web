@@ -5,7 +5,7 @@
 .gridPlans{
   border: 1px solid #C8CFDE;
   border-radius: 10px;
-  margin: 30px 1.5% 30px 1.5% !important;
+  margin: 30px 4% 30px 4% !important;
   margin-bottom: 20px;
   background-color: white;
 }
@@ -101,6 +101,7 @@ select::after {
 .planBoxTitle{
   font-size: 15px;
   margin-top: 2px;
+  font-weight: 600;
 }
 
 .planBoxInfo {

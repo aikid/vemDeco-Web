@@ -6,10 +6,10 @@ import { useAuth } from "../../context/AuthContext";
 import SoundWave from "../../utils/soundwave/soundwave";
 import Modal from "../../components/Modal/Modal";
 import DashboardLayout from '../DashboardLayout/DashboardLayout';
-import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import { NotepadText, Sparkles } from 'lucide-react';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { Button } from "@mui/material";
+import generalHelper from "../../helpers/generalHelper";
 
 function Atendimento() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -142,10 +142,10 @@ function Atendimento() {
     return (
       <div className="recordingArea">
         {/* <p className="recordText">{notRecordingText}</p> */}
-        <Button onClick={() => beginRecord()} className="notRecordingButton" startIcon={<AutoAwesomeOutlinedIcon />}>
+        <Button onClick={() => beginRecord()} className="notRecordingButton" startIcon={<Sparkles />}>
           Novo atendimento
         </Button>
-        <Button onClick={() => navigate('/resumos')} className="notRecordingButton" startIcon={<TextSnippetIcon />}>
+        <Button onClick={() => navigate('/resumos')} className="notRecordingButton" startIcon={<NotepadText />}>
           Resumos Anteriores
         </Button >
       </div>
@@ -175,7 +175,9 @@ function Atendimento() {
 
   useEffect(() => {
     const userPlan = user.userPlan ?? '{}'
-    if(userPlan && userPlan.status){
+    const hasExpiresConsume = generalHelper.getDiference(userPlan.limit, userPlan.consumption)
+    console.log(hasExpiresConsume);
+    if(userPlan && userPlan.status && hasExpiresConsume > 0){
       setNotUserHasPlan(false)
     }
     

@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Box, Button } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './initial.css'
+import { useEffect } from "react";
+import generalHelper from "../../helpers/generalHelper";
+import { useAuth } from "../../context/AuthContext";
 
 function Initial(){
     let navigate = useNavigate();
@@ -12,6 +15,16 @@ function Initial(){
       {id: 3, image: './banners/resumo-rapido-inteligencia-medica-banner-1.png'},
       {id: 4, image: './banners/resumo-rapido-inteligencia-medica-banner-1.png'},
     ]
+    const { user } = useAuth();
+    
+    useEffect(()=>{
+      const dataPlan = generalHelper.getUserPlan(user.userPlan);
+      if(user.authkey && !dataPlan){
+          navigate('/planos');
+      }else if(user.authkey && dataPlan){
+          navigate('/atendimento');
+      }
+    },[user, navigate]);
 
     return (
         <Grid container style={{ height: '100vh' }}>
