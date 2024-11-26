@@ -4,6 +4,10 @@
     align-items: center;
     justify-content: flex-start;
     height: 100vh;
+    @media(max-width: 768px) {
+        height: 650px;
+        overflow: scroll;          
+    }
 }
 
 .menuBtnItem {
@@ -100,4 +104,9 @@
     color: #686f95 !important;
     border: 1px solid #686f95 !important;
     font-size: 16px !important;
+}
+
+.consumeContent, .taxContent{
+    width: '85%'; 
+    overflow: 'hidden';
 }

@@ -32,16 +32,12 @@
         margin-top: -20px;
   }
 
-  .textoLogin{
+  .info{
     font-family:"Inter", sans-serif;
     font-size: 16px;
     font-weight: 400;
-    line-height: 0px;
     text-align: center;
     color: #667085;
-    margin-top: 10px;
-    margin-bottom: 30px;
-
   }
 
   img{
@@ -84,16 +80,13 @@
     margin-left: 4px;
   }
 
-  .noAccountText{
+  .hasAccountText{
     display: flex;
     font-family: "Inter", sans-serif;
     font-size: 14px;
-    font-weight: 00;
-    line-height: 20px;
     justify-content: center;
     align-items: center;
     color: #667085;
-    margin-top: 20px;
   }
 
   .links{

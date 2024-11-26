@@ -15,7 +15,7 @@ import { Sparkles, Trash2 } from "lucide-react";
   const Resumo = () => {
     let navigate = useNavigate();
     let location = useLocation();
-    const response = location.state.response;
+    const response = location?.state?.response;
 
     const [activeTab, setActiveTab] = useState(0);
     const [activeDetailTab, setActiveDetailTab] = useState(0);
@@ -82,6 +82,7 @@ import { Sparkles, Trash2 } from "lucide-react";
     );
 
     useEffect(() => {
+      console.log('Response: ', response)
       if (response !== undefined) {
         if (response.data.completion.summary !== undefined) {
           console.log(response.data.completion.prescription)
@@ -109,15 +110,15 @@ import { Sparkles, Trash2 } from "lucide-react";
           <Box sx={{ display: 'flex', gap: 2 }} className="boxContainer">
               <Box flex={1} className="atestadoContainer">
                 <Paper elevation={2} className="boxAtestado">
-                  <Tabs value={activeTab} onChange={handleTabChange} indicatorColor="primary" className="tabsSummary">
-                    <Tab label="Atestado" />
+                  <Tabs value={activeTab} onChange={handleTabChange} TabIndicatorProps={{style: {display: 'none'}}} className="tabsSummary">
                     <Tab label="Receita" />
+                    <Tab label="Atestado" />
                     <Tab label="Anotação" />
                   </Tabs>
 
                   <Box sx={{ mt: 2 }}>
-                  {activeTab === 0 && renderAtestadoTab(certificateLines)}
-                  {activeTab === 1 && renderReceitaTab(prescriptionLines)}
+                  {activeTab === 0 && renderReceitaTab(prescriptionLines)}
+                  {activeTab === 1 && renderAtestadoTab(certificateLines)}
                   {activeTab === 2 && renderAnotacaoTab()}
                   </Box>
                   {/* <Button className="btnPreview" startIcon={<ContentCopyIcon />} sx={{ mt: 2 }} disabled>
@@ -130,7 +131,7 @@ import { Sparkles, Trash2 } from "lucide-react";
                 <Paper elevation={2} sx={{ p: 2 }} className="boxResumo">
                   <div className="titleSwitch">
                     <h4>Detalhes da consulta</h4>
-                    <Tabs value={activeDetailTab} onChange={handleDetailTabChange} indicatorColor="primary">
+                    <Tabs value={activeDetailTab} onChange={handleDetailTabChange} TabIndicatorProps={{style: {display: 'none'}}} className="tabsSummaryCustom">
                       <Tab label="Resumo" />
                       <Tab label="Transcrição" />
                     </Tabs>

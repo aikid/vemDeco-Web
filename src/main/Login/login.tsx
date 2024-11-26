@@ -63,14 +63,14 @@ function Login(){
                         <label>
                             <div className="inputIcon">
                                 <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="loginformBox" type="text" placeholder="Digite seu e-mail" />
-                                <VisibilityOutlinedIcon className="iconStyle"/>
+                                <MailOutlineIcon className="iconStyle"/>
                             </div>
                             <p className="errorMsg">{errors.email?.message?.toString()}</p>
                         </label>
                         <label>
                             <div className="inputIcon">
                                 <input {...register("password", {required: 'A Senha é obrigatória'})} className="loginformBox" type="password" placeholder="Digite sua senha" />
-                                <MailOutlineIcon className="iconStyle"/>
+                                <VisibilityOutlinedIcon className="iconStyle"/>
                             </div>
                             <p className="errorMsg">{errors.password?.message?.toString()}</p>
                         </label>

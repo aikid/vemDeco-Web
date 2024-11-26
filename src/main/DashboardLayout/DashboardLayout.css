@@ -1,7 +1,10 @@
 .mainMenu{
     width: 60px;
     flex-shrink: 0;
-    border: 1px solid #E0EAFF;
+    border: 1px solid #eef4ff;
+    @media(max-width: 768px) {
+        display: none;        
+    }
 }
 
 .mainMenu .MuiDrawer-paper{
@@ -12,7 +15,7 @@
 
 .mainContainer{
     flex-grow: 1;
-    background: #f5faff;
+    background: #eef4ff;
 }
 
 .headerBar{
@@ -36,4 +39,10 @@
 .bottomItens {
     position: absolute;
     bottom: 40px;
+}
+
+.mobileMenu{
+    @media(min-width: 768px) {
+        display: none;        
+    }
 }

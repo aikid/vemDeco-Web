@@ -142,35 +142,24 @@ const ContaPrincipal = () => {
                 <a className="active" href="/conta">Conta</a>
                 <a href="/historico">Consumo</a>
             </div>
-            <form onSubmit={handleSubmit((data)=>{updateProfile(data)})}>
+            <form onSubmit={handleSubmit((data)=>{updateProfile(data)})} className="formContainer">
                 <Grid className="gridPersonal">
                     <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}> 
-                        Informações pessoais
+                        <span className="titleBox">Dados pessoais</span>
                     </Grid>
                     <Divider style={{width:"100%"}}/>
                         <Grid margin={2}>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-BR">
                                 <Grid container spacing={3} sx={{ mt: "15px" }}>
-                                    <Grid item xs={12} md={6}>
-                                        <Typography className="typography">Nome</Typography>
+                                    <Grid item xs={12} md={4}>
+                                        <Typography className="typography">Nome:</Typography>
                                         <input {...register("name", {required: 'O Nome é obrigatório'})} className="inputMain" type="text"/>
                                         <p className="errorMsg">{errors.name?.message?.toString()}</p>
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        <Typography className="typography">E-mail</Typography>
-                                        <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="inputMain" type="text"/>
-                                        <p className="errorMsg">{errors.email?.message?.toString()}</p>
-                                    </Grid>
-                                    
-                                    <Grid item xs={12} md={4}>
-                                        <Typography className="typography">Documento</Typography>
-                                        <input {...register("document", {required: 'O Documento é obrigatório', validate: value => ValidationHelper.validarCPF(value) || "Documento inválido"})} className="inputMain"/>
-                                        <p className="errorMsg">{errors.document?.message?.toString()}</p>
-                                    </Grid>
-                       
+
                                     <Grid item xs={12} md={4}>
                                         <FormControl fullWidth>
-                                            <Typography>Data de Nascimento</Typography>
+                                            <Typography>Data de Nascimento:</Typography>
                                                 <Controller
                                                    name="birthdate"
                                                    control={control}
@@ -209,7 +198,13 @@ const ContaPrincipal = () => {
                                     </Grid>
 
                                     <Grid item xs={12} md={4}>
-                                        <Typography className="typography">Pessoa Jurídica</Typography>
+                                        <Typography className="typography">Documento:</Typography>
+                                        <input {...register("document", {required: 'O Documento é obrigatório', validate: value => ValidationHelper.validarCPF(value) || "Documento inválido"})} className="inputMain"/>
+                                        <p className="errorMsg">{errors.document?.message?.toString()}</p>
+                                    </Grid>
+
+                                    <Grid item xs={12} md={4}>
+                                        <Typography className="typography">Tipo de Pessoa:</Typography>
                                         <FormControl fullWidth>
                                             <select {...register("type", {required: 'Selecione um tipo de pessoa'})} className="selectBox" id="meu-select">
                                                 <option value="">Selecione...</option>
@@ -219,6 +214,12 @@ const ContaPrincipal = () => {
                                         </FormControl>
                                         <p className="errorMsg">{errors.type?.message?.toString()}</p>
                                     </Grid>
+
+                                    <Grid item xs={12} md={4}>
+                                        <Typography className="typography">Profissão:</Typography>
+                                        <input {...register("occupation", {required: 'A Profissão é obrigatória'})} className="inputMain" type="text" name="occupation" id="txt-given-name" />
+                                        <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
+                                    </Grid>
                                 </Grid>
                             </LocalizationProvider>
                         </Grid>
@@ -226,16 +227,11 @@ const ContaPrincipal = () => {
 
                 <Grid className="gridPersonal">
                     <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}> 
-                        Contato
+                        <span className="titleBox">Dados de Contato</span>
                     </Grid>
                     <Divider style={{width:"100%"}}/>
                         <Grid margin={2}>
                             <Grid container spacing={3} sx={{ mt: "15px" }}>
-                                <Grid item xs={12} md={4}>
-                                        <Typography className="typography">Profissão</Typography>
-                                        <input {...register("occupation", {required: 'A Profissão é obrigatória'})} className="inputMain" type="text" name="occupation" id="txt-given-name" />
-                                        <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
-                                </Grid>
                                 <Grid item xs={12} md={4}>
                                     <Typography className="typography">Celular de recados</Typography>
                                     <Controller name="phone" control={control} rules={{ required: 'O Celular é obrigatório' }} render={({ field }) => (
@@ -257,13 +253,29 @@ const ContaPrincipal = () => {
                                         />
                                     )}/>
                                 </Grid> 
+                                <Grid item xs={12} md={4}>
+                                    <Typography className="typography">E-mail</Typography>
+                                    <input {...register("email", {required: 'O E-mail é obrigatório', validate: value => ValidationHelper.validarEmail(value) || "E-mail inválido"})} className="inputMain" type="text"/>
+                                    <p className="errorMsg">{errors.email?.message?.toString()}</p>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                </Grid>
+
+                <Grid className="gridPersonal">
+                    <Grid display={"flex"} fontSize={20} fontWeight={400} margin={2}> 
+                        <span className="titleBox">Endereço</span>
+                    </Grid>
+                    <Divider style={{width:"100%"}}/>
+                        <Grid margin={2}>
+                            <Grid container spacing={3} sx={{ mt: "15px" }}>
                                 <Grid item xs={12} md={3}>
-                                    <Typography className="typography">CEP</Typography>
+                                    <Typography className="typography">CEP:</Typography>
                                     <input {...register("zipCode", {required: 'O CEP é obrigatório'})} className="inputMain" type="text" name="zipCode" id="txt-given-name" disabled={disableInput} onBlur={handleCepBlur}/>
                                     <p className="errorMsg">{errors.zipCode?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <Typography className="typography">Estado</Typography>
+                                    <Typography className="typography">Estado:</Typography>
                                     <Controller
                                         name="state"
                                         control={control}
@@ -281,27 +293,27 @@ const ContaPrincipal = () => {
                                     <p className="errorMsg">{errors.state?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <Typography className="typography">Cidade</Typography>
+                                    <Typography className="typography">Cidade:</Typography>
                                     <input {...register("city", {required: 'A Cidade é obrigatória'})} className="inputMain" type="text" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.city?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={5}>
-                                    <Typography className="typography">Endereço</Typography>
+                                    <Typography className="typography">Endereço:</Typography>
                                     <input {...register("address", {required: 'O Endereço é obrigatório'})} className="inputMain" type="text" name="address" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.address?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <Typography className="typography">Número</Typography>
+                                    <Typography className="typography">Número:</Typography>
                                     <input {...register("number", {required: 'O Número é obrigatório'})} className="inputMain" type="text" name="number" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.number?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <Typography className="typography">Complemento</Typography>
+                                    <Typography className="typography">Complemento:</Typography>
                                     <input {...register("complement", {required: 'O Complemento é obrigatório'})} className="inputMain" type="text" name="complement" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.complement?.message?.toString()}</p>
                                 </Grid>
                                 <Grid item xs={12} md={3}>
-                                    <Typography className="typography">Bairro</Typography>
+                                    <Typography className="typography">Bairro:</Typography>
                                     <input {...register("neighborhood", {required: 'O Bairro é obrigatório'})} className="inputMain" type="text" name="neighborhood" id="txt-given-name" disabled={disableInput}/>
                                     <p className="errorMsg">{errors.neighborhood?.message?.toString()}</p>
                                 </Grid>

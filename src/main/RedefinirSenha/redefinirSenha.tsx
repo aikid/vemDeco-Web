@@ -27,7 +27,7 @@ function RedefinirSenha(){
             if(response && response.email){
                 setLoad(false);
                 setTitle("Pedido de Alteração de Senha Registrado")
-                setMessage("Você recebeu um e-mail para recuperar seu acesso, verique sua caixa de e-mail para os próximos passos");
+                setMessage("Se você tiver cadastro conosco receberá um e-mail para recuperar seu acesso, verifique sua caixa de e-email para os próximos passos.");
                 setModalOpen(true);
             }
             else{
@@ -40,7 +40,7 @@ function RedefinirSenha(){
         }catch (e){
             setLoad(false);
             setTitle("Pedido de Alteração de Senha Registrado")
-            setMessage("Você recebeu um e-mail para recuperar seu acesso, verique sua caixa de e-mail para os próximos passos");
+            setMessage("Se você tiver cadastro conosco receberá um e-mail para recuperar seu acesso, verifique sua caixa de e-email para os próximos passos.");
             setModalOpen(true);
         }
     }
@@ -52,9 +52,9 @@ function RedefinirSenha(){
                     <div className="rricon">
                         <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />        
                     </div>
-                    <div className="textoLogin">
+                    <p className="info">
                         Insira seu e-mail abaixo para recuperar a senha.
-                    </div>
+                    </p>
                     <form className="mobileRedefinirForm" onSubmit={handleSubmit((data)=>{signIn(data)})}>
                         <label>
                             <p className="textBox">E-mail</p>
@@ -69,8 +69,8 @@ function RedefinirSenha(){
                         )}
                         </div>
                     </form>
-                    <div className="noAccountText">
-                        Se lembrou do acesso? <Link className="links" to="/login">Faça o Login Aqui!</Link>
+                    <div className="hasAccountText">
+                        Já tem uma conta? <Link className="links" to="/login">Faça o Login Aqui!</Link>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,11 @@
 .gridPersonal{
     border: 1px solid #C8CFDE;
     border-radius: 10px;
-    margin: 30px 120px 30px 120px;
+    margin: 30px 30px 30px 30px;
+    text-align: left;
     margin-bottom: 20px;
     background-color: white;
+    font-family: "Inter", sans-serif !important;
     @media (max-width: 767px){
       margin: 10px;
     }
@@ -87,6 +89,7 @@
     margin: 0px 20px;
     color: rgb(0 0 0 / 54%);
     text-decoration: none;
+    font-family: "Inter", sans-serif !important;
 }
 
 .active{
@@ -100,4 +103,17 @@
     width: 100%;
     position: relative;
     top: 35px;
+}
+
+.titleBox {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif !important;
+}
+
+.formContainer{
+  @media(max-width: 768px) {
+    height: 650px;
+    overflow: scroll;          
+  }
 }

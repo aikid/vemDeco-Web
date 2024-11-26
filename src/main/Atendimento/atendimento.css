@@ -5,6 +5,10 @@
   background-color: #eef4ff !important;
   height: 100vh;
   align-items: flex-start;
+  @media(max-width: 768px) {
+    height: 650px;
+    overflow: scroll;          
+  }
 }
 
 .recordText {
@@ -16,7 +20,7 @@
 }
 
 .recordingButton {
-  background-image: linear-gradient(to right, #b53737 , #f01515);
+  background-color: #D92D20 !important;
   color: #f8f9fb !important;
   padding: 15px !important;
   width: 230px !important;
@@ -24,6 +28,7 @@
   margin-left: 20px !important;
   text-transform: capitalize !important;
   font-size: 16px !important;
+  height: 48px;
 }
 
 .notRecordingButton {
@@ -35,6 +40,7 @@
   margin-left: 20px !important;
   text-transform: capitalize !important;
   font-size: 16px !important;
+  height: 48px;
 }
 .audio-container {
   font-size: 18px;

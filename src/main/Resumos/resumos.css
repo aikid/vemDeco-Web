@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: #F8F8F8;
+    justify-content: flex-start;
+    background-color: #eef4ff;
+    height: 100vh;
 }
 
 .menuBtnItem {

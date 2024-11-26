@@ -7,6 +7,8 @@ import Modal from "../../components/Modal/Modal";
 import 'react-international-phone/style.css';
 import './recuperarSenha.css';
 import { IPasswordRequestReset } from "../../interfaces/passwordReset.interfaces";
+import { CheckIcon } from "lucide-react";
+import { List, Avatar, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 
 
 function RecuperarSenha(){
@@ -40,28 +42,33 @@ function RecuperarSenha(){
     
     return(
         <>
-        {!token ? (
+        {token ? (
             <>
                 <div className="recuperarSenhaContainer">
                     <div className="recuperarAuthBox">
                         <div className="rricon">
                             <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />      
                         </div>
-                        <div className="textoLogin">
+                        <p className="info">
                             Insira sua nova senha abaixo.
-                        </div>
+                        </p>
                         <form className="mobileRecuperarForm" onSubmit={handleSubmit((data)=>{resetPassword(data)})}>
                             <label>
                                 <p className="textBox">Senha</p>
                                 <input {...register("password", {required: 'A Senha é obrigatória'})} className="recuperarformBox" type="password" placeholder="••••••••"/>
                                 <p className="errorMsg">{errors.password?.message?.toString()}</p>
-                                <ul className="listErrors">
+                                <List dense={false}>
                                     {verificarSenha.resultados.map((resultado, index) => (
-                                        <li key={index} style={{ color: resultado.valido ? 'green' : 'red' }}>
-                                            {resultado.mensagem}
-                                        </li>
+                                        <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar className={resultado.valido ? 'errorListAvatarGreen' : 'errorListAvatarRed' }>
+                                            <CheckIcon className="errorIcon"/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={resultado.mensagem} className="errorListItem"/>
+                                        </ListItem>
                                     ))}
-                                </ul>
+                                </List>
                             </label>
                             <label>
                                 <p className="textBox">Confirmar Senha</p>
@@ -77,7 +84,7 @@ function RecuperarSenha(){
                         
                             </div>
                         </form>
-                        <div className="noAccountText">
+                        <div className="hasAccountText">
                             Se lembrou do acesso? <a className="links" onClick={()=>navigate('/')} href="">Faça o Login Aqui!</a>
                         </div>
                     </div>

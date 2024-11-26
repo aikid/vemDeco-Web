@@ -1,16 +1,3 @@
-.confMenu {
-    height: 50px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-}
-
-.confMenu a {
-    margin: 0px 20px;
-    color: rgb(0 0 0 / 54%);
-    text-decoration: none;
-}
-
 .active{
     color: #007aff !important;
 }
@@ -61,6 +48,7 @@
 .titleSwitch {
     display: flex;
     justify-content: space-between;
+    font-family: "Inter", sans-serif !important;
 }
 
 .buttonRecordingArea {
@@ -84,18 +72,32 @@
     margin-right: 0px;
 }
 
+.tabsSummary .MuiButtonBase-root{
+    font-family: "Inter", sans-serif !important;
+    text-transform: capitalize;
+    color: #4E5BA6;
+}
+
+.tabsSummary .MuiTabs-flexContainer{
+    background: #f1f6ff;
+}
+
 .tabsSummary {
     border: 1px solid #E0EAFF;
     background: #f3f3f3;
     padding: 0px;
     border-radius: 5px 5px 0px 0px;
+    font-family: "Inter", sans-serif !important;
+    text-transform: capitalize;
 }
 
 .tabsSummary .Mui-selected {
     background: #fff !important;
     border-radius: 5px 5px 0px 0px;
-    border: 1px solid #ccc;
-    color: #323539;
+    color: #323539 !important;
+    font-family: "Inter", sans-serif !important;
+    text-transform: capitalize;
+    border-right: 1px solid #E0EAFF;
 }
 
 .tabContent {
