@@ -33,6 +33,8 @@ const getUserSubscriptionPath = "/user/find-subscription";
 const createNotificationPath = "/user/create-notification";
 const getUserResumesPath = "get-last-transcriptions";
 const reprocessUserAudioPath = "reprocess-transcribe";
+const userListPath = "/user/list";
+const getAllPaymentsPath = "/user/payments";
 
 const postAudio = async (audio: any, userName: string | null = "conversa-medico-paciente", token: string | null): Promise<any> => {
   const formData = new FormData();
@@ -77,6 +79,7 @@ const signUp = async (data: ISignUpData): Promise<any> => {
   formData.append("phone", data.phone.replace(/\D/g, ''));
   formData.append("password", data.password);
   formData.append("type", data.tipoPessoa);
+  formData.append("occupation", data.occupation);
   formData.append("document", data.document.replace(/\D/g, ''));
 
   return await HttpClient.executeRequest({
@@ -333,6 +336,22 @@ const getUserResumes = async(token: string): Promise<any> =>{
   });
 }
 
+const getUserList = async(token: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${userListPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
+const getAllPayments = async(token: string): Promise<any> =>{
+  return await HttpClient.executeRequest({
+    method: "GET",
+    url: `${getAllPaymentsPath}`,
+    headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+}
+
 const ResumoRapidoService = {
   postAudio,
   postTranscribe,
@@ -361,7 +380,9 @@ const ResumoRapidoService = {
   getUserSubscription,
   createUserNotification,
   reprocessUserAudio,
-  getUserResumes
+  getUserResumes,
+  getUserList,
+  getAllPayments
 };
 
 export default ResumoRapidoService;

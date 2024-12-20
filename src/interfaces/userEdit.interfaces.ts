@@ -4,6 +4,11 @@ export interface Estado {
     sigla: string;
 }
 export interface UserData {
+    _id?: string;
+    type?: string;
+    occupation?: string;
+    createdAt?: string;
+    gatewayCustomerId?: string;
     name: string;
     email: string;
     phone: string;

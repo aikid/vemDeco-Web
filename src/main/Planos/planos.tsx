@@ -30,14 +30,14 @@ const Planos = () => {
         {
             qtdResumo:"1 Resumo de teste",
             recordTime:"5 minutos de gravação",
-            integrationSuport: "Suporte a integrações",
-            customMetrics: "Métricas personalizadas" 
+            integrationSuport: "Personalização de prompt",
+            customMetrics: "Suporte a integrações"
         },
         {
             qtdResumo:"100 resumos mês",
             recordTime:"60 minutos de gravação",
-            integrationSuport: "Suporte a integrações",
-            customMetrics: "Métricas personalizadas"
+            integrationSuport: "Personalização de prompt",
+            customMetrics: "Suporte a integrações"
         },
         {
             qtdResumo:"200 resumos mês",
@@ -48,20 +48,20 @@ const Planos = () => {
         {
             qtdResumo:"500 resumos mês",
             recordTime:"60 minutos de gravação",
-            integrationSuport: "Suporte a integrações",
-            customMetrics: "Métricas personalizadas"
+            integrationSuport: "Personalização de prompt",
+            customMetrics: "Suporte a integrações"
         },
         {
             qtdResumo:"Resumos ilimitados",
             recordTime:"60 minutos de gravação",
-            integrationSuport: "Suporte a integrações",
-            customMetrics: "Métricas personalizadas"
+            integrationSuport: "Personalização de prompt",
+            customMetrics: "Suporte a integrações"
         },
         {
             qtdResumo:"Resumos ilimitados",
             recordTime:"Sem limite de tempo",
-            integrationSuport: "Suporte a integrações",
-            customMetrics: "Métricas personalizadas"
+            // integrationSuport: "Suporte a integrações",
+            // customMetrics: "Métricas personalizadas"
         }
     ]
 
@@ -180,7 +180,7 @@ const Planos = () => {
         <DashboardLayout title="Planos">
             <div className="planosContainer">
                 <Grid>
-                    <p className="subTitle">Para melhor aproveitamento de recursos da plataforma é necessário adquirir um dos planos acima do trial abaixo:</p>
+                    <p className="subTitle">Liberte todo o potencial da plataforma com um dos planos disponíveis além do trial gratuito!</p>
                 </Grid>
                 <Grid container>
                     {planos.length > 0 &&
@@ -210,8 +210,8 @@ const Planos = () => {
                                     <Grid margin={2}> 
                                         <h4 className="planBoxInfo"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].qtdResumo ?? 'null'}</h4>
                                         <h4 className="planBoxInfo"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].recordTime ?? 'null'}</h4>
-                                        <h4 className="planBoxInfo planosDisabled"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].integrationSuport ?? 'null'}</h4>
-                                        <h4 className="planBoxInfo planosDisabled"><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].customMetrics ?? 'null'}</h4>
+                                        <h4 className={"planBoxInfo " + (index < 2 ? "planosDisabled" : "")}><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].integrationSuport ?? 'null'}</h4>
+                                        <h4 className={"planBoxInfo " + (index < 3 ? "planosDisabled" : "")}><CheckCircleIcon color={"primary"} style={{position: "relative", top: 6}}/>{planosAtribuites[index].customMetrics ?? 'null'}</h4>
                                     </Grid>
                                 </Grid>
                             </Grid>

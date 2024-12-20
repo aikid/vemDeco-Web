@@ -22,6 +22,7 @@ function Registro() {
         email:"",
         phone:"",
         tipoPessoa:"",
+        occupation: "",
         document:"",
         password:"",
         confirmPassword:""
@@ -126,6 +127,19 @@ function Registro() {
                       <option value="pj">Pessoa Jurídica</option>
                   </select>
                   <p className="errorMsg">{errors.tipoPessoa?.message?.toString()}</p>
+              </label>
+              <label>
+                  <select {...register("occupation", {required: 'Selecione uma profissão'})} className="cadastroSelectBox" id="meu-select">
+                    <option value="">Selecione uma profissão</option>
+                    <option value="Médico">Médico</option>
+                    <option value="Enfermeiro">Enfermeiro</option>
+                    <option value="Advogado">Advogado</option>
+                    <option value="Recursos Humanos">Recursos Humanos</option>
+                    <option value="Psicólogo">Psicólogo</option>
+                    <option value="Jornalista">Jornalista</option>
+                    <option value="Assistente Social">Assistente Social</option>
+                  </select>
+                  <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
               </label>
               <div className="inputIcon">
                   <PhoneInput {...register("phone", {required: 'O Celular é obrigatório', validate: value => ValidationHelper.validarTelephone(value) || "Telefone inválido"})} className="phonebox" defaultCountry="br" onChange={() => {}} />

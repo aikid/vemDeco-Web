@@ -8,6 +8,7 @@ import Modal from "../../components/Modal/Modal";
 import ValidationHelper from '../../helpers/validationHelper';
 import generalHelper from "../../helpers/generalHelper";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import './login.css';
 
@@ -17,6 +18,12 @@ function Login(){
     const [message, setMessage] = useState<string>("");
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
     const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     let navigate = useNavigate();
     const { register, handleSubmit, formState:{errors} } = useForm({
         defaultValues: {
@@ -69,8 +76,25 @@ function Login(){
                         </label>
                         <label>
                             <div className="inputIcon">
-                                <input {...register("password", {required: 'A Senha é obrigatória'})} className="loginformBox" type="password" placeholder="Digite sua senha" />
-                                <VisibilityOutlinedIcon className="iconStyle"/>
+                                <input
+                                    {...register("password", { required: "A Senha é obrigatória" })}
+                                    className="loginformBox"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Digite sua senha"
+                                />
+                                {showPassword ? (
+                                    <VisibilityOffOutlinedIcon
+                                        className="iconStyle"
+                                        onClick={togglePasswordVisibility}
+                                        style={{ cursor: "pointer" }}
+                                    />
+                                ) : (
+                                    <VisibilityOutlinedIcon
+                                        className="iconStyle"
+                                        onClick={togglePasswordVisibility}
+                                        style={{ cursor: "pointer" }}
+                                    />
+                                )}
                             </div>
                             <p className="errorMsg">{errors.password?.message?.toString()}</p>
                         </label>

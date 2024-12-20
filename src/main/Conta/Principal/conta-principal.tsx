@@ -217,7 +217,18 @@ const ContaPrincipal = () => {
 
                                     <Grid item xs={12} md={4}>
                                         <Typography className="typography">Profissão:</Typography>
-                                        <input {...register("occupation", {required: 'A Profissão é obrigatória'})} className="inputMain" type="text" name="occupation" id="txt-given-name" />
+                                        <FormControl fullWidth>
+                                            <select {...register("occupation", {required: 'Selecione uma profissão'})} className="selectBox" id="meu-select">
+                                                <option value="">Selecione...</option>
+                                                <option value="Médico">Médico</option>
+                                                <option value="Enfermeiro">Enfermeiro</option>
+                                                <option value="Advogado">Advogado</option>
+                                                <option value="Recursos Humanos">Recursos Humanos</option>
+                                                <option value="Psicólogo">Psicólogo</option>
+                                                <option value="Jornalista">Jornalista</option>
+                                                <option value="Assistente Social">Assistente Social</option>
+                                            </select>
+                                        </FormControl>
                                         <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
                                     </Grid>
                                 </Grid>

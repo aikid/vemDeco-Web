@@ -11,6 +11,7 @@ interface UserData {
     token: string;
     gatewayCustomerId: string;
     loginTime: string;
+    isAdmin: string;
 }
 
 interface AuthContextData {
@@ -28,6 +29,7 @@ interface AuthState {
     loginTime: string;
     subscription: SubscriptionData;
     gatewayCustomerId: string;
+    isAdmin: string
 }
 
 interface Props {
@@ -44,6 +46,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         const authkey = localStorage.getItem("@DrMobile:authkey");
         const loginTime = localStorage.getItem("@DrMobile:loginTime");
         const gatewayCustomerId = localStorage.getItem("@DrMobile:gatewayCustomerId");
+        const isAdmin = localStorage.getItem("@DrMobile:isAdmin");
 
         if(token && username){
             return {
@@ -52,7 +55,8 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
                 authkey: authkey ? authkey : "unlogged",
                 loginTime: loginTime ? loginTime : "",
                 subscription: subscription ? JSON.parse(subscription) : {},
-                gatewayCustomerId: gatewayCustomerId ? gatewayCustomerId : ""
+                gatewayCustomerId: gatewayCustomerId ? gatewayCustomerId : "",
+                isAdmin: isAdmin ? isAdmin : ""
             }
         }
 
@@ -62,7 +66,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     const signIn = useCallback(async (data: ISignInData)=>{
         try{
             const response = await ResumoRapidoService.signIn(data);
-            const { token, username, subscription, gatewayCustomerId } = response.data; 
+            const { token, username, subscription, gatewayCustomerId, isAdmin } = response.data; 
             const loginTime = new Date().toISOString();
             localStorage.setItem("@DrMobile:authkey","logged");
             localStorage.setItem("@DrMobile:username", username);
@@ -70,7 +74,8 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
             localStorage.setItem('@DrMobile:loginTime', loginTime);
             localStorage.setItem("@DrMobile:subscription", generalHelper.setUserPlan(subscription));
             localStorage.setItem("@DrMobile:gatewayCustomerId", gatewayCustomerId);
-            setData({ token, username, subscription, loginTime, authkey: "logged", gatewayCustomerId });
+            localStorage.setItem("@DrMobile:isAdmin", isAdmin);
+            setData({ token, username, subscription, loginTime, authkey: "logged", gatewayCustomerId, isAdmin });
             return true;
         } catch(e){
             console.log('Erro encontrado:', e);
@@ -84,6 +89,8 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         localStorage.removeItem("@DrMobile:token");
         localStorage.removeItem("@DrMobile:loginTime");
         localStorage.removeItem("@DrMobile:subscription");
+        localStorage.removeItem("@DrMobile:gatewayCustomerId");
+        localStorage.removeItem("@DrMobile:isAdmin");
 
         setData({} as AuthState);
     }, []);
@@ -114,7 +121,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token, gatewayCustomerId: data.gatewayCustomerId, loginTime: data.loginTime}, signIn, signOut, updateSubscription, verifySubscription }}>
+        <AuthContext.Provider value={{ user: {username: data.username, userPlan: data.subscription, authkey: data.authkey, token: data.token, gatewayCustomerId: data.gatewayCustomerId, loginTime: data.loginTime, isAdmin: data.isAdmin}, signIn, signOut, updateSubscription, verifySubscription }}>
             {children}
         </AuthContext.Provider>
     );

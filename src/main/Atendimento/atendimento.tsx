@@ -88,7 +88,7 @@ function Atendimento() {
   const beginRecord = async () => {
     if(userNotHasPlan){
       setTitle("Ainda há mais um passo para começar a fazer seus resumos");
-      setMessage("Você precisa contratar um plano, clique em ver planos e escolha um que combine com seu uso diario");
+      setMessage("Você precisa contratar um plano, clique em ver planos e escolha um que combine com seu uso diário");
       setModalOpen(true);
       return;
     }

@@ -3,6 +3,7 @@ export interface ISignUpData {
     email: string;
     phone: string;
     tipoPessoa: string;
+    occupation: string;
     document: string;
     password: string;
     confirmPassword: string;

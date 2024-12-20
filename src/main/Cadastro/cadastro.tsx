@@ -19,6 +19,7 @@ function Cadastro(){
             email:"",
             phone:"",
             tipoPessoa:"",
+            occupation:"",
             document:"",
             password:"",
             confirmPassword:""
@@ -101,6 +102,19 @@ function Cadastro(){
                                 <p className="errorMsg">{errors.document?.message?.toString()}</p>
                             </label>
                         }
+                        <label>
+                            <select {...register("occupation", {required: 'Selecione uma profissão'})} className="cadastroSelectBox" id="meu-select">
+                                <option value="">Selecione uma profissão</option>
+                                <option value="Médico">Médico</option>
+                                <option value="Enfermeiro">Enfermeiro</option>
+                                <option value="Advogado">Advogado</option>
+                                <option value="Recursos Humanos">Recursos Humanos</option>
+                                <option value="Psicólogo">Psicólogo</option>
+                                <option value="Jornalista">Jornalista</option>
+                                <option value="Assistente Social">Assistente Social</option>
+                            </select>
+                            <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
+                        </label>
                         <label>
                             <p className="textBox">Nome</p>
                             <input {...register("name", {required: 'O Nome é obrigatório'})} className="cadastroFormBox" type="text" placeholder="Digite seu nome completo"/>

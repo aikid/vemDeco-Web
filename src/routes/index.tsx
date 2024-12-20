@@ -20,6 +20,8 @@ import Initial from "../main/Initial/initial";
 import Registro from "../main/Registro/registro";
 import Notification from "../main/Notification/notification";
 import Resumos from "../main/Resumos/resumos";
+import Administrativo from "../main/Administrativo/administrativo";
+import ConsumoGeral from "../main/Administrativo/ConsumoGeral/consumoGeral";
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
@@ -48,6 +50,8 @@ const MainRoutes = () => {
             <Route path="/vincular-usuario" element={<PrivateRoute><VincularUsuario /></PrivateRoute>} />
             <Route path="/configuracao-parametro" element={<PrivateRoute><ConfParametros /></PrivateRoute>} />
             <Route path="/prompt" element={<PrivateRoute><Prompt /></PrivateRoute>} />
+            <Route path="/administrativo" element={<PrivateRoute><Administrativo /></PrivateRoute>} />
+            <Route path="/consumo-geral" element={<PrivateRoute><ConsumoGeral /></PrivateRoute>} />
         </Routes>
     );
 };

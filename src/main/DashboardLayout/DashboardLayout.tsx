@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AppBar, Backdrop, Box, CssBaseline, Drawer, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon, Toolbar } from '@mui/material';
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
-import { Activity, Bell, LogOut, NotepadText, Settings, Wallet } from 'lucide-react';
+import { Activity, Bell, LogOut, NotepadText, Settings, Wallet, UserCog2 } from 'lucide-react';
 import './DashboardLayout.css';
 
 
@@ -71,6 +71,9 @@ const DashboardLayout: React.FC<{ children: React.ReactNode, title?: string }> =
             <IconButton href="/planos" size="large">
               <Wallet />
             </IconButton>
+            {/* <IconButton href="/administrativo" size="large">
+              <UserCog2 />
+            </IconButton> */}
             <div className="bottomItens">
               <IconButton href="/conta" size="large">
                 <Settings />

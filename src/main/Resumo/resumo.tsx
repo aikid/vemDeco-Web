@@ -11,6 +11,7 @@ import { useState } from 'react';
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import { Sparkles, Trash2 } from "lucide-react";
+import { Editor } from "@tinymce/tinymce-react";
 
   const Resumo = () => {
     let navigate = useNavigate();
@@ -71,7 +72,18 @@ import { Sparkles, Trash2 } from "lucide-react";
 
     const renderResumoTab = (summaryLines:string) => (
       <div className="tabContent">
-        <textarea className="textareaContent" defaultValue={summaryLines}></textarea>
+        {/* <textarea className="textareaContent" defaultValue={formatSummaryForTextarea(summaryLines)}></textarea> */}
+        <Editor
+          value={formatContent(summaryLines)}
+          init={{
+            menubar: false, // Remove o menu
+            toolbar: false, // Remove a barra de ferramentas
+            statusbar: false, // Remove a barra de status
+            content_style: "body { font-family: Arial, sans-serif; font-size: 14px; }", // Estiliza o texto
+            height: 300, // Altura ajustável para parecer um textarea
+          }}
+          onEditorChange={(newSummaryLines) => setSummaryLines(newSummaryLines)}
+        />
       </div>
     );
 
@@ -80,6 +92,19 @@ import { Sparkles, Trash2 } from "lucide-react";
         <textarea className="textareaContent" defaultValue={transcriptionLines}></textarea>
       </div>
     );
+
+    const formatSummaryForTextarea = (summary: any) => {
+      // Substituir <b> por ** e </b> por **
+      const boldFormatted = summary.replace(/<b>/g, "**").replace(/<\/b>/g, "**");
+      
+      // Substituir \n para preservar quebras de linha no textarea
+      return boldFormatted
+    };
+
+    const formatContent = (text: string) => {
+      return text.replace(/\n/g, "<br>");
+    };
+  
 
     useEffect(() => {
       console.log('Response: ', response)

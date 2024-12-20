@@ -1,0 +1,118 @@
+.usuariosDashContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: auto;
+    @media(max-width: 768px) {
+        height: 650px;
+        overflow: scroll;          
+    }
+}
+
+.menuBtnItem {
+    margin-top: 10px;
+}
+
+.menuConfBtn {
+    width: 320px;
+    height: 50px;
+    justify-content: flex-start !important;
+    background-color: #04cda6 !important;
+}
+
+.menuConfBtn .MuiButton-icon svg {
+    color: #fff;
+}
+
+.titlePlan{
+    text-align: left;
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.subtitlePlan{
+    text-align: left;
+    margin-left: 15px;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.promptTableHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.promptActions {
+    margin-right: 15px;
+}
+
+.bt-add-prompt {
+    background: #04cda6 !important;
+    font-size: 16px !important;
+}
+
+.modalContent{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 768px;
+  height: 575px;
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #cfcfcf;
+  box-shadow: 24;
+}
+
+.promptInModal{
+  height: 450px;
+  width: 100%;
+  border-radius: 0px;
+}
+
+.modalFormButton{
+  height: 45px;
+  padding: 10px 18px 10px 18px;
+  gap: 8px;
+  border-radius: 8px ;
+  color: #ffffff;
+  background-color: #04cda6;
+  border: 0px;
+  cursor: pointer;
+}
+
+.formButtonLoad{
+  background-color: #9dbcad !important;
+}
+
+.buttonTableContainer {
+    display: flex;
+}
+
+.editButton {
+    text-transform: capitalize !important;
+    background: #04cda6 !important;
+    color: #fff !important;
+    font-size: 16px !important;
+}
+
+.btnReceipt {
+    text-transform: capitalize !important;
+    background: #fff !important;
+    color: #686f95 !important;
+    border: 1px solid #686f95 !important;
+    font-size: 16px !important;
+}
+
+.consumeContent, .taxContent{
+    width: '85%'; 
+    overflow: 'hidden';
+}
+
+.titleChart {
+    font-size: 14px;
+    position: relative;
+    right: 45px;
+}
