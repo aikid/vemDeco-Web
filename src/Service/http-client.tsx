@@ -3,9 +3,9 @@ import qs from "qs";
 
 //axios.defaults.baseURL = "http://localhost:4000/";
 //axios.defaults.baseURL = "https://dev.resumorapido.ai:8443";
-//axios.defaults.baseURL = "https://apidev.resumorapido.ai:8443";
+axios.defaults.baseURL = "https://apidev.resumorapido.ai:8443";
 //axios.defaults.baseURL = "http://resumorapido.drmobile.com.br:3000";
-axios.defaults.baseURL = "https://api.resumorapido.ai/";
+//axios.defaults.baseURL = "https://api.resumorapido.ai/";
 
 axios.defaults.paramsSerializer = {
   serialize: function (params: any) {
@@ -14,18 +14,25 @@ axios.defaults.paramsSerializer = {
 };
 
 const executeRequest = async (config: AxiosRequestConfig) => {
-  const result = await axios
-    .request(config)
-    .then((r) => {
-      if (r.status === 200) {
-        return r.data;
+  try {
+    const response = await axios.request(config);
+
+    if (response.status === 200) {
+      return { data: response.data };
+    }
+
+    throw new Error("Erro na resposta: Status diferente de 200");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Lança o objeto da resposta diretamente se existir
+      if (error.response?.data) {
+        throw error.response.data;
       }
-      throw new Error("Erro");
-    })
-    .catch((e) => {
-      throw new Error(e.message);
-    });
-  return { data: result };
+    }
+
+    // Lança o erro padrão para casos não relacionados ao Axios
+    throw new Error(error instanceof Error ? error.message : "Erro desconhecido");
+  }
 };
 
 const HttpClient = {

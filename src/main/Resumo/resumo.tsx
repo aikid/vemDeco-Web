@@ -75,12 +75,13 @@ import { Editor } from "@tinymce/tinymce-react";
         {/* <textarea className="textareaContent" defaultValue={formatSummaryForTextarea(summaryLines)}></textarea> */}
         <Editor
           value={formatContent(summaryLines)}
+          apiKey="p1c0ggbaxkao2lbhnirbxik5qqtaom5mavwi77f96f9q765k"
           init={{
             menubar: false, // Remove o menu
             toolbar: false, // Remove a barra de ferramentas
             statusbar: false, // Remove a barra de status
             content_style: "body { font-family: Arial, sans-serif; font-size: 14px; }", // Estiliza o texto
-            height: 300, // Altura ajustável para parecer um textarea
+            height: 300, // Altura ajustável para parecer um textarea,
           }}
           onEditorChange={(newSummaryLines) => setSummaryLines(newSummaryLines)}
         />

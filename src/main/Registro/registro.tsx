@@ -64,10 +64,11 @@ function Registro() {
             setOpen(true);
             setLoad(false);
         }
-    }catch (e){
+    }catch (e: any){
         setLoad(false);
+        var erroMessage = e && e.message ? e.message : 'Ocorreu um erro ao executar a operação, contate o suporte'
+        setMessage(erroMessage);
         setOpen(true);
-        console.log('Erro encontrado:', e);
     }
   }
 
@@ -210,6 +211,12 @@ function Registro() {
     }
   };
 
+  const onKeyDownEvent = (event: any) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Impede a submissão do formulário
+    }
+  }
+
   return (
     <Grid container className='registerContainer'>
       {/* Barra de progresso no topo */}
@@ -247,7 +254,7 @@ function Registro() {
             Insira seus dados para criar sua conta.
           </Typography>
 
-            <form className="mobileCadastroForm" onSubmit={handleSubmit((data)=>{signUp(data)})}>
+            <form className="mobileCadastroForm" onSubmit={handleSubmit((data)=>{signUp(data)})}  onKeyDown={(event) => onKeyDownEvent(event)}>
                 {renderStepContent()}
             </form>
           
