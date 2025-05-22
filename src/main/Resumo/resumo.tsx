@@ -35,16 +35,41 @@ import { Editor } from "@tinymce/tinymce-react";
       setActiveDetailTab(newValue);
     };
 
-    const handleCopy = (tabNumber:number) => {
+    // const handleCopy = (tabNumber:number) => {
+    //   let text = tabNumber === 0 ? summaryLines : transcriptionLines;
+    //   navigator.clipboard.writeText(text)
+    //     .then(() => {
+    //       console.log('Texto copiado com sucesso!');
+    //     })
+    //     .catch(err => {
+    //       console.error('Erro ao copiar o texto:', err);
+    //     });
+    // };
+
+    const handleCopy = (tabNumber: number) => {
       let text = tabNumber === 0 ? summaryLines : transcriptionLines;
-      navigator.clipboard.writeText(text)
-        .then(() => {
-          console.log('Texto copiado com sucesso!');
-        })
-        .catch(err => {
-          console.error('Erro ao copiar o texto:', err);
-        });
+    
+      // Criar um elemento temporário para copiar com formatação
+      const tempElement = document.createElement("div");
+      tempElement.innerHTML = text; // Mantém a formatação, mas remove tags desnecessárias
+      document.body.appendChild(tempElement);
+    
+      // Criar um range para selecionar o conteúdo
+      const range = document.createRange();
+      range.selectNodeContents(tempElement);
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    
+      // Executar o comando de cópia
+      document.execCommand("copy");
+    
+      // Remover o elemento temporário
+      document.body.removeChild(tempElement);
+    
+      console.log("Texto copiado com sucesso!");
     };
+    
 
     const renderAtestadoTab = (certificateLines: string) => (
       <div className="tabContent">
@@ -77,9 +102,9 @@ import { Editor } from "@tinymce/tinymce-react";
           value={formatContent(summaryLines)}
           apiKey="p1c0ggbaxkao2lbhnirbxik5qqtaom5mavwi77f96f9q765k"
           init={{
-            menubar: false, // Remove o menu
-            toolbar: false, // Remove a barra de ferramentas
-            statusbar: false, // Remove a barra de status
+            menubar: true, // Remove o menu
+            toolbar: true, // Remove a barra de ferramentas
+            statusbar: true, // Remove a barra de status
             content_style: "body { font-family: Arial, sans-serif; font-size: 14px; }", // Estiliza o texto
             height: 300, // Altura ajustável para parecer um textarea,
           }}

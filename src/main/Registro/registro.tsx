@@ -52,7 +52,7 @@ function Registro() {
     if(severity === 'success'){
         navigate("/login");
     }
-};
+  };
 
   const signUp = async  (data: ISignUpData) => {
     try{
@@ -245,7 +245,7 @@ function Registro() {
       <Grid item xs={12} container direction="column" alignItems="center" justifyContent="center" className='registerContainer animationContainerDown'>
         <Box width="100%" maxWidth="400px" textAlign="center">
           <div className="rricon">
-            <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />      
+            <img src="vemdeco-a-sua-plataforma-para-venda-e-compra-de-servicos-logo.svg" alt="Vemdeco Logo" />   
           </div>
           <Typography variant="h4" gutterBottom>
             Criar conta

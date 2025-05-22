@@ -23,7 +23,6 @@ function Resumos() {
     const [open, setOpen] = useState<boolean>(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const userLogged = localStorage.getItem("userLogger");
     const { user } = useAuth();
     let navigate = useNavigate();
 
@@ -57,9 +56,9 @@ function Resumos() {
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     };  
 
-    const handleProcessAgain = async(userLogged: string | null,link: string) => {
-        if(userLogged){
-            let response = await ResumoRapidoService.reprocessUserAudio(user.token, link)
+    const handleProcessAgain = async(token: string | null,link: string) => {
+        if(token){
+            let response = await ResumoRapidoService.reprocessUserAudio(token, link)
             if(response && response.data.success){
                 setOpen(true);
             }
@@ -82,7 +81,7 @@ function Resumos() {
     useEffect(()=>{
         const getUserPaymentsData = async(): Promise<void> =>{
         try{
-            if(userLogged){
+            if(user.token){
                 let response = await ResumoRapidoService.getUserResumes(user.token);
                 if(response && response.data){
                 setResumes(response.data.transcriptions);
@@ -152,7 +151,7 @@ function Resumos() {
                                 ) : (
                                 <Button 
                                     className="reProcessedBtn"
-                                    onClick={() => handleProcessAgain(userLogged,row.link)}
+                                    onClick={() => handleProcessAgain(user.token,row.link)}
                                 >
                                     Processar
                                 </Button>

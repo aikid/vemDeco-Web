@@ -11,13 +11,14 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import './login.css';
+import { Alert, AlertProps, Snackbar } from "@mui/material";
 
 function Login(){
     const [load, setLoad] = useState<boolean>(false);
     const [title, setTitle] = useState<string>("");
-    const [message, setMessage] = useState<string>("");
-    const [isModalOpen, setModalOpen] = useState<boolean>(false);
-    const [modalType, setModalType] = useState<'success' | 'confirm'>('success');
+    const [open, setOpen] = useState<boolean>(false);
+    const [severity, setSeverity] = useState<AlertProps["severity"]>('error');
+    const [message, setMessage] = useState<string>('Ocorreu um erro ao executar a operação, contate o suporte');
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -39,12 +40,21 @@ function Login(){
         const loginAction = await signIn(data);
         if(!loginAction){
             setLoad(false);
-            setTitle("Erro ao realizar o login");
-            setMessage("Ocorreu um erro ao fazer a autenticação, caso persista tente redefinir sua senha ou contate o suporte.");
-            setModalOpen(true);
+            setMessage("Usuário ou senha inválidos");
+            setOpen(true);
         }
         setLoad(false);
     }
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+        if(severity === 'success'){
+            navigate("/login");
+        }
+    };
 
     useEffect(()=>{
         const dataPlan = generalHelper.getUserPlan(user.userPlan);
@@ -60,7 +70,7 @@ function Login(){
             <div className="loginContainer animationContainerDown">
                 <div className="authBox">
                     <div className="rricon">
-                        <img src="resumo-rapido-atendimento-medico-logo.svg" alt="Resumo Rápido Logo" />      
+                        <img src="vemdeco-a-sua-plataforma-para-venda-e-compra-de-servicos-logo.svg" alt="Vemdeco Logo" />      
                     </div>
                     <div>
                         <h3 className="tituloLogin">Bem vindo (a)!</h3> 
@@ -127,15 +137,11 @@ function Login(){
                     </div>
                 </div>
             </div>
-            <Modal
-                show={isModalOpen}
-                onClose={()=>setModalOpen(false)}
-                title={title}
-                content={<p>{message}</p>}
-                actions={
-                    <button className="confirmModal" onClick={()=>setModalOpen(false)}>OK</button>
-                }
-            />
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
+                <Alert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </>
     )
 
