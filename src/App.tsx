@@ -18,7 +18,7 @@ function App() {
       <AuthProvider>
         <Helmet>
             <meta charSet="utf-8" />
-            <title>Resumo Rápido - Aperfeiçõe o seu atendimento!</title>
+            <title>VemDeco - A sua plataforma digital de compra ou venda</title>
         </Helmet>
         <div className="App">
           <MainRoutes/>

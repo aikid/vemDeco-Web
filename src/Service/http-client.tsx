@@ -1,11 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
 import qs from "qs";
 
-//axios.defaults.baseURL = "http://localhost:4000/";
+axios.defaults.baseURL = "http://localhost:3333/";
 //axios.defaults.baseURL = "https://dev.resumorapido.ai:8443";
 //axios.defaults.baseURL = "https://apidev.resumorapido.ai:8443";
 //axios.defaults.baseURL = "http://resumorapido.drmobile.com.br:3000";
-axios.defaults.baseURL = "https://api.resumorapido.ai/";
+//axios.defaults.baseURL = "https://api.resumorapido.ai/";
 
 axios.defaults.paramsSerializer = {
   serialize: function (params: any) {

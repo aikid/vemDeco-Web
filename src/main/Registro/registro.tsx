@@ -57,6 +57,7 @@ function Registro() {
   const signUp = async  (data: ISignUpData) => {
     try{
         setLoad(true);
+        console.log('Response: ', data);
         let response = await ResumoRapidoService.signUp(data);
         if(response && response.data){
             setSeverity("success");
@@ -131,14 +132,12 @@ function Registro() {
               </label>
               <label>
                   <select {...register("occupation", {required: 'Selecione uma profissão'})} className="cadastroSelectBox" id="meu-select">
-                    <option value="">Selecione uma profissão</option>
-                    <option value="Médico">Médico</option>
-                    <option value="Enfermeiro">Enfermeiro</option>
-                    <option value="Advogado">Advogado</option>
-                    <option value="Recursos Humanos">Recursos Humanos</option>
-                    <option value="Psicólogo">Psicólogo</option>
-                    <option value="Jornalista">Jornalista</option>
-                    <option value="Assistente Social">Assistente Social</option>
+                    <option value="">Selecione um segmento</option>
+                    <option value="Imobiliario">Imobiliário</option>
+                    <option value="Academico">Acadêmico</option>
+                    <option value="Logístico">Advogado</option>
+                    <option value="Automobilistico">Recursos Humanos</option>
+                    <option value="Rodoviário">Rodoviário</option>
                   </select>
                   <p className="errorMsg">{errors.occupation?.message?.toString()}</p>
               </label>
