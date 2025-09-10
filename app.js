@@ -1,7 +1,7 @@
 // Imports
 const express = require('express')
 const app = express()
-const PORT = process.env.PORT || 3010;
+const PORT = 3010;
 const HOST = '0.0.0.0'; 
 
 
