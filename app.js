@@ -43,6 +43,10 @@ app.get('/produto', (req, res) => {
     res.render('produto', { text: 'produto Page'})
 })
 
+app.get('/pesquisa', (req, res) => {
+    res.render('pesquisa', { text: 'pesquisa Page'})
+})
+
 app.get('/contato', (req, res) => {
     res.render('contato', { text: 'produto Page'})
 })
