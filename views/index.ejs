@@ -38,9 +38,9 @@
                 -->
                 <ul id="menu">
                     <a href="#"><li>Home</li></a>
-                    <a href="#"><li>About</li></a>
+                    <a href="#"><li>Sobre</li></a>
                     <a href="#"><li>Info</li></a>
-                    <a href="#"><li>Contact</li></a>
+                    <a href="#"><li>Contato</li></a>
                     <a href="https://erikterwan.com/" target="_blank"><li>Show me more</li></a>
                 </ul>
             </div>
@@ -50,14 +50,10 @@
                 </a>
             </div>
       
-            <ul class="nav-items menuDesktop">
+            <!-- <ul class="nav-items menuDesktop">
                 <li><a href="/" data-link>Home</a></li>
-                <li><a href="/about" data-link>About</a></li>
-                <li><a href="/contact" data-link>Contact us</a></li>
-                <li><a href="/" data-link>Home</a></li>
-                <li><a href="/about" data-link>About</a></li>
-                <li><a href="/contact" data-link>Contact us</a></li>
-            </ul>
+                <li><a href="/lab" data-link>Laboratório</a></li>
+            </ul> -->
 
             <ul class="nav-items">
                 <li class="btlogin">
@@ -70,34 +66,27 @@
         </nav>
       
         <div id="home">
-            <div class="uk-position-relative uk-visible-toggle" tabindex="-1" uk-slideshow="animation: push">
+            <div class="uk-position-relative uk-visible-toggle" tabindex="-1" uk-slideshow="animation: push;min-height: 300; max-height: 600">
                 <ul class="uk-slideshow-items">
                     <li>
-                        <img src="https://getuikit.com/docs/images/photo.jpg" alt="" uk-cover>
-                        <div class="uk-position-center uk-position-small uk-text-center uk-light">
-                            <h2 class="uk-margin-remove">Center</h2>
-                            <p class="uk-margin-remove">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <img src="img/banner-1.jpg" alt="" uk-cover>
+                        <div class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center">
+                            <h3 class="uk-margin-remove">A Educação do Século 21</h3>
+                            <p class="uk-margin-remove">A educação está evoluindo ou perdendo a sua essência?</p>
                         </div>
                     </li>
                     <li>
-                        <img src="https://getuikit.com/docs/images/dark.jpg" alt="" uk-cover>
-                        <div class="uk-position-bottom uk-position-medium uk-text-center uk-light">
-                            <h3 class="uk-margin-remove">Bottom</h3>
-                            <p class="uk-margin-remove">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <img src="img/banner-2.jpg" alt="" uk-cover>
+                        <div class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center">
+                            <h3 class="uk-margin-remove">O Equilíbrio do home office</h3>
+                            <p class="uk-margin-remove">Os desafios de poder gerar valor e comprovar performance</p>
                         </div>
                     </li>
                     <li>
                         <img src="https://getuikit.com/docs/images/light.jpg" alt="" uk-cover>
                         <div class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center">
-                            <h3 class="uk-margin-remove">Overlay Bottom</h3>
-                            <p class="uk-margin-remove">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="https://getuikit.com/docs/images/dark.jpg" alt="" uk-cover>
-                        <div class="uk-overlay uk-overlay-default uk-position-bottom-right uk-position-small">
-                            <h3 class="uk-margin-remove">Overlay Bottom Right</h3>
-                            <p class="uk-margin-remove">Lorem ipsum dolor sit amet.</p>
+                            <h3 class="uk-margin-remove">Os impactos da "mídia de aparências"</h3>
+                            <p class="uk-margin-remove">Os desafios encontrados em compreender padrões na sociedade</p>
                         </div>
                     </li>
                 </ul>
@@ -107,9 +96,44 @@
                     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
                 </div>
             </div>
-
-            <div class="uk-child-width-1-3@m content" uk-grid>
-                <div>
+            
+            <div class="lastpublishes">
+                <h3 class="uk-text-center lastpublishestitle">Publicações Recentes</h3>
+                <div class="uk-child-width-1-3@m content" uk-grid>
+                    <div>
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-media-top">
+                                <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
+                            </div>
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title">A Educação do Século 21</h3>
+                                <p>A educação está evoluindo ou perdendo a sua essência?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-media-top">
+                                <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
+                            </div>
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title">O Equilíbrio do home office</h3>
+                                <p>Os desafios de poder gerar valor e comprovar performance</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-media-top">
+                                <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
+                            </div>
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title">Os impactos da "mídia de aparências"</h3>
+                                <p>Os desafios encontrados em compreender padrões na sociedade</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div>
                     <div class="uk-card uk-card-default">
                         <div class="uk-card-media-top">
                             <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
@@ -141,39 +165,7 @@
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <div class="uk-card uk-card-default">
-                        <div class="uk-card-media-top">
-                            <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
-                        </div>
-                        <div class="uk-card-body">
-                            <h3 class="uk-card-title">Media Top</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="uk-card uk-card-default">
-                        <div class="uk-card-media-top">
-                            <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
-                        </div>
-                        <div class="uk-card-body">
-                            <h3 class="uk-card-title">Media Top</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="uk-card uk-card-default">
-                        <div class="uk-card-media-top">
-                            <img src="https://getuikit.com/docs/images/light.jpg" width="1800" height="1200" alt="">
-                        </div>
-                        <div class="uk-card-body">
-                            <h3 class="uk-card-title">Media Top</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                        </div>
-                    </div>
+                </div> -->
                 </div>
             </div>
 

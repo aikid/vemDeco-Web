@@ -226,6 +226,15 @@
   color: #25d366 !important;
 }
 
+.lastpublishes{
+  background: linear-gradient(-90deg, rgb(240, 240, 240), rgb(255, 255, 255));
+}
+
+.lastpublishestitle {
+    position: relative;
+    top: 100px;
+}
+
 @media(max-width: 768px){
     #menuToggle{
       position: absolute;
