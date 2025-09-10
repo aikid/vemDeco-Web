@@ -1,7 +1,8 @@
 // Imports
 const express = require('express')
 const app = express()
-const port = 3010
+const PORT = process.env.PORT || 3010;
+const HOST = '0.0.0.0'; 
 
 
 // Static Files
