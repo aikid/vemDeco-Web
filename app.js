@@ -1,7 +1,8 @@
 // Imports
 const express = require('express')
 const app = express()
-const port = 3010
+const PORT = process.env.PORT || 3000;
+const HOST = '0.0.0.0'; // importante no Render
 
 
 // Static Files
@@ -49,4 +50,4 @@ app.get('/contato', (req, res) => {
 
 
 //  Listen on port 3000
-app.listen(port, () => console.info(`Listening on port ${port}`))
+app.listen(PORT, HOST, () => console.log(`Up on ${HOST}:${PORT}`));

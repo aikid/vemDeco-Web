@@ -312,4 +312,12 @@
 .subtitle {
     text-align: center;
 }
-    
+
+.grid-mapa {
+    width: 80%;
+}
+
+.grid-mapa iframe {
+    width: 100%;
+    display: block;
+}
