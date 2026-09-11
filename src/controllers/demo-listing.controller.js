@@ -49,7 +49,11 @@ function create(req, res) {
 }
 
 function details(req, res) {
-  if (!ensureDemo(req, res)) return
+  if (!demoMode) return res.status(404).render('errors/404', {
+    pageTitle: 'Anúncio não encontrado',
+    description: 'Este anúncio não está disponível.',
+  })
+
   const listing = demoListings.find(req.session, req.params.id)
   if (!listing) return res.status(404).render('errors/404', {
     pageTitle: 'Anúncio não encontrado',

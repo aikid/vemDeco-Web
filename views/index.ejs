@@ -48,12 +48,19 @@
   <section class="section section-alt" aria-labelledby="featured-title">
     <div class="container-wide">
       <div class="section-heading"><div><p class="eyebrow">Destaques</p><h2 id="featured-title">Anúncios em destaque</h2></div></div>
-      <div class="empty-state">
-        <div class="empty-state-icon" aria-hidden="true">⌂</div>
-        <h3>Os primeiros anúncios serão publicados em breve</h3>
-        <p>A nova área de classificados está sendo preparada para exibir informações reais, sem conteúdo de demonstração.</p>
-        <a class="button button-primary" href="/cadastro">Quero anunciar</a>
-      </div>
+      <% if (featuredListings.length) { %>
+        <div class="demo-notice" role="note"><strong>Imóvel de demonstração.</strong> Abra o anúncio abaixo para testar a navegação sem criar uma conta.</div>
+        <div class="listing-cards">
+          <% featuredListings.forEach((listing) => { %><%- include('partials/listing-card', { listing }) %><% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          <div class="empty-state-icon" aria-hidden="true">⌂</div>
+          <h3>Os primeiros anúncios serão publicados em breve</h3>
+          <p>A nova área de classificados está sendo preparada para receber os primeiros anúncios.</p>
+          <a class="button button-primary" href="/cadastro">Quero anunciar</a>
+        </div>
+      <% } %>
     </div>
   </section>
 

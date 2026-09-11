@@ -25,6 +25,21 @@ test('rotas públicas renderizam com headers de segurança', async () => {
   })
 })
 
+test('imóvel de demonstração aparece na página inicial e abre sem login', async () => {
+  await withServer(async (baseUrl) => {
+    const home = await fetch(`${baseUrl}/`)
+    const homeHtml = await home.text()
+    const detailPath = homeHtml.match(/href="(\/anuncios\/demo\/demo-apartamento-carapicuiba)"/)?.[1]
+
+    assert.equal(home.status, 200)
+    assert.ok(detailPath, 'a página inicial deve conter o link do imóvel de demonstração')
+
+    const detail = await fetch(`${baseUrl}${detailPath}`)
+    assert.equal(detail.status, 200)
+    assert.match(await detail.text(), /Apartamento com garagem em boa localização/)
+  })
+})
+
 test('rota desconhecida usa a página 404', async () => {
   await withServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/nao-existe`)

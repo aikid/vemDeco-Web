@@ -1,3 +1,6 @@
+const { demoMode } = require('../config/env')
+const demoListings = require('../services/demo-listing.service')
+
 function render(view, pageTitle, description) {
   return (req, res) => res.render(view, { pageTitle, description })
 }
@@ -19,6 +22,7 @@ const home = (req, res) => {
     pageTitle: 'Encontre imóveis e serviços',
     description: 'Encontre imóveis e profissionais em um só lugar.',
     search: typeof req.query.q === 'string' ? req.query.q.trim().slice(0, 120) : '',
+    featuredListings: demoMode ? [demoListings.featured()] : [],
   })
 }
 

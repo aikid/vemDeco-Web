@@ -24,6 +24,10 @@ function initialize(session) {
   return session.demoListings
 }
 
+function featured() {
+  return { ...initialListing }
+}
+
 function create(session, input) {
   const listing = {
     id: crypto.randomUUID(),
@@ -50,4 +54,4 @@ function numberOrNull(value) {
   return Number.isFinite(parsed) ? parsed : null
 }
 
-module.exports = { initialize, create, find }
+module.exports = { initialize, featured, create, find }
