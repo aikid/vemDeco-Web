@@ -1,11 +1,11 @@
-const { prisma } = require('../database/prisma')
+const { getPrisma } = require('../database/prisma')
 
 function findByEmail(email) {
-  return prisma.user.findUnique({ where: { email } })
+  return getPrisma().user.findUnique({ where: { email } })
 }
 
 function create(data) {
-  return prisma.user.create({
+  return getPrisma().user.create({
     data,
     select: { id: true, name: true, email: true, role: true },
   })

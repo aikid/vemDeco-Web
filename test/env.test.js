@@ -19,6 +19,31 @@ test('produção aceita bypass explícito de demonstração sem banco', () => {
   assert.match(result.stdout, /"demoMode":true/)
 })
 
+test('modo de demonstração inicia sem carregar o Prisma Client', () => {
+  const script = [
+    "const Module = require('node:module')",
+    'const originalLoad = Module._load',
+    "Module._load = function (request, parent, isMain) { if (request === '@prisma/client') throw new Error('PRISMA_SHOULD_NOT_LOAD'); return originalLoad.call(this, request, parent, isMain) }",
+    "require('./src/app')",
+    "console.log('APP_LOADED')",
+  ].join(';')
+
+  const result = spawnSync(process.execPath, ['-e', script], {
+    cwd: root,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      NODE_ENV: 'production',
+      DEMO_MODE: 'true',
+      DATABASE_URL: '',
+      SESSION_SECRET: '',
+    },
+  })
+
+  assert.equal(result.status, 0, result.stderr)
+  assert.match(result.stdout, /APP_LOADED/)
+})
+
 test('produção continua recusando ausência de banco sem bypass', () => {
   const result = loadEnvironment({ DEMO_MODE: 'false' })
   assert.notEqual(result.status, 0)
