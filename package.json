@@ -1,19 +1,44 @@
 {
   "name": "vemdeco",
   "version": "1.0.0",
-  "description": "Projeto vemdeco plataforma digital",
-  "main": "index.js",
+  "description": "Portal de classificados de imóveis e serviços",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed"
   },
   "author": "Leandro Brito / Leo Avallone",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.9",
-    "express": "^4.18.2"
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "express-session": "^1.19.0",
+    "helmet": "^8.0.0",
+    "method-override": "^3.0.0",
+    "multer": "^2.3.0",
+    "pg": "^8.23.0",
+    "zod": "^4.6.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.1.14",
+    "prisma": "^6.19.3"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.2"
   }
 }

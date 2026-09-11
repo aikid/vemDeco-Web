@@ -1,38 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Free Web tutorials">
-        <meta name="keywords" content="HTML, CSS, JavaScript">
-        <meta name="author" content="John Doe">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>vemDeco - Confirmar Email</title>
-        <link rel="stylesheet" href="css/confirmaremail.css">
-        <link rel="stylesheet" href="css/uikit.min.css" />
-        <script src="js/uikit.min.js"></script>
-        <script src="js/uikit-icons.min.js"></script>
-        <link rel="icon" href="img/favicon.ico">
-    </head>
-    <body>
-        <div class="container uk-text-center">
-            <div class="loginContent">
-                <img src="img/vemdeco-plataforma-digital-logo.png" alt="vemDeco a sua plataforma de venda" title="vemDeco a sua plataforma de venda"/>
-                <h5>Desculpe, mas sua chave de acesso expirou ou está inválida, <br>preencha o formulário abaixo com o e-mail usado no cadastro para ativar sua conta.
-                </h5>
-                <form class="formlogin">
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Seu E-mail:">
-                        </div>
-                    </div>
-                
-                    <button class="uk-button">Confirmar Email</button>
-                </form>
-                <div class="helpLink">
-                    <a href="/login">Voltar</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main id="conteudo" class="auth-page">
+  <aside class="auth-aside"><div><p class="eyebrow">Confirme seu cadastro</p><h2>Um passo rápido para proteger sua conta.</h2><p>Solicite outro link caso o anterior tenha expirado.</p></div></aside>
+  <section class="auth-main" aria-labelledby="confirm-title">
+    <div class="card auth-card"><%- include('partials/flash') %><h1 id="confirm-title">Confirmar e-mail</h1><p>Informe o e-mail cadastrado e enviaremos um novo link de confirmação.</p>
+      <form class="auth-form" action="/confirmaremail" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><div class="field"><label for="confirm-email">E-mail</label><input id="confirm-email" name="email" type="email" autocomplete="email" required></div><button class="button button-primary" type="submit">Enviar novo link</button></form>
+      <div class="auth-links"><a href="/login">Voltar para o login</a></div>
+    </div>
+  </section>
+</main>
+<%- include('partials/end') %>

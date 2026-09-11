@@ -1,0 +1,20 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo" class="section section-alt">
+  <div class="container-wide">
+    <div class="dashboard-header">
+      <div><p class="eyebrow">Modo demonstração</p><h1>Meus anúncios</h1><p class="muted">Estes dados existem somente durante a sessão atual.</p></div>
+      <a class="button button-primary" href="/anuncios/novo">Criar anúncio</a>
+    </div>
+    <%- include('../partials/flash') %>
+    <% if (listings.length) { %>
+      <div class="listing-cards">
+        <% listings.forEach((listing) => { %><%- include('../partials/listing-card', { listing }) %><% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">⌂</div><h2>Nenhum anúncio nesta sessão</h2><p>Crie um anúncio de teste para conferir o fluxo.</p><a class="button button-primary" href="/anuncios/novo">Criar anúncio</a></div>
+    <% } %>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>

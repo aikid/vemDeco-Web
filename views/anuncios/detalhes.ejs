@@ -1,0 +1,16 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo">
+  <section class="page-hero"><div class="container-wide"><p class="eyebrow"><%= listing.kind === 'PROPERTY' ? 'Imóvel' : 'Serviço' %> · <%= formatStatus(listing.status) %></p><h1><%= listing.title %></h1><p><%= listing.city %> — <%= listing.state %></p></div></section>
+  <section class="section"><div class="container-wide listing-layout">
+    <article><div class="listing-media" role="img" aria-label="Imagem de demonstração do anúncio"><div class="listing-media-mark"><span aria-hidden="true"><%= listing.kind === 'PROPERTY' ? '⌂' : 'S' %></span><strong>Imagem do anúncio</strong><p class="muted">Uploads serão adicionados no fluxo com banco.</p></div></div>
+      <div class="listing-content"><p class="listing-price"><%= listing.priceType === 'ON_REQUEST' ? 'Preço a combinar' : formatCurrency(listing.price) %></p>
+        <% if (listing.kind === 'PROPERTY') { %><ul class="feature-list"><% if (listing.bedrooms != null) { %><li><%= listing.bedrooms %> quartos</li><% } %><% if (listing.bathrooms != null) { %><li><%= listing.bathrooms %> banheiros</li><% } %><% if (listing.parkingSpaces != null) { %><li><%= listing.parkingSpaces %> vagas</li><% } %><% if (listing.area != null) { %><li><%= listing.area %> m²</li><% } %></ul><% } %>
+        <h2>Descrição</h2><p class="muted"><%= listing.description %></p>
+      </div>
+    </article>
+    <aside class="card seller-card"><div class="seller-avatar" aria-hidden="true">VD</div><p class="eyebrow">Anunciante</p><h2>Visitante Demo</h2><p class="muted">Anúncio temporário criado para validar a experiência.</p><a class="button button-primary" href="/meus-anuncios">Meus anúncios</a><a class="button button-ghost" href="/anuncios/novo">Criar outro</a></aside>
+  </div></section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>

@@ -1,0 +1,12 @@
+<article class="card listing-card">
+  <a class="listing-card-media" href="/anuncios/demo/<%= listing.id %>" aria-label="Ver <%= listing.title %>">
+    <span aria-hidden="true"><%= listing.kind === 'PROPERTY' ? '⌂' : 'S' %></span>
+  </a>
+  <div class="listing-card-body">
+    <div class="listing-card-meta"><span><%= listing.kind === 'PROPERTY' ? 'Imóvel' : 'Serviço' %></span><span class="status-badge status-<%= listing.status.toLowerCase() %>"><%= formatStatus(listing.status) %></span></div>
+    <h2><a href="/anuncios/demo/<%= listing.id %>"><%= listing.title %></a></h2>
+    <strong class="listing-card-price"><%= listing.priceType === 'ON_REQUEST' ? 'Preço a combinar' : formatCurrency(listing.price) %></strong>
+    <p><%= listing.city %> — <%= listing.state %></p>
+    <a class="button button-ghost" href="/anuncios/demo/<%= listing.id %>">Ver anúncio</a>
+  </div>
+</article>

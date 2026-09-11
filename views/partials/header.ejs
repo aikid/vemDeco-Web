@@ -1,0 +1,32 @@
+<header class="site-header">
+  <div class="container-wide header-inner">
+    <a class="brand" href="/" aria-label="vemDeco — página inicial">
+      <img src="/img/vem-deco-plataforma-digital-logo.png" width="50" height="55" alt="">
+      <span>vem<span>Deco</span></span>
+    </a>
+
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="sr-only">Abrir menu</span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+
+    <nav class="main-navigation" id="main-navigation" aria-label="Navegação principal">
+      <a href="/" <%- currentPath === '/' ? 'aria-current="page"' : '' %>>Início</a>
+      <a href="/?categoria=imoveis">Imóveis</a>
+      <a href="/?categoria=servicos">Serviços</a>
+      <a href="/contato" <%- currentPath === '/contato' ? 'aria-current="page"' : '' %>>Contato</a>
+    </nav>
+
+    <div class="header-actions">
+      <% if (user) { %>
+        <a class="button button-ghost" href="/dashboard"><%= user.name.split(' ')[0] %></a>
+        <form action="/logout" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="button button-primary header-publish" type="submit">Sair</button></form>
+      <% } else { %>
+        <a class="button button-ghost" href="/login">Entrar</a>
+        <a class="button button-primary header-publish" href="/cadastro">Anunciar</a>
+      <% } %>
+    </div>
+  </div>
+</header>

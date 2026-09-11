@@ -1,73 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Free Web tutorials">
-        <meta name="keywords" content="HTML, CSS, JavaScript">
-        <meta name="author" content="John Doe">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>vemDeco - Crie sua conta!</title>
-        <link rel="stylesheet" href="css/cadastro.css">
-        <link rel="stylesheet" href="css/uikit.min.css" />
-        <script src="js/uikit.min.js"></script>
-        <script src="js/uikit-icons.min.js"></script>
-        <link rel="icon" href="img/favicon.ico">
-    </head>
-    <body>
-        <div class="container uk-text-center">
-            <div class="loginContent">
-                <img src="img/vemdeco-plataforma-digital-logo.png" alt="vemDeco a sua plataforma de venda" title="vemDeco a sua plataforma de venda"/>
-                <form class="formlogin">
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Nome Completo:">
-                        </div>
-                    </div>
-
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: mail"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="E-mail:">
-                        </div>
-                    </div>
-
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: receiver"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Seu Telefone:">
-                        </div>
-                    </div>
-
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: location"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Cidade:">
-                        </div>
-                    </div>
-
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: tag"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="CPF ou CNPJ:">
-                        </div>
-                    </div>
-                
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                            <input class="uk-input" type="password" aria-label="Not clickable icon" placeholder="Senha:">
-                        </div>
-                    </div>
-
-                    <button class="uk-button">Acessar</button>
-                </form>
-                <div class="helpLink">
-                    <a href="">Criar Acesso</a>
-                    <a href="">Confirmar E-mail</a>
-                    <a href="">Esqueci a Senha</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main id="conteudo" class="auth-page">
+  <aside class="auth-aside">
+    <div><p class="eyebrow">Faça parte</p><h2>Uma conta para anunciar, favoritar e conversar.</h2><p>Comece com seus dados essenciais. Você poderá completar seu perfil depois.</p></div>
+  </aside>
+  <section class="auth-main" aria-labelledby="register-title">
+    <div class="card auth-card">
+      <%- include('partials/flash') %>
+      <h1 id="register-title">Criar conta</h1><p>Preencha seus dados para começar.</p>
+      <form class="auth-form" action="/cadastro" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="field"><label for="register-name">Nome completo</label><input id="register-name" name="name" type="text" value="<%= values?.name || '' %>" autocomplete="name" required></div>
+        <div class="field"><label for="register-email">E-mail</label><input id="register-email" name="email" type="email" value="<%= values?.email || '' %>" autocomplete="email" required></div>
+        <div class="field"><label for="register-phone">Telefone</label><input id="register-phone" name="phone" type="tel" value="<%= values?.phone || '' %>" autocomplete="tel" inputmode="tel"></div>
+        <div class="field"><label for="register-city">Cidade</label><input id="register-city" name="city" type="text" autocomplete="address-level2"></div>
+        <div class="field"><label for="register-document">CPF ou CNPJ</label><input id="register-document" name="document" type="text" value="<%= values?.document || '' %>" inputmode="numeric" aria-describedby="document-hint"><p class="field-hint" id="document-hint">Usado apenas para validação da conta.</p></div>
+        <div class="field"><label for="register-password">Senha</label><input id="register-password" name="password" type="password" autocomplete="new-password" minlength="8" required><p class="field-hint">Use pelo menos 8 caracteres.</p></div>
+        <button class="button button-primary" type="submit">Criar minha conta</button>
+      </form>
+      <div class="auth-links"><a href="/login">Já tenho uma conta</a></div>
+    </div>
+  </section>
+</main>
+<%- include('partials/end') %>

@@ -1,0 +1,268 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum ListingKind {
+  PROPERTY
+  SERVICE
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  PAUSED
+  REJECTED
+  ARCHIVED
+}
+
+enum PriceType {
+  FIXED
+  STARTING_AT
+  NEGOTIABLE
+  ON_REQUEST
+}
+
+enum PropertyPurpose {
+  SALE
+  RENT
+}
+
+enum InterestStatus {
+  NEW
+  READ
+  CONTACTED
+  CLOSED
+  SPAM
+}
+
+model User {
+  id                  String                   @id @default(uuid()) @db.Uuid
+  name                String                   @db.VarChar(120)
+  email               String                   @unique @db.VarChar(254)
+  passwordHash        String                   @map("password_hash") @db.VarChar(255)
+  phone               String?                  @db.VarChar(30)
+  document            String?                  @unique @db.VarChar(20)
+  role                UserRole                 @default(USER)
+  isActive            Boolean                  @default(true) @map("is_active")
+  emailVerifiedAt     DateTime?                @map("email_verified_at") @db.Timestamptz(3)
+  createdAt           DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(3)
+  listings            Listing[]
+  favorites           Favorite[]
+  interests           ListingInterest[]
+  verificationTokens  EmailVerificationToken[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([role, isActive])
+  @@map("users")
+}
+
+model Category {
+  id            String        @id @default(uuid()) @db.Uuid
+  name          String        @db.VarChar(80)
+  slug          String        @unique @db.VarChar(90)
+  kind          ListingKind
+  isActive      Boolean       @default(true) @map("is_active")
+  sortOrder     Int           @default(0) @map("sort_order")
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  subcategories Subcategory[]
+  listings      Listing[]
+
+  @@index([kind, isActive, sortOrder])
+  @@map("categories")
+}
+
+model Subcategory {
+  id         String    @id @default(uuid()) @db.Uuid
+  categoryId String    @map("category_id") @db.Uuid
+  name       String    @db.VarChar(80)
+  slug       String    @db.VarChar(90)
+  isActive   Boolean   @default(true) @map("is_active")
+  sortOrder  Int       @default(0) @map("sort_order")
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  listings   Listing[]
+
+  @@unique([categoryId, slug])
+  @@index([categoryId, isActive, sortOrder])
+  @@map("subcategories")
+}
+
+model Listing {
+  id            String            @id @default(uuid()) @db.Uuid
+  ownerId       String            @map("owner_id") @db.Uuid
+  categoryId    String            @map("category_id") @db.Uuid
+  subcategoryId String?           @map("subcategory_id") @db.Uuid
+  kind          ListingKind
+  title         String            @db.VarChar(140)
+  slug          String            @unique @db.VarChar(170)
+  description   String            @db.Text
+  price         Decimal?          @db.Decimal(14, 2)
+  priceType     PriceType         @default(FIXED) @map("price_type")
+  status        ListingStatus     @default(DRAFT)
+  featured      Boolean           @default(false)
+  views         Int               @default(0)
+  publishedAt   DateTime?         @map("published_at") @db.Timestamptz(3)
+  createdAt     DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime?         @map("deleted_at") @db.Timestamptz(3)
+  owner         User              @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  category      Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  subcategory   Subcategory?      @relation(fields: [subcategoryId], references: [id], onDelete: Restrict)
+  location      ListingLocation?
+  property      PropertyDetails?
+  service       ServiceDetails?
+  images        ListingImage[]
+  favorites     Favorite[]
+  interests     ListingInterest[]
+
+  @@index([status, featured, publishedAt(sort: Desc)])
+  @@index([kind, status, createdAt(sort: Desc)])
+  @@index([categoryId, subcategoryId, status])
+  @@index([ownerId, status, updatedAt(sort: Desc)])
+  @@index([price])
+  @@map("listings")
+}
+
+model ListingLocation {
+  id           String   @id @default(uuid()) @db.Uuid
+  listingId    String   @unique @map("listing_id") @db.Uuid
+  addressLine  String?  @map("address_line") @db.VarChar(180)
+  neighborhood String?  @db.VarChar(100)
+  city         String   @db.VarChar(100)
+  state        String   @db.Char(2)
+  postalCode   String?  @map("postal_code") @db.VarChar(10)
+  country      String   @default("BR") @db.Char(2)
+  latitude     Decimal? @db.Decimal(10, 7)
+  longitude    Decimal? @db.Decimal(10, 7)
+  listing      Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([state, city])
+  @@index([postalCode])
+  @@map("listing_locations")
+}
+
+model PropertyDetails {
+  id            String          @id @default(uuid()) @db.Uuid
+  listingId     String          @unique @map("listing_id") @db.Uuid
+  propertyType  String          @map("property_type") @db.VarChar(60)
+  purpose       PropertyPurpose
+  bedrooms      Int?
+  bathrooms     Int?
+  parkingSpaces Int?            @map("parking_spaces")
+  area          Decimal?        @db.Decimal(10, 2)
+  listing       Listing         @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([purpose, propertyType, bedrooms])
+  @@index([area])
+  @@map("property_details")
+}
+
+model ServiceDetails {
+  id           String  @id @default(uuid()) @db.Uuid
+  listingId    String  @unique @map("listing_id") @db.Uuid
+  serviceType  String  @map("service_type") @db.VarChar(100)
+  serviceArea  String? @map("service_area") @db.VarChar(180)
+  contactPhone String? @map("contact_phone") @db.VarChar(30)
+  contactEmail String? @map("contact_email") @db.VarChar(254)
+  priceDetails String? @map("price_details") @db.VarChar(140)
+  listing      Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([serviceType])
+  @@map("service_details")
+}
+
+model ListingImage {
+  id         String   @id @default(uuid()) @db.Uuid
+  listingId  String   @map("listing_id") @db.Uuid
+  storageKey String   @map("storage_key") @db.VarChar(500)
+  publicUrl  String?  @map("public_url") @db.VarChar(1000)
+  altText    String?  @map("alt_text") @db.VarChar(180)
+  position   Int      @default(0)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, storageKey])
+  @@index([listingId, position])
+  @@map("listing_images")
+}
+
+model Favorite {
+  userId    String   @map("user_id") @db.Uuid
+  listingId String   @map("listing_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([userId, listingId])
+  @@index([listingId])
+  @@map("favorites")
+}
+
+model ListingInterest {
+  id        String         @id @default(uuid()) @db.Uuid
+  listingId String         @map("listing_id") @db.Uuid
+  userId    String?        @map("user_id") @db.Uuid
+  name      String         @db.VarChar(120)
+  email     String         @db.VarChar(254)
+  phone     String?        @db.VarChar(30)
+  message   String         @db.Text
+  status    InterestStatus @default(NEW)
+  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  listing   Listing        @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  user      User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([listingId, status, createdAt(sort: Desc)])
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("listing_interests")
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.Char(64)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@map("email_verification_tokens")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.Char(64)
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(3)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model UserSession {
+  sid    String   @id @db.VarChar
+  sess   Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire])
+  @@map("user_sessions")
+}

@@ -1,0 +1,43 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo" class="section section-alt">
+  <div class="container-narrow">
+    <a class="back-link" href="/meus-anuncios">← Voltar aos anúncios</a>
+    <div class="card listing-form-card">
+      <p class="eyebrow">Modo demonstração</p><h1>Criar anúncio</h1><p class="muted">O anúncio ficará disponível somente nesta sessão.</p>
+      <%- include('../partials/flash') %>
+      <form class="listing-form" action="/anuncios" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="field"><label for="listing-kind">Categoria</label><select id="listing-kind" name="kind" data-listing-kind><option value="PROPERTY" <%= values.kind === 'PROPERTY' ? 'selected' : '' %>>Imóvel</option><option value="SERVICE" <%= values.kind === 'SERVICE' ? 'selected' : '' %>>Serviço</option></select></div>
+        <div class="field"><label for="listing-title">Título</label><input id="listing-title" name="title" type="text" maxlength="140" value="<%= values.title || '' %>" placeholder="Ex.: Apartamento com 2 quartos" required></div>
+        <div class="field"><label for="listing-description">Descrição</label><textarea id="listing-description" name="description" maxlength="5000" required><%= values.description || '' %></textarea><p class="field-hint">Inclua informações que ajudem a pessoa a decidir.</p></div>
+        <div class="form-grid">
+          <div class="field"><label for="listing-price-type">Condição do preço</label><select id="listing-price-type" name="priceType"><option value="FIXED" <%= values.priceType === 'FIXED' ? 'selected' : '' %>>Preço fixo</option><option value="STARTING_AT" <%= values.priceType === 'STARTING_AT' ? 'selected' : '' %>>A partir de</option><option value="NEGOTIABLE" <%= values.priceType === 'NEGOTIABLE' ? 'selected' : '' %>>Negociável</option><option value="ON_REQUEST" <%= values.priceType === 'ON_REQUEST' ? 'selected' : '' %>>A combinar</option></select></div>
+          <div class="field"><label for="listing-price">Preço em reais</label><input id="listing-price" name="price" type="number" min="0" step="0.01" value="<%= values.price || '' %>"></div>
+          <div class="field"><label for="listing-city">Cidade</label><input id="listing-city" name="city" type="text" maxlength="100" value="<%= values.city || '' %>" required></div>
+          <div class="field"><label for="listing-state">Estado</label><input id="listing-state" name="state" type="text" maxlength="2" value="<%= values.state || '' %>" required></div>
+        </div>
+
+        <fieldset class="conditional-fields" data-fields="PROPERTY">
+          <legend>Detalhes do imóvel</legend>
+          <div class="form-grid">
+            <div class="field"><label for="property-type">Tipo do imóvel</label><input id="property-type" name="propertyType" type="text" maxlength="60" value="<%= values.propertyType || '' %>" placeholder="Apartamento, casa, terreno"></div>
+            <div class="field"><label for="property-purpose">Finalidade</label><select id="property-purpose" name="purpose"><option value="SALE" <%= values.purpose === 'SALE' ? 'selected' : '' %>>Venda</option><option value="RENT" <%= values.purpose === 'RENT' ? 'selected' : '' %>>Aluguel</option></select></div>
+            <div class="field"><label for="bedrooms">Quartos</label><input id="bedrooms" name="bedrooms" type="number" min="0" value="<%= values.bedrooms || '' %>"></div>
+            <div class="field"><label for="bathrooms">Banheiros</label><input id="bathrooms" name="bathrooms" type="number" min="0" value="<%= values.bathrooms || '' %>"></div>
+            <div class="field"><label for="parking-spaces">Vagas</label><input id="parking-spaces" name="parkingSpaces" type="number" min="0" value="<%= values.parkingSpaces || '' %>"></div>
+            <div class="field"><label for="area">Área em m²</label><input id="area" name="area" type="number" min="0" step="0.01" value="<%= values.area || '' %>"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="conditional-fields" data-fields="SERVICE" hidden>
+          <legend>Detalhes do serviço</legend>
+          <div class="form-grid"><div class="field"><label for="service-type">Tipo de serviço</label><input id="service-type" name="serviceType" type="text" maxlength="100" value="<%= values.serviceType || '' %>" placeholder="Ex.: Pintura residencial"></div><div class="field"><label for="service-area">Área atendida</label><input id="service-area" name="serviceArea" type="text" maxlength="180" value="<%= values.serviceArea || '' %>" placeholder="Ex.: Jundiaí e região"></div></div>
+        </fieldset>
+        <button class="button button-primary" type="submit">Salvar anúncio de teste</button>
+      </form>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>

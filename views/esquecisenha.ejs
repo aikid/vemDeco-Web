@@ -1,37 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Free Web tutorials">
-        <meta name="keywords" content="HTML, CSS, JavaScript">
-        <meta name="author" content="John Doe">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>vemDeco - Esqueci a Senha</title>
-        <link rel="stylesheet" href="css/confirmaremail.css">
-        <link rel="stylesheet" href="css/uikit.min.css" />
-        <script src="js/uikit.min.js"></script>
-        <script src="js/uikit-icons.min.js"></script>
-        <link rel="icon" href="img/favicon.ico">
-    </head>
-    <body>
-        <div class="container uk-text-center">
-            <div class="loginContent">
-                <img src="img/vemdeco-plataforma-digital-logo.png" alt="vemDeco a sua plataforma de venda" title="vemDeco a sua plataforma de venda"/>
-                <form class="formlogin">
-                    <div class="uk-margin">
-                        <div class="uk-inline">
-                            <span class="uk-form-icon" uk-icon="icon: user"></span>
-                            <input class="uk-input" type="text" aria-label="Not clickable icon" placeholder="Seu E-mail:">
-                        </div>
-                    </div>
-                
-            
-                    <button class="uk-button">Recuperar Senha</button>
-                </form>
-                <div class="helpLink">
-                    <a href="/cadastro">Já possuo o Acesso</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main id="conteudo" class="auth-page">
+  <aside class="auth-aside"><div><p class="eyebrow">Recupere o acesso</p><h2>Vamos ajudar você a voltar para sua conta.</h2><p>Enviaremos as instruções para o e-mail usado no cadastro.</p></div></aside>
+  <section class="auth-main" aria-labelledby="forgot-title">
+    <div class="card auth-card"><%- include('partials/flash') %><h1 id="forgot-title">Recuperar senha</h1><p>Informe seu e-mail para receber um link seguro.</p>
+      <form class="auth-form" action="/esquecisenha" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><div class="field"><label for="forgot-email">E-mail</label><input id="forgot-email" name="email" type="email" autocomplete="email" required></div><button class="button button-primary" type="submit">Enviar instruções</button></form>
+      <div class="auth-links"><a href="/login">Voltar para o login</a></div>
+    </div>
+  </section>
+</main>
+<%- include('partials/end') %>
