@@ -19,7 +19,11 @@ Portal de classificados de imóveis e serviços construído com Node.js, Express
 
 Sem `DATABASE_URL`, as páginas públicas continuam disponíveis para desenvolvimento visual, mas autenticação e demais fluxos persistentes respondem como indisponíveis.
 
-Quando não existe `.env` nem `DATABASE_URL`, o desenvolvimento ativa automaticamente um modo de demonstração. Na página `/login`, use o botão **Entrar na demonstração**. Esse modo cria apenas uma sessão temporária em memória, não grava dados e nunca é habilitado em produção. Para desligá-lo localmente, defina `DEMO_MODE=false`.
+Quando não existe `.env` nem `DATABASE_URL`, o desenvolvimento ativa automaticamente um modo de demonstração. Na página `/login`, use o botão **Entrar na demonstração**. Esse modo cria apenas uma sessão temporária em memória e não grava dados. Para desligá-lo localmente, defina `DEMO_MODE=false`.
+
+### Bypass temporário no Render
+
+Para publicar a demonstração antes de provisionar o PostgreSQL, configure `DEMO_MODE=true` nas variáveis de ambiente do serviço e não defina `DATABASE_URL`. O servidor usará uma chave de sessão efêmera caso `SESSION_SECRET` também não exista. Sessões e anúncios serão perdidos em reinícios, novos deploys e possivelmente entre instâncias. Remova `DEMO_MODE` assim que o banco estiver disponível.
 
 ## Comandos
 
