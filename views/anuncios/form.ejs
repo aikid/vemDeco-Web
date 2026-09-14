@@ -4,13 +4,15 @@
   <div class="container-narrow">
     <a class="back-link" href="/meus-anuncios">← Voltar aos anúncios</a>
     <div class="card listing-form-card">
-      <p class="eyebrow">Modo demonstração</p><h1>Criar anúncio</h1><p class="muted">O anúncio ficará disponível somente nesta sessão.</p>
+      <p class="eyebrow"><%= isDemoListingFlow ? 'Modo demonstração' : isEditing ? 'Gerenciar anúncio' : 'Novo anúncio' %></p><h1><%= isEditing ? 'Editar anúncio' : 'Criar anúncio' %></h1><p class="muted"><%= isDemoListingFlow ? 'O anúncio ficará disponível somente nesta sessão.' : isEditing ? 'Atualize os dados e salve para publicar as alterações.' : 'Preencha os dados para publicar no portal.' %></p>
       <%- include('../partials/flash') %>
-      <form class="listing-form" action="/anuncios" method="post">
+      <form class="listing-form" action="<%= formAction %>" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <div class="field"><label for="listing-kind">Categoria</label><select id="listing-kind" name="kind" data-listing-kind><option value="PROPERTY" <%= values.kind === 'PROPERTY' ? 'selected' : '' %>>Imóvel</option><option value="SERVICE" <%= values.kind === 'SERVICE' ? 'selected' : '' %>>Serviço</option></select></div>
+        <% if (isEditing) { %><input type="hidden" name="kind" value="<%= values.kind %>"><% } %>
+        <div class="field"><label for="listing-kind">Categoria</label><select id="listing-kind" name="<%= isEditing ? '' : 'kind' %>" data-listing-kind <%= isEditing ? 'disabled' : '' %>><option value="PROPERTY" <%= values.kind === 'PROPERTY' ? 'selected' : '' %>>Imóvel</option><option value="SERVICE" <%= values.kind === 'SERVICE' ? 'selected' : '' %>>Serviço</option><option value="PRODUCT" <%= values.kind === 'PRODUCT' ? 'selected' : '' %>>Produto</option></select><% if (isEditing) { %><p class="field-hint">A categoria não pode ser alterada após a publicação.</p><% } %></div>
         <div class="field"><label for="listing-title">Título</label><input id="listing-title" name="title" type="text" maxlength="140" value="<%= values.title || '' %>" placeholder="Ex.: Apartamento com 2 quartos" required></div>
         <div class="field"><label for="listing-description">Descrição</label><textarea id="listing-description" name="description" maxlength="5000" required><%= values.description || '' %></textarea><p class="field-hint">Inclua informações que ajudem a pessoa a decidir.</p></div>
+        <div class="field"><label for="listing-image"><%= isEditing ? 'Substituir foto principal' : 'Foto principal' %></label><% if (isEditing && values.image?.publicUrl) { %><img class="listing-form-preview" src="<%= values.image.publicUrl %>" alt="Foto atual de <%= values.title %>"><% } %><input id="listing-image" name="image" type="file" accept="image/jpeg,image/png,image/webp"><p class="field-hint">JPEG, PNG ou WebP · proporção horizontal 3:2 · entre 1200 × 800 e 3072 × 2048 px · até 3 MB.<%= isEditing ? ' Deixe vazio para manter a foto atual.' : '' %></p></div>
         <div class="form-grid">
           <div class="field"><label for="listing-price-type">Condição do preço</label><select id="listing-price-type" name="priceType"><option value="FIXED" <%= values.priceType === 'FIXED' ? 'selected' : '' %>>Preço fixo</option><option value="STARTING_AT" <%= values.priceType === 'STARTING_AT' ? 'selected' : '' %>>A partir de</option><option value="NEGOTIABLE" <%= values.priceType === 'NEGOTIABLE' ? 'selected' : '' %>>Negociável</option><option value="ON_REQUEST" <%= values.priceType === 'ON_REQUEST' ? 'selected' : '' %>>A combinar</option></select></div>
           <div class="field"><label for="listing-price">Preço em reais</label><input id="listing-price" name="price" type="number" min="0" step="0.01" value="<%= values.price || '' %>"></div>
@@ -34,7 +36,15 @@
           <legend>Detalhes do serviço</legend>
           <div class="form-grid"><div class="field"><label for="service-type">Tipo de serviço</label><input id="service-type" name="serviceType" type="text" maxlength="100" value="<%= values.serviceType || '' %>" placeholder="Ex.: Pintura residencial"></div><div class="field"><label for="service-area">Área atendida</label><input id="service-area" name="serviceArea" type="text" maxlength="180" value="<%= values.serviceArea || '' %>" placeholder="Ex.: Jundiaí e região"></div></div>
         </fieldset>
-        <button class="button button-primary" type="submit">Salvar anúncio de teste</button>
+        <fieldset class="conditional-fields" data-fields="PRODUCT" hidden>
+          <legend>Detalhes do produto</legend>
+          <div class="form-grid">
+            <div class="field"><label for="product-condition">Condição</label><select id="product-condition" name="productCondition"><option value="Novo" <%= values.productCondition === 'Novo' ? 'selected' : '' %>>Novo</option><option value="Seminovo" <%= values.productCondition === 'Seminovo' ? 'selected' : '' %>>Seminovo</option><option value="Usado - ótimo estado" <%= values.productCondition === 'Usado - ótimo estado' ? 'selected' : '' %>>Usado — ótimo estado</option><option value="Usado - bom estado" <%= values.productCondition === 'Usado - bom estado' ? 'selected' : '' %>>Usado — bom estado</option></select></div>
+            <div class="field"><label for="product-stock">Estoque</label><input id="product-stock" name="stock" type="number" min="1" max="9999" value="<%= values.stock || 1 %>"></div>
+            <div class="field"><label for="delivery-details">Entrega</label><input id="delivery-details" name="deliveryDetails" maxlength="180" value="<%= values.deliveryDetails || '' %>" placeholder="Ex.: Retirada ou frete a combinar"></div>
+          </div>
+        </fieldset>
+        <button class="button button-primary" type="submit"><%= isEditing ? 'Salvar alterações' : isDemoListingFlow ? 'Salvar anúncio de teste' : 'Publicar anúncio' %></button>
       </form>
     </div>
   </div>

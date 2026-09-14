@@ -1,12 +1,12 @@
 const session = require('express-session')
 const connectPgSimple = require('connect-pg-simple')
 const { Pool } = require('pg')
-const { databaseUrl, isProduction, sessionSecret } = require('./env')
+const { databaseUrl, demoMode, isProduction, sessionSecret } = require('./env')
 
 function createSessionMiddleware() {
   let store
 
-  if (databaseUrl) {
+  if (databaseUrl && !demoMode) {
     const PgSession = connectPgSimple(session)
     const pool = new Pool({ connectionString: databaseUrl, max: 10 })
     store = new PgSession({ pool, tableName: 'user_sessions', createTableIfMissing: false })

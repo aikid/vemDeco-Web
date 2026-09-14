@@ -22,3 +22,9 @@ if (listingKind && conditionalFields.length) {
   listingKind.addEventListener('change', updateFields)
   updateFields()
 }
+
+document.querySelectorAll('[data-confirm]').forEach((form) => {
+  form.addEventListener('submit', (event) => {
+    if (!window.confirm(form.dataset.confirm)) event.preventDefault()
+  })
+})

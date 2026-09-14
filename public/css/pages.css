@@ -41,6 +41,7 @@
 .page-hero p { max-width: 42rem; margin-bottom: 0; color: #d7e5ea; font-size: 1.1rem; }
 .listing-layout { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(18rem, 0.8fr); gap: 2rem; align-items: start; }
 .listing-media { min-height: clamp(18rem, 45vw, 32rem); display: grid; place-items: center; border-radius: var(--radius-lg); background: linear-gradient(135deg, #dcebee, #f7fafb); color: var(--color-brand); }
+.listing-media img { width: 100%; height: clamp(18rem, 45vw, 32rem); display: block; border-radius: inherit; object-fit: cover; }
 .listing-media-mark { text-align: center; }
 .listing-media-mark span { display: grid; place-items: center; width: 5rem; height: 5rem; margin: 0 auto 1rem; border-radius: 1.5rem; background: white; box-shadow: var(--shadow-md); font-size: 2rem; }
 .listing-content { margin-top: 2rem; }
@@ -78,13 +79,23 @@
 .listing-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .listing-card { overflow: hidden; }
 .listing-card-media { min-height: 12rem; display: grid; place-items: center; background: linear-gradient(135deg, #dcebee, #f7fafb); color: var(--color-brand); text-decoration: none; }
+.listing-card-media img { width: 100%; height: 12rem; display: block; object-fit: cover; transition: transform 180ms ease; }
+.listing-card:hover .listing-card-media img { transform: scale(1.025); }
 .listing-card-media span { width: 4rem; height: 4rem; display: grid; place-items: center; border-radius: 1.2rem; background: white; box-shadow: var(--shadow-md); font-size: 1.75rem; font-weight: 850; }
 .listing-card-body { display: grid; gap: 0.75rem; padding: 1.25rem; }
 .listing-card-body h2 { margin: 0; font-size: 1.2rem; }
 .listing-card-body h2 a { text-decoration: none; }
 .listing-card-body p { margin: 0; color: var(--color-ink-soft); }
 .listing-card-body .button { justify-self: start; margin-top: 0.35rem; }
+.listing-owner-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; padding-top: 0.4rem; border-top: 1px solid var(--color-border); }
+.listing-owner-actions form { margin: 0; }
+.listing-form-preview { width: min(100%, 28rem); aspect-ratio: 3 / 2; display: block; border-radius: var(--radius-sm); object-fit: cover; }
 .listing-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; color: var(--color-ink-soft); font-size: 0.8rem; font-weight: 750; }
+.interest-list { display: grid; gap: 1rem; }
+.interest-card { padding: 1.5rem; }
+.interest-card h2 { margin: 0.75rem 0; font-size: 1.3rem; }
+.interest-card p { margin: 0.55rem 0 0; }
+.interest-message { padding: 1rem; border-radius: var(--radius-md); background: var(--color-surface-alt); white-space: pre-wrap; }
 .listing-card-price { font-size: 1.15rem; }
 .status-badge { padding: 0.25rem 0.55rem; border-radius: 999px; background: var(--color-surface-alt); }
 .status-published { background: #eaf8f1; color: var(--color-success); }

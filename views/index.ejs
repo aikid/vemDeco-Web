@@ -12,9 +12,10 @@
         <input id="home-search" name="q" type="search" value="<%= search %>" placeholder="Busque por imóvel, serviço ou localização">
         <label class="sr-only" for="home-category">Categoria</label>
         <select id="home-category" name="categoria">
-          <option value="">Todas as categorias</option>
-          <option value="imoveis">Imóveis</option>
-          <option value="servicos">Serviços</option>
+          <option value="" <%= !category ? 'selected' : '' %>>Todas as categorias</option>
+          <option value="imoveis" <%= category === 'imoveis' ? 'selected' : '' %>>Imóveis</option>
+          <option value="servicos" <%= category === 'servicos' ? 'selected' : '' %>>Serviços</option>
+          <option value="produtos" <%= category === 'produtos' ? 'selected' : '' %>>Produtos</option>
         </select>
         <button class="button button-accent" type="submit">Buscar</button>
       </form>
@@ -36,6 +37,10 @@
           <span class="category-icon" aria-hidden="true">S</span><h3>Serviços</h3>
           <p>Profissionais e empresas para cuidar do que você precisa.</p>
         </a>
+        <a class="card category-card" href="/?categoria=produtos">
+          <span class="category-icon" aria-hidden="true">P</span><h3>Produtos</h3>
+          <p>Móveis, decoração e itens úteis anunciados perto de você.</p>
+        </a>
       </div>
       <div class="trust-row" aria-label="Compromissos da plataforma">
         <div class="trust-item"><strong>Informação clara</strong><span>Detalhes organizados para comparar melhor.</span></div>
@@ -49,7 +54,7 @@
     <div class="container-wide">
       <div class="section-heading"><div><p class="eyebrow">Destaques</p><h2 id="featured-title">Anúncios em destaque</h2></div></div>
       <% if (featuredListings.length) { %>
-        <div class="demo-notice" role="note"><strong>Imóvel de demonstração.</strong> Abra o anúncio abaixo para testar a navegação sem criar uma conta.</div>
+        <% if (demoMode) { %><div class="demo-notice" role="note"><strong>Imóvel de demonstração.</strong> Abra o anúncio abaixo para testar a navegação sem criar uma conta.</div><% } %>
         <div class="listing-cards">
           <% featuredListings.forEach((listing) => { %><%- include('partials/listing-card', { listing }) %><% }) %>
         </div>

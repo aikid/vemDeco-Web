@@ -1,0 +1,24 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo" class="section section-alt">
+  <div class="container-wide">
+    <div class="dashboard-header"><div><p class="eyebrow">Notificações</p><h1>Interesses recebidos</h1><p class="muted">Pessoas que solicitaram contato sobre seus imóveis e serviços.</p></div><a class="button button-ghost" href="/dashboard">Voltar ao dashboard</a></div>
+    <% if (interests.length) { %>
+      <div class="interest-list">
+        <% interests.forEach((interest) => { %>
+          <article class="card interest-card">
+            <div class="listing-card-meta"><span><%= interest.listing.kind === 'PROPERTY' ? 'Imóvel' : 'Serviço' %></span><span class="status-badge status-<%= interest.status.toLowerCase() %>"><%= interest.status === 'NEW' ? 'Novo' : interest.status === 'READ' ? 'Lido' : interest.status %></span></div>
+            <h2><a href="/anuncios/<%= interest.listing.slug %>"><%= interest.listing.title %></a></h2>
+            <p><strong><%= interest.name %></strong> · <a href="mailto:<%= interest.email %>"><%= interest.email %></a><% if (interest.phone) { %> · <a href="tel:<%= interest.phone.replace(/[^+\d]/g, '') %>"><%= interest.phone %></a><% } %></p>
+            <p class="interest-message"><%= interest.message %></p>
+            <p class="muted">Recebido em <%= new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(interest.createdAt) %></p>
+          </article>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">✉</div><h2>Nenhum interesse recebido</h2><p>Quando alguém entrar em contato sobre um anúncio seu, a notificação aparecerá aqui.</p><a class="button button-primary" href="/meus-anuncios">Ver meus anúncios</a></div>
+    <% } %>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>

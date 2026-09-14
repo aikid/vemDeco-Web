@@ -1,0 +1,30 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo" class="section section-alt">
+  <div class="container-narrow">
+    <a class="back-link" href="<%= listing.href %>">← Voltar ao produto</a>
+    <div class="card listing-form-card">
+      <p class="eyebrow">Checkout</p>
+      <h1><%= listing.title %></h1>
+      <p class="listing-price"><%= formatCurrency(listing.price) %></p>
+      <p class="muted"><%= listing.productCondition %> · <%= listing.stock %> unidade(s) disponível(is)</p>
+      <%- include('../partials/flash') %>
+      <form class="listing-form" action="<%= listing.href %>/checkout" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="field"><label for="quantity">Quantidade</label><input id="quantity" name="quantity" type="number" min="1" max="<%= listing.stock %>" value="<%= values.quantity || 1 %>" required></div>
+        <div class="field"><label for="recipient-name">Nome de quem receberá</label><input id="recipient-name" name="recipientName" maxlength="120" value="<%= values.recipientName || '' %>" required></div>
+        <div class="field"><label for="checkout-phone">Telefone</label><input id="checkout-phone" name="phone" maxlength="30" value="<%= values.phone || '' %>" required></div>
+        <div class="field"><label for="address-line">Endereço de entrega</label><input id="address-line" name="addressLine" maxlength="180" value="<%= values.addressLine || '' %>" required></div>
+        <div class="form-grid">
+          <div class="field"><label for="checkout-city">Cidade</label><input id="checkout-city" name="city" maxlength="100" value="<%= values.city || '' %>" required></div>
+          <div class="field"><label for="checkout-state">Estado</label><input id="checkout-state" name="state" maxlength="2" value="<%= values.state || 'SP' %>" required></div>
+          <div class="field"><label for="postal-code">CEP</label><input id="postal-code" name="postalCode" maxlength="10" value="<%= values.postalCode || '' %>" required></div>
+        </div>
+        <div class="demo-notice" role="note"><strong>Pagamento ainda não integrado.</strong> Ao confirmar, o pedido será salvo e o estoque reservado. Nenhum valor será cobrado.</div>
+        <button class="button button-primary" type="submit" <%= listing.stock < 1 ? 'disabled' : '' %>>Confirmar pedido</button>
+      </form>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>

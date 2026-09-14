@@ -48,10 +48,31 @@ function find(session, id) {
   return initialize(session).find((listing) => listing.id === id)
 }
 
+function update(session, id, input) {
+  const listing = find(session, id)
+  if (!listing) return null
+  Object.assign(listing, input, {
+    price: input.price || null,
+    bedrooms: numberOrNull(input.bedrooms),
+    bathrooms: numberOrNull(input.bathrooms),
+    parkingSpaces: numberOrNull(input.parkingSpaces),
+    area: numberOrNull(input.area),
+  })
+  return listing
+}
+
+function remove(session, id) {
+  const listings = initialize(session)
+  const index = listings.findIndex((listing) => listing.id === id)
+  if (index < 0) return false
+  listings.splice(index, 1)
+  return true
+}
+
 function numberOrNull(value) {
   if (value === '' || value === undefined || value === null) return null
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : null
 }
 
-module.exports = { initialize, featured, create, find }
+module.exports = { initialize, featured, create, find, update, remove }

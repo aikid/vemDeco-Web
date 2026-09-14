@@ -1,5 +1,7 @@
-const { demoMode } = require('../config/env')
+const { demoMode, databaseUrl } = require('../config/env')
 const demoListings = require('../services/demo-listing.service')
+const listings = require('../repositories/listing.repository')
+const interests = require('../repositories/interest.repository')
 
 function render(view, pageTitle, description) {
   return (req, res) => res.render(view, { pageTitle, description })
@@ -17,13 +19,54 @@ function unavailable(view, pageTitle, description) {
   })
 }
 
-const home = (req, res) => {
-  res.render('index', {
-    pageTitle: 'Encontre imóveis e serviços',
-    description: 'Encontre imóveis e profissionais em um só lugar.',
-    search: typeof req.query.q === 'string' ? req.query.q.trim().slice(0, 120) : '',
-    featuredListings: demoMode ? [demoListings.featured()] : [],
-  })
+const home = async (req, res, next) => {
+  try {
+    const search = typeof req.query.q === 'string' ? req.query.q.trim().slice(0, 120) : ''
+    const requestedCategory = typeof req.query.categoria === 'string' ? req.query.categoria : ''
+    const category = ['imoveis', 'servicos', 'produtos'].includes(requestedCategory) ? requestedCategory : ''
+    const featuredListings = demoMode
+      ? [demoListings.featured()]
+      : databaseUrl ? await listings.findPublished({ search, category }) : []
+
+    res.render('index', {
+      pageTitle: 'Encontre imóveis, serviços e produtos',
+      description: 'Encontre imóveis, profissionais e produtos em um só lugar.',
+      search,
+      category,
+      featuredListings,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const listingDetails = async (req, res, next) => {
+  try {
+    if (!databaseUrl || demoMode) return next()
+    const listing = await listings.findPublishedBySlug(req.params.slug)
+    if (!listing) return next()
+
+    res.render('anuncios/detalhes', {
+      pageTitle: listing.title,
+      description: listing.description.slice(0, 150),
+      listing,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const dashboard = async (req, res, next) => {
+  try {
+    const interestCount = req.session.user.isDemo ? 0 : await interests.countNewForOwner(req.session.user.id)
+    res.render('dashboard', {
+      pageTitle: 'Minha área',
+      description: 'Gerencie sua conta, anúncios e interesses recebidos.',
+      interestCount,
+    })
+  } catch (error) {
+    next(error)
+  }
 }
 
 module.exports = {
@@ -39,10 +82,11 @@ module.exports = {
     description: 'Crie sua conta gratuita na vemDeco.',
     values: {},
   }),
-  dashboard: render('dashboard', 'Minha área', 'Gerencie sua conta e seus anúncios.'),
+  dashboard,
   confirmEmail: render('confirmaremail', 'Confirmar e-mail', 'Solicite um novo link de confirmação.'),
   forgotPassword: render('esquecisenha', 'Recuperar senha', 'Solicite a recuperação da sua senha.'),
-  listingDetails: render('produto', 'Apartamento em Carapicuíba', 'Detalhes do anúncio na vemDeco.'),
+  legacyListingDetails: render('produto', 'Apartamento em Carapicuíba', 'Detalhes do anúncio na vemDeco.'),
+  listingDetails,
   contact: render('contato', 'Contato', 'Fale com a equipe vemDeco.'),
   confirmEmailUnavailable: unavailable('confirmaremail', 'Confirmar e-mail', 'Solicite um novo link de confirmação.'),
   forgotPasswordUnavailable: unavailable('esquecisenha', 'Recuperar senha', 'Solicite a recuperação da sua senha.'),

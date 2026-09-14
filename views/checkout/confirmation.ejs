@@ -1,0 +1,18 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo" class="section section-alt">
+  <div class="container-narrow">
+    <div class="card listing-form-card">
+      <p class="eyebrow">Pedido recebido</p>
+      <h1>Produto reservado com sucesso</h1>
+      <p><strong><%= order.listing.title %></strong></p>
+      <p class="listing-price"><%= formatCurrency(order.total) %></p>
+      <p class="muted">Pedido <%= order.id %> · <%= order.quantity %> unidade(s)</p>
+      <div class="demo-notice" role="status"><strong>Aguardando pagamento.</strong> Nenhuma cobrança foi realizada; a integração com o provedor de pagamento será adicionada em uma próxima etapa.</div>
+      <a class="button button-primary" href="/anuncios/<%= order.listing.slug %>">Voltar ao produto</a>
+      <a class="button button-ghost" href="/">Continuar navegando</a>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>

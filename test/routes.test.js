@@ -1,5 +1,11 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
+const fs = require('node:fs')
+const path = require('node:path')
+
+process.env.DEMO_MODE = 'true'
+process.env.DATABASE_URL = ''
+
 const app = require('../src/app')
 
 async function withServer(callback) {
@@ -109,7 +115,15 @@ test('modo demonstração cria sessão local e libera o dashboard', async () => 
     const authenticatedCookie = demoLogin.headers.get('set-cookie')?.split(';')[0]
     const dashboard = await fetch(`${baseUrl}/dashboard`, { headers: { cookie: authenticatedCookie } })
     assert.equal(dashboard.status, 200)
-    assert.match(await dashboard.text(), /modo demonstração/i)
+    const dashboardHtml = await dashboard.text()
+    assert.match(dashboardHtml, /modo demonstração/i)
+    assert.match(dashboardHtml, /Novo produto/)
+
+    const productForm = await fetch(`${baseUrl}/anuncios/novo?tipo=produto`, { headers: { cookie: authenticatedCookie } })
+    assert.equal(productForm.status, 200)
+    const productFormHtml = await productForm.text()
+    assert.match(productFormHtml, /value="PRODUCT" selected/)
+    assert.match(productFormHtml, /name="image" type="file"/)
   })
 })
 
@@ -131,25 +145,31 @@ test('modo demonstração permite criar, listar e abrir um anúncio temporário'
     const formHtml = await formPage.text()
     const formCsrf = formHtml.match(/name="_csrf" value="([^"]+)"/)?.[1]
 
+    const listingForm = new FormData()
+    const listingFields = {
+      _csrf: formCsrf,
+      kind: 'PROPERTY',
+      title: 'Casa térrea para teste',
+      description: 'Casa de demonstração com quintal e boa localização para validar o fluxo.',
+      price: '420000',
+      priceType: 'FIXED',
+      city: 'Jundiaí',
+      state: 'SP',
+      propertyType: 'Casa',
+      purpose: 'SALE',
+      bedrooms: '3',
+      bathrooms: '2',
+      parkingSpaces: '2',
+      area: '140',
+    }
+    for (const [name, value] of Object.entries(listingFields)) listingForm.append(name, value)
+    const imageBuffer = fs.readFileSync(path.resolve(__dirname, '../public/img/listings/apartamento-carapicuiba.png'))
+    listingForm.append('image', new Blob([imageBuffer], { type: 'image/png' }), 'apartamento.png')
+
     const created = await fetch(`${baseUrl}/anuncios`, {
       method: 'POST', redirect: 'manual',
-      headers: { 'content-type': 'application/x-www-form-urlencoded', cookie: authenticatedCookie },
-      body: new URLSearchParams({
-        _csrf: formCsrf,
-        kind: 'PROPERTY',
-        title: 'Casa térrea para teste',
-        description: 'Casa de demonstração com quintal e boa localização para validar o fluxo.',
-        price: '420000',
-        priceType: 'FIXED',
-        city: 'Jundiaí',
-        state: 'SP',
-        propertyType: 'Casa',
-        purpose: 'SALE',
-        bedrooms: '3',
-        bathrooms: '2',
-        parkingSpaces: '2',
-        area: '140',
-      }),
+      headers: { cookie: authenticatedCookie },
+      body: listingForm,
     })
 
     assert.equal(created.status, 303)
@@ -164,5 +184,37 @@ test('modo demonstração permite criar, listar e abrir um anúncio temporário'
     const detailPage = await fetch(`${baseUrl}${detailPath}`, { headers: { cookie: authenticatedCookie } })
     assert.equal(detailPage.status, 200)
     assert.match(await detailPage.text(), /Casa térrea para teste/)
+
+    const listingId = detailPath.split('/').pop()
+    const editPage = await fetch(`${baseUrl}/anuncios/${listingId}/editar`, { headers: { cookie: authenticatedCookie } })
+    assert.equal(editPage.status, 200)
+    const editHtml = await editPage.text()
+    const editCsrf = editHtml.match(/name="_csrf" value="([^"]+)"/)?.[1]
+
+    const editForm = new FormData()
+    for (const [name, value] of Object.entries({ ...listingFields, _csrf: editCsrf, title: 'Casa térrea atualizada' })) {
+      editForm.append(name, value)
+    }
+    editForm.append('image', new Blob([imageBuffer], { type: 'image/png' }), 'apartamento-carapicuiba.png')
+
+    const updated = await fetch(`${baseUrl}/anuncios/${listingId}/editar`, {
+      method: 'POST', redirect: 'manual',
+      headers: { cookie: authenticatedCookie },
+      body: editForm,
+    })
+    assert.equal(updated.status, 303)
+
+    const updatedList = await fetch(`${baseUrl}/meus-anuncios`, { headers: { cookie: authenticatedCookie } })
+    assert.match(await updatedList.text(), /Casa térrea atualizada/)
+
+    const removed = await fetch(`${baseUrl}/anuncios/${listingId}/excluir`, {
+      method: 'POST', redirect: 'manual',
+      headers: { 'content-type': 'application/x-www-form-urlencoded', cookie: authenticatedCookie },
+      body: new URLSearchParams({ _csrf: editCsrf }),
+    })
+    assert.equal(removed.status, 303)
+
+    const finalList = await fetch(`${baseUrl}/meus-anuncios`, { headers: { cookie: authenticatedCookie } })
+    assert.doesNotMatch(await finalList.text(), /Casa térrea atualizada/)
   })
 })

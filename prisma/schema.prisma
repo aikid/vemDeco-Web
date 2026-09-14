@@ -16,6 +16,7 @@ enum UserRole {
 enum ListingKind {
   PROPERTY
   SERVICE
+  PRODUCT
 }
 
 enum ListingStatus {
@@ -47,6 +48,12 @@ enum InterestStatus {
   SPAM
 }
 
+enum CheckoutStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  CANCELLED
+}
+
 model User {
   id                  String                   @id @default(uuid()) @db.Uuid
   name                String                   @db.VarChar(120)
@@ -64,6 +71,7 @@ model User {
   interests           ListingInterest[]
   verificationTokens  EmailVerificationToken[]
   passwordResetTokens PasswordResetToken[]
+  orders              CheckoutOrder[]
 
   @@index([role, isActive])
   @@map("users")
@@ -126,9 +134,11 @@ model Listing {
   location      ListingLocation?
   property      PropertyDetails?
   service       ServiceDetails?
+  product       ProductDetails?
   images        ListingImage[]
   favorites     Favorite[]
   interests     ListingInterest[]
+  orders        CheckoutOrder[]
 
   @@index([status, featured, publishedAt(sort: Desc)])
   @@index([kind, status, createdAt(sort: Desc)])
@@ -136,6 +146,42 @@ model Listing {
   @@index([ownerId, status, updatedAt(sort: Desc)])
   @@index([price])
   @@map("listings")
+}
+
+model ProductDetails {
+  id              String  @id @default(uuid()) @db.Uuid
+  listingId       String  @unique @map("listing_id") @db.Uuid
+  condition       String  @db.VarChar(30)
+  stock           Int     @default(1)
+  deliveryDetails String? @map("delivery_details") @db.VarChar(180)
+  listing         Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([stock])
+  @@map("product_details")
+}
+
+model CheckoutOrder {
+  id            String         @id @default(uuid()) @db.Uuid
+  listingId     String         @map("listing_id") @db.Uuid
+  buyerId       String         @map("buyer_id") @db.Uuid
+  quantity      Int
+  unitPrice     Decimal        @map("unit_price") @db.Decimal(14, 2)
+  total         Decimal        @db.Decimal(14, 2)
+  status        CheckoutStatus @default(PENDING_PAYMENT)
+  recipientName String         @map("recipient_name") @db.VarChar(120)
+  phone         String         @db.VarChar(30)
+  addressLine   String         @map("address_line") @db.VarChar(180)
+  city          String         @db.VarChar(100)
+  state         String         @db.Char(2)
+  postalCode    String         @map("postal_code") @db.VarChar(10)
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  listing       Listing        @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  buyer         User           @relation(fields: [buyerId], references: [id], onDelete: Restrict)
+
+  @@index([buyerId, createdAt(sort: Desc)])
+  @@index([listingId, status])
+  @@map("checkout_orders")
 }
 
 model ListingLocation {
@@ -191,6 +237,8 @@ model ListingImage {
   listingId  String   @map("listing_id") @db.Uuid
   storageKey String   @map("storage_key") @db.VarChar(500)
   publicUrl  String?  @map("public_url") @db.VarChar(1000)
+  data       Bytes?   @db.ByteA
+  mimeType   String?  @map("mime_type") @db.VarChar(50)
   altText    String?  @map("alt_text") @db.VarChar(180)
   position   Int      @default(0)
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)

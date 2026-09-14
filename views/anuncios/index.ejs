@@ -3,16 +3,16 @@
 <main id="conteudo" class="section section-alt">
   <div class="container-wide">
     <div class="dashboard-header">
-      <div><p class="eyebrow">Modo demonstração</p><h1>Meus anúncios</h1><p class="muted">Estes dados existem somente durante a sessão atual.</p></div>
+      <div><p class="eyebrow"><%= isDemoListingFlow ? 'Modo demonstração' : 'Sua conta' %></p><h1>Meus anúncios</h1><p class="muted"><%= isDemoListingFlow ? 'Estes dados existem somente durante a sessão atual.' : 'Anúncios publicados com a sua conta.' %></p></div>
       <a class="button button-primary" href="/anuncios/novo">Criar anúncio</a>
     </div>
     <%- include('../partials/flash') %>
     <% if (listings.length) { %>
       <div class="listing-cards">
-        <% listings.forEach((listing) => { %><%- include('../partials/listing-card', { listing }) %><% }) %>
+        <% listings.forEach((listing) => { %><%- include('../partials/listing-card', { listing, ownerControls: true }) %><% }) %>
       </div>
     <% } else { %>
-      <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">⌂</div><h2>Nenhum anúncio nesta sessão</h2><p>Crie um anúncio de teste para conferir o fluxo.</p><a class="button button-primary" href="/anuncios/novo">Criar anúncio</a></div>
+      <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">⌂</div><h2>Nenhum anúncio encontrado</h2><p>Crie seu primeiro anúncio para começar.</p><a class="button button-primary" href="/anuncios/novo">Criar anúncio</a></div>
     <% } %>
   </div>
 </main>

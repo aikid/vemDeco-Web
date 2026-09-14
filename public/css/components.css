@@ -18,10 +18,12 @@
 .button-accent { background: var(--color-accent); color: #2d1b00; }
 .button-accent:hover { background: #ffb943; }
 .button-ghost { border-color: var(--color-border); background: white; color: var(--color-brand); }
+.button-danger { border-color: #f2b8b5; background: #fff0ee; color: var(--color-danger); }
+.button-danger:hover { background: #ffe0dc; }
 .button:disabled, .button[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
 
 .card { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-sm); }
-.category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .category-card { position: relative; min-height: 14rem; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; padding: 1.5rem; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
 .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .category-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 80% 15%, rgba(245, 166, 35, 0.26), transparent 30%); pointer-events: none; }

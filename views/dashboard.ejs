@@ -6,14 +6,15 @@
     <% if (user.isDemo) { %>
       <div class="demo-notice" role="note"><strong>Você está no modo demonstração.</strong> Os controles são apenas visuais e nenhuma informação será gravada.</div>
     <% } else { %>
-      <div class="demo-notice" role="note"><strong>Área em preparação.</strong> As opções abaixo serão ativadas conforme os fluxos forem conectados ao banco.</div>
+      <div class="demo-notice" role="note"><strong>Banco conectado.</strong> Você já pode consultar e publicar imóveis, serviços e produtos.</div>
     <% } %>
     <div class="dashboard-grid">
-      <article class="card dashboard-card"><img src="/img/anuncio.png" alt=""><h2>Meus anúncios</h2><p>Veja os anúncios disponíveis nesta sessão de demonstração.</p><a class="button button-ghost" href="/meus-anuncios">Ver anúncios</a></article>
-      <article class="card dashboard-card"><img src="/img/imoveis.png" alt=""><h2>Novo imóvel</h2><p>Teste o cadastro com os campos específicos de imóveis.</p><a class="button button-ghost" href="/anuncios/novo">Cadastrar</a></article>
-      <article class="card dashboard-card"><img src="/img/vemdeco-plataforma-digital-logo.png" alt=""><h2>Novo serviço</h2><p>Altere a categoria no formulário para cadastrar um serviço.</p><a class="button button-ghost" href="/anuncios/novo">Cadastrar</a></article>
+      <article class="card dashboard-card"><img src="/img/anuncio.png" alt=""><h2>Meus anúncios</h2><p>Veja os anúncios publicados com a sua conta.</p><a class="button button-ghost" href="/meus-anuncios">Ver anúncios</a></article>
+      <article class="card dashboard-card"><img src="/img/imoveis.png" alt=""><h2>Novo imóvel</h2><p>Cadastre um anúncio com os campos específicos de imóveis.</p><a class="button button-ghost" href="/anuncios/novo?tipo=imovel">Cadastrar</a></article>
+      <article class="card dashboard-card"><img src="/img/vemdeco-plataforma-digital-logo.png" alt=""><h2>Novo serviço</h2><p>Cadastre um serviço e informe a área atendida.</p><a class="button button-ghost" href="/anuncios/novo?tipo=servico">Cadastrar</a></article>
+      <article class="card dashboard-card"><img src="/img/anuncio.png" alt=""><h2>Novo produto</h2><p>Cadastre um produto com preço, estoque e opções de entrega.</p><a class="button button-ghost" href="/anuncios/novo?tipo=produto">Cadastrar</a></article>
+      <article class="card dashboard-card"><img src="/img/avaliacao.png" alt=""><h2>Interesses recebidos</h2><p><%= interestCount ? `${interestCount} novo(s) contato(s) aguardando sua atenção.` : 'Acompanhe quem demonstrou interesse nos seus imóveis e serviços.' %></p><a class="button button-ghost" href="/interesses">Ver interesses<%= interestCount ? ` (${interestCount})` : '' %></a></article>
       <article class="card dashboard-card"><img src="/img/aprovacao.png" alt=""><h2>Aprovações</h2><p>Revise anúncios que aguardam moderação na plataforma.</p><button class="button button-ghost" type="button" disabled>Em breve</button></article>
-      <article class="card dashboard-card"><img src="/img/avaliacao.png" alt=""><h2>Avaliações</h2><p>Acompanhe avaliações e informações de qualidade.</p><button class="button button-ghost" type="button" disabled>Em breve</button></article>
       <article class="card dashboard-card"><img src="/img/adm.png" alt=""><h2>Usuários e perfis</h2><p>Administre papéis de administradores, corretores, parceiros e avaliadores.</p><button class="button button-ghost" type="button" disabled>Em breve</button></article>
     </div>
   </div>

@@ -8,9 +8,10 @@ const demoListingRoutes = require('./routes/demo-listing.routes')
 const { notFound, errorHandler } = require('./middlewares/error.middleware')
 const { createSessionMiddleware } = require('./config/session')
 const { csrfToken, verifyCsrf } = require('./middlewares/csrf.middleware')
-const { exposeUser } = require('./middlewares/auth.middleware')
+const { exposeUser, requireAuth } = require('./middlewares/auth.middleware')
 const { isProduction, demoMode } = require('./config/env')
 const format = require('./utils/format')
+const { listingImageUpload } = require('./middlewares/listing-upload.middleware')
 
 const app = express()
 const rootDirectory = path.resolve(__dirname, '..')
@@ -35,7 +36,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'"],
-      imgSrc: ["'self'", 'data:'],
+      imgSrc: ["'self'", 'data:', 'https:'],
       fontSrc: ["'self'"],
       connectSrc: ["'self'"],
       frameSrc: ['https://www.google.com'],
@@ -58,6 +59,9 @@ app.use(express.static(path.join(rootDirectory, 'public'), {
 app.use(createSessionMiddleware())
 app.use(csrfToken)
 app.use(exposeUser)
+// Multipart precisa ser processado antes da verificação do token presente no corpo.
+app.post('/anuncios', requireAuth, listingImageUpload)
+app.post('/anuncios/:id/editar', requireAuth, listingImageUpload)
 app.use((req, res, next) => {
   res.locals.appName = 'vemDeco'
   res.locals.currentPath = req.path

@@ -1,0 +1,16 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<main id="conteudo" class="section section-alt">
+  <div class="container-narrow">
+    <div class="card listing-form-card">
+      <p class="eyebrow">Interesse enviado</p>
+      <h1><%= interest.listing.owner.name %> foi notificado</h1>
+      <p class="muted">Seu interesse em <strong><%= interest.listing.title %></strong> foi registrado. O anunciante poderá consultar sua mensagem e seus dados de contato no dashboard.</p>
+      <div class="demo-notice" role="status"><strong>Tudo certo.</strong> Agora é só aguardar o contato do anunciante.</div>
+      <a class="button button-primary" href="/anuncios/<%= interest.listing.slug %>">Voltar ao anúncio</a>
+      <a class="button button-ghost" href="/">Continuar navegando</a>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/end') %>
