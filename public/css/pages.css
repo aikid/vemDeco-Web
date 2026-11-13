@@ -76,6 +76,8 @@
 .listing-form { display: grid; gap: 1.25rem; margin-top: 1.75rem; }
 .conditional-fields { margin: 0; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
 .conditional-fields legend { padding-inline: 0.5rem; font-weight: 850; }
+.payment-options { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; }
+.payment-options label { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 750; }
 .listing-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .listing-card { overflow: hidden; }
 .listing-card-media { min-height: 12rem; display: grid; place-items: center; background: linear-gradient(135deg, #dcebee, #f7fafb); color: var(--color-brand); text-decoration: none; }

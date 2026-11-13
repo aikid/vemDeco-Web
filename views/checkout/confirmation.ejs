@@ -3,12 +3,24 @@
 <main id="conteudo" class="section section-alt">
   <div class="container-narrow">
     <div class="card listing-form-card">
-      <p class="eyebrow">Pedido recebido</p>
-      <h1>Produto reservado com sucesso</h1>
+      <p class="eyebrow"><%= order.status === 'CONFIRMED' ? 'Pagamento confirmado' : 'Pedido recebido' %></p>
+      <h1><%= order.status === 'CONFIRMED' ? 'Compra confirmada' : order.status === 'CANCELLED' ? 'Pedido cancelado' : 'Produto reservado com sucesso' %></h1>
+      <%- include('../partials/flash') %>
       <p><strong><%= order.listing.title %></strong></p>
       <p class="listing-price"><%= formatCurrency(order.total) %></p>
       <p class="muted">Pedido <%= order.id %> · <%= order.quantity %> unidade(s)</p>
-      <div class="demo-notice" role="status"><strong>Aguardando pagamento.</strong> Nenhuma cobrança foi realizada; a integração com o provedor de pagamento será adicionada em uma próxima etapa.</div>
+      <% if (order.status === 'CONFIRMED') { %>
+        <div class="demo-notice" role="status"><strong>Pagamento aprovado.</strong> O Asaas confirmou esta transação.</div>
+      <% } else if (order.status === 'CANCELLED') { %>
+        <div class="demo-notice" role="status"><strong>Cobrança cancelada.</strong> A reserva de estoque deste pedido foi liberada.</div>
+      <% } else { %>
+        <div class="demo-notice" role="status"><strong>Aguardando pagamento.</strong> Conclua ou simule o pagamento no <%= asaasSandbox ? 'Sandbox do ' : '' %>Asaas.</div>
+        <% if (order.paymentUrl) { %><a class="button button-primary" href="<%= order.paymentUrl %>" target="_blank" rel="noopener noreferrer">Abrir pagamento no Asaas</a><% } %>
+        <form action="/pedidos/<%= order.id %>/sincronizar" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="button button-ghost" type="submit">Atualizar status do pagamento</button>
+        </form>
+      <% } %>
       <a class="button button-primary" href="/anuncios/<%= order.listing.slug %>">Voltar ao produto</a>
       <a class="button button-ghost" href="/">Continuar navegando</a>
     </div>

@@ -26,6 +26,17 @@ if (nodeEnv === 'production' && !demoMode && (!process.env.SESSION_SECRET || pro
 const sessionSecret = process.env.SESSION_SECRET || (
   demoMode ? crypto.randomBytes(32).toString('hex') : 'apenas-desenvolvimento-troque-esta-chave'
 )
+const asaasApiUrl = (process.env.ASAAS_API_URL || 'https://api-sandbox.asaas.com/v3').replace(/\/$/, '')
+const asaasApiKey = process.env.ASAAS_API_KEY?.trim() || ''
+const asaasWebhookToken = process.env.ASAAS_WEBHOOK_TOKEN?.trim() || ''
+
+if (asaasApiKey && !asaasApiUrl.startsWith('https://')) {
+  throw new Error('ASAAS_API_URL deve usar HTTPS.')
+}
+
+if (asaasWebhookToken && asaasWebhookToken.length < 32) {
+  throw new Error('ASAAS_WEBHOOK_TOKEN deve ter pelo menos 32 caracteres.')
+}
 
 module.exports = Object.freeze({
   env: nodeEnv,
@@ -35,4 +46,9 @@ module.exports = Object.freeze({
   sessionSecret,
   isProduction: nodeEnv === 'production',
   demoMode,
+  asaasApiUrl,
+  asaasApiKey,
+  asaasWebhookToken,
+  asaasEnabled: Boolean(asaasApiKey),
+  asaasSandbox: asaasApiUrl.includes('api-sandbox.asaas.com'),
 })

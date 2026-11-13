@@ -161,27 +161,46 @@ model ProductDetails {
 }
 
 model CheckoutOrder {
-  id            String         @id @default(uuid()) @db.Uuid
-  listingId     String         @map("listing_id") @db.Uuid
-  buyerId       String         @map("buyer_id") @db.Uuid
-  quantity      Int
-  unitPrice     Decimal        @map("unit_price") @db.Decimal(14, 2)
-  total         Decimal        @db.Decimal(14, 2)
-  status        CheckoutStatus @default(PENDING_PAYMENT)
-  recipientName String         @map("recipient_name") @db.VarChar(120)
-  phone         String         @db.VarChar(30)
-  addressLine   String         @map("address_line") @db.VarChar(180)
-  city          String         @db.VarChar(100)
-  state         String         @db.Char(2)
-  postalCode    String         @map("postal_code") @db.VarChar(10)
-  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt     DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
-  listing       Listing        @relation(fields: [listingId], references: [id], onDelete: Restrict)
-  buyer         User           @relation(fields: [buyerId], references: [id], onDelete: Restrict)
+  id                 String         @id @default(uuid()) @db.Uuid
+  listingId          String         @map("listing_id") @db.Uuid
+  buyerId            String         @map("buyer_id") @db.Uuid
+  quantity           Int
+  unitPrice          Decimal        @map("unit_price") @db.Decimal(14, 2)
+  total              Decimal        @db.Decimal(14, 2)
+  status             CheckoutStatus @default(PENDING_PAYMENT)
+  recipientName      String         @map("recipient_name") @db.VarChar(120)
+  phone              String         @db.VarChar(30)
+  addressLine        String         @map("address_line") @db.VarChar(180)
+  city               String         @db.VarChar(100)
+  state              String         @db.Char(2)
+  postalCode         String         @map("postal_code") @db.VarChar(10)
+  paymentProvider    String?        @map("payment_provider") @db.VarChar(30)
+  paymentMethod      String?        @map("payment_method") @db.VarChar(30)
+  paymentStatus      String?        @map("payment_status") @db.VarChar(40)
+  paymentExternalId  String?        @unique @map("payment_external_id") @db.VarChar(80)
+  paymentUrl         String?        @map("payment_url") @db.VarChar(1000)
+  paymentDueDate     DateTime?      @map("payment_due_date") @db.Date
+  paymentConfirmedAt DateTime?      @map("payment_confirmed_at") @db.Timestamptz(3)
+  createdAt          DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  listing            Listing        @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  buyer              User           @relation(fields: [buyerId], references: [id], onDelete: Restrict)
 
   @@index([buyerId, createdAt(sort: Desc)])
   @@index([listingId, status])
   @@map("checkout_orders")
+}
+
+model PaymentWebhookEvent {
+  id          String   @id @db.VarChar(120)
+  provider    String   @db.VarChar(30)
+  eventType   String   @map("event_type") @db.VarChar(80)
+  paymentId   String?  @map("payment_id") @db.VarChar(80)
+  payload     Json
+  processedAt DateTime @default(now()) @map("processed_at") @db.Timestamptz(3)
+
+  @@index([provider, paymentId])
+  @@map("payment_webhook_events")
 }
 
 model ListingLocation {

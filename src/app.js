@@ -12,6 +12,7 @@ const { exposeUser, requireAuth } = require('./middlewares/auth.middleware')
 const { isProduction, demoMode } = require('./config/env')
 const format = require('./utils/format')
 const { listingImageUpload } = require('./middlewares/listing-upload.middleware')
+const asaasWebhook = require('./controllers/asaas-webhook.controller')
 
 const app = express()
 const rootDirectory = path.resolve(__dirname, '..')
@@ -55,6 +56,9 @@ app.use(express.static(path.join(rootDirectory, 'public'), {
   etag: true,
   maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
 }))
+
+// Webhook autenticado pelo header asaas-access-token; não usa sessão nem CSRF.
+app.post('/webhooks/asaas', asaasWebhook.receive)
 
 app.use(createSessionMiddleware())
 app.use(csrfToken)
