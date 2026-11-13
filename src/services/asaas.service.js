@@ -115,6 +115,24 @@ function getPayment(paymentId) {
   return request(`/payments/${encodeURIComponent(paymentId)}`)
 }
 
+function getAccountStatus() {
+  return request('/myAccount/status/')
+}
+
+async function ensurePaymentMethodAvailable(billingType) {
+  ensureConfigured()
+  if (billingType !== 'CREDIT_CARD') return
+
+  const status = await getAccountStatus()
+  if (status?.commercialInfo !== 'APPROVED') {
+    throw new AppError(
+      'O cadastro comercial da conta Asaas está pendente. Complete os dados comerciais no Sandbox, incluindo o faturamento mensal, antes de gerar cobranças por cartão.',
+      422,
+      'ASAAS_COMMERCIAL_INFO_PENDING',
+    )
+  }
+}
+
 async function deletePayment(paymentId) {
   try {
     await request(`/payments/${encodeURIComponent(paymentId)}`, { method: 'DELETE' })
@@ -129,6 +147,8 @@ module.exports = {
   getOrCreateCustomer,
   createPayment,
   getPayment,
+  getAccountStatus,
+  ensurePaymentMethodAvailable,
   deletePayment,
   ensureConfigured,
 }

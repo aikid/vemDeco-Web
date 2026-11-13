@@ -140,6 +140,21 @@ test('gera cobrança de cartão sem enviar dados sensíveis à API', async (cont
   assert.equal('creditCardHolderInfo' in requestBody, false)
 })
 
+test('impede cartão quando o cadastro comercial da conta Asaas está pendente', async (context) => {
+  const originalFetch = global.fetch
+  context.after(() => { global.fetch = originalFetch })
+
+  global.fetch = async () => new Response(JSON.stringify({
+    commercialInfo: 'PENDING',
+    general: 'PENDING',
+  }), { status: 200, headers: { 'content-type': 'application/json' } })
+
+  await assert.rejects(
+    () => asaas.ensurePaymentMethodAvailable('CREDIT_CARD'),
+    (error) => error.code === 'ASAAS_COMMERCIAL_INFO_PENDING' && /dados comerciais/i.test(error.message),
+  )
+})
+
 test('propaga uma mensagem compreensível quando o Asaas rejeita a cobrança', async (context) => {
   const originalFetch = global.fetch
   context.after(() => { global.fetch = originalFetch })

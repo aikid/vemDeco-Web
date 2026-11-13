@@ -63,6 +63,7 @@ async function create(req, res, next) {
     }
 
     asaas.ensureConfigured()
+    await asaas.ensurePaymentMethodAvailable(result.data.billingType)
     order = await orders.createOrder(req.session.user.id, listing.id, result.data)
     const profile = await orders.findBuyerPaymentProfile(req.session.user.id)
     if (!profile) throw new AppError('Não foi possível localizar o comprador.', 404, 'BUYER_NOT_FOUND')
@@ -112,6 +113,22 @@ async function confirmation(req, res, next) {
   }
 }
 
+async function purchases(req, res, next) {
+  try {
+    const purchaseList = req.session.user.isDemo
+      ? []
+      : await orders.findBuyerOrders(req.session.user.id)
+    res.render('checkout/index', {
+      pageTitle: 'Minhas compras',
+      description: 'Acompanhe seus pedidos e o status dos pagamentos no Asaas.',
+      orders: purchaseList,
+      asaasSandbox,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 async function syncPayment(req, res, next) {
   try {
     const order = await orders.findBuyerOrder(req.params.id, req.session.user.id)
@@ -136,4 +153,4 @@ async function syncPayment(req, res, next) {
   }
 }
 
-module.exports = { show, create, confirmation, syncPayment }
+module.exports = { show, create, confirmation, purchases, syncPayment }

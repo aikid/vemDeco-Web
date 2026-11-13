@@ -118,6 +118,11 @@ test('modo demonstração cria sessão local e libera o dashboard', async () => 
     const dashboardHtml = await dashboard.text()
     assert.match(dashboardHtml, /modo demonstração/i)
     assert.match(dashboardHtml, /Novo produto/)
+    assert.match(dashboardHtml, /Minhas compras/)
+
+    const purchases = await fetch(`${baseUrl}/minhas-compras`, { headers: { cookie: authenticatedCookie } })
+    assert.equal(purchases.status, 200)
+    assert.match(await purchases.text(), /Nenhuma compra encontrada/)
 
     const productForm = await fetch(`${baseUrl}/anuncios/novo?tipo=produto`, { headers: { cookie: authenticatedCookie } })
     assert.equal(productForm.status, 200)

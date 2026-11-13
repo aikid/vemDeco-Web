@@ -90,6 +90,36 @@ function findBuyerOrder(id, buyerId) {
   })
 }
 
+async function findBuyerOrders(buyerId) {
+  const orderList = await getPrisma().checkoutOrder.findMany({
+    where: {
+      buyerId,
+      NOT: { status: 'CANCELLED', paymentExternalId: null },
+    },
+    include: {
+      listing: {
+        select: {
+          title: true,
+          slug: true,
+          images: {
+            orderBy: { position: 'asc' },
+            take: 1,
+            select: { id: true, publicUrl: true },
+          },
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  })
+
+  return orderList.map((order) => ({
+    ...order,
+    imageUrl: order.listing.images[0]
+      ? order.listing.images[0].publicUrl || `/media/anuncios/${order.listing.images[0].id}`
+      : null,
+  }))
+}
+
 function mappedCheckoutStatus(eventType, paymentStatus) {
   if (['PAYMENT_CONFIRMED', 'PAYMENT_RECEIVED'].includes(eventType) || ['CONFIRMED', 'RECEIVED'].includes(paymentStatus)) {
     return 'CONFIRMED'
@@ -154,5 +184,6 @@ module.exports = {
   attachPayment,
   cancelOrderAndRestoreStock,
   findBuyerOrder,
+  findBuyerOrders,
   applyPaymentUpdate,
 }

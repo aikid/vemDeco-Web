@@ -98,10 +98,25 @@
 .interest-card h2 { margin: 0.75rem 0; font-size: 1.3rem; }
 .interest-card p { margin: 0.55rem 0 0; }
 .interest-message { padding: 1rem; border-radius: var(--radius-md); background: var(--color-surface-alt); white-space: pre-wrap; }
+.purchase-list { display: grid; gap: 1rem; }
+.purchase-card { display: grid; grid-template-columns: 12rem 1fr; overflow: hidden; }
+.purchase-media { min-height: 12rem; display: grid; place-items: center; background: linear-gradient(135deg, #dcebee, #f7fafb); text-decoration: none; }
+.purchase-media img { width: 100%; height: 100%; min-height: 12rem; display: block; object-fit: cover; }
+.purchase-media span { font-size: 2rem; font-weight: 850; }
+.purchase-content { display: grid; gap: 0.65rem; padding: 1.5rem; }
+.purchase-content p, .purchase-content h2 { margin: 0; }
+.purchase-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.purchase-heading h2 { font-size: 1.35rem; }
+.purchase-heading h2 a { text-decoration: none; }
+.purchase-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 0.5rem; }
+.purchase-actions form { margin: 0; }
 .listing-card-price { font-size: 1.15rem; }
 .status-badge { padding: 0.25rem 0.55rem; border-radius: 999px; background: var(--color-surface-alt); }
 .status-published { background: #eaf8f1; color: var(--color-success); }
 .status-draft { background: var(--color-accent-soft); color: #6d4300; }
+.status-confirmed { background: #eaf8f1; color: var(--color-success); }
+.status-pending-payment { background: var(--color-accent-soft); color: #6d4300; }
+.status-cancelled { background: #fff0ee; color: var(--color-danger); }
 .error-page { min-height: 70vh; display: grid; place-items: center; text-align: center; }
 .error-code { margin-bottom: 0.5rem; color: var(--color-accent); font-size: clamp(4rem, 15vw, 9rem); font-weight: 900; line-height: 1; }
 
@@ -120,6 +135,9 @@
   .cta-panel .button { width: 100%; }
   .auth-aside { min-height: 15rem; }
   .auth-main { padding-inline: 0.625rem; }
+  .purchase-card { grid-template-columns: 1fr; }
+  .purchase-media { min-height: 10rem; }
+  .purchase-heading { align-items: stretch; flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {

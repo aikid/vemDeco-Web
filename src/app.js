@@ -28,6 +28,7 @@ app.locals.csrfToken = ''
 app.locals.demoMode = demoMode
 app.locals.formatCurrency = format.currency
 app.locals.formatStatus = format.status
+app.locals.formatPaymentStatus = format.paymentStatus
 app.set('views', path.join(rootDirectory, 'views'))
 app.set('view engine', 'ejs')
 
