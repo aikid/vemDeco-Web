@@ -1,30 +1,83 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 <main id="conteudo" class="section section-alt">
-  <div class="container-narrow">
-    <div class="card listing-form-card">
-      <p class="eyebrow"><%= order.status === 'CONFIRMED' ? 'Pagamento confirmado' : 'Pedido recebido' %></p>
-      <h1><%= order.status === 'CONFIRMED' ? 'Compra confirmada' : order.status === 'CANCELLED' ? 'Pedido cancelado' : 'Produto reservado com sucesso' %></h1>
-      <%- include('../partials/flash') %>
-      <p><strong><%= order.listing.title %></strong></p>
-      <p class="listing-price"><%= formatCurrency(order.total) %></p>
-      <p class="muted">Pedido <%= order.id %> · <%= order.quantity %> unidade(s)</p>
-      <% if (order.status === 'CONFIRMED') { %>
-        <div class="demo-notice" role="status"><strong>Pagamento aprovado.</strong> O Asaas confirmou esta transação.</div>
-      <% } else if (order.status === 'CANCELLED') { %>
-        <div class="demo-notice" role="status"><strong>Cobrança cancelada.</strong> A reserva de estoque deste pedido foi liberada.</div>
-      <% } else { %>
-        <div class="demo-notice" role="status"><strong>Aguardando pagamento.</strong> Conclua ou simule o pagamento no <%= asaasSandbox ? 'Sandbox do ' : '' %>Asaas.</div>
-        <% if (order.paymentUrl) { %><a class="button button-primary" href="<%= order.paymentUrl %>" target="_blank" rel="noopener noreferrer">Abrir pagamento no Asaas</a><% } %>
-        <form action="/pedidos/<%= order.id %>/sincronizar" method="post">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button class="button button-ghost" type="submit">Atualizar status do pagamento</button>
-        </form>
-      <% } %>
-      <a class="button button-primary" href="/anuncios/<%= order.listing.slug %>">Voltar ao produto</a>
-      <a class="button button-ghost" href="/minhas-compras">Minhas compras</a>
-      <a class="button button-ghost" href="/">Continuar navegando</a>
+  <div class="container-wide order-page">
+    <a class="back-link" href="/minhas-compras">← Voltar para minhas compras</a>
+    <%- include('../partials/flash') %>
+
+    <div class="order-detail-layout">
+      <section class="card order-status-card" aria-labelledby="order-title">
+        <div class="order-status-heading">
+          <div class="order-status-icon status-<%= order.status.toLowerCase().replaceAll('_', '-') %>" aria-hidden="true"><%= order.status === 'CONFIRMED' ? '✓' : order.status === 'CANCELLED' ? '×' : '…' %></div>
+          <div>
+            <p class="eyebrow"><%= order.status === 'CONFIRMED' ? 'Pagamento confirmado' : order.status === 'CANCELLED' ? 'Pedido cancelado' : 'Pedido recebido' %></p>
+            <h1 id="order-title"><%= order.status === 'CONFIRMED' ? 'Compra confirmada' : order.status === 'CANCELLED' ? 'Este pedido foi cancelado' : 'Finalize o pagamento' %></h1>
+          </div>
+        </div>
+
+        <% if (order.status === 'CONFIRMED') { %>
+          <div class="order-notice order-notice-success" role="status">
+            <strong>Pagamento aprovado</strong>
+            <span>O Asaas confirmou a transação e seu pedido está concluído.</span>
+          </div>
+        <% } else if (order.status === 'CANCELLED') { %>
+          <div class="order-notice order-notice-danger" role="status">
+            <strong>Cobrança cancelada</strong>
+            <span>A reserva deste produto foi liberada e nenhuma ação adicional é necessária.</span>
+          </div>
+        <% } else { %>
+          <div class="order-notice" role="status">
+            <strong>Aguardando pagamento</strong>
+            <span>Conclua ou simule o pagamento no <%= asaasSandbox ? 'Sandbox do ' : '' %>Asaas.</span>
+          </div>
+          <div class="order-primary-actions">
+            <% if (order.paymentUrl) { %>
+              <a class="button button-primary" href="<%= order.paymentUrl %>" target="_blank" rel="noopener noreferrer">Abrir pagamento no Asaas</a>
+            <% } %>
+            <% if (order.paymentExternalId) { %>
+              <form action="/pedidos/<%= order.id %>/sincronizar" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="button button-ghost" type="submit">Atualizar status</button>
+              </form>
+            <% } %>
+          </div>
+        <% } %>
+
+        <div class="order-reference">
+          <span>Número do pedido</span>
+          <strong><%= order.id %></strong>
+        </div>
+      </section>
+
+      <aside class="card order-summary-card" aria-labelledby="summary-title">
+        <div class="order-product-media">
+          <% if (order.imageUrl) { %>
+            <img src="<%= order.imageUrl %>" alt="<%= order.listing.title %>">
+          <% } else { %>
+            <span aria-hidden="true">VD</span>
+          <% } %>
+        </div>
+        <div class="order-summary-content">
+          <p class="eyebrow" id="summary-title">Resumo da compra</p>
+          <h2><a href="/anuncios/<%= order.listing.slug %>"><%= order.listing.title %></a></h2>
+          <dl class="order-summary-list">
+            <div><dt>Quantidade</dt><dd><%= order.quantity %> unidade(s)</dd></div>
+            <div><dt>Pagamento</dt><dd><%= order.paymentMethod === 'CREDIT_CARD' ? 'Cartão de crédito' : order.paymentMethod === 'BOLETO' ? 'Boleto' : order.paymentMethod === 'PIX' ? 'Pix' : 'Não gerado' %></dd></div>
+            <div class="order-summary-total"><dt>Total</dt><dd><%= formatCurrency(order.total) %></dd></div>
+          </dl>
+          <div class="order-delivery">
+            <strong>Entrega</strong>
+            <span><%= order.addressLine %></span>
+            <span><%= order.city %> — <%= order.state %> · CEP <%= order.postalCode %></span>
+          </div>
+        </div>
+      </aside>
     </div>
+
+    <nav class="order-secondary-actions" aria-label="Navegação do pedido">
+      <a class="button button-ghost" href="/anuncios/<%= order.listing.slug %>">Ver produto</a>
+      <a class="button button-ghost" href="/">Continuar navegando</a>
+    </nav>
   </div>
 </main>
 <%- include('../partials/footer') %>

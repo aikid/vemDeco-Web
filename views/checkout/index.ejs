@@ -3,30 +3,56 @@
 <main id="conteudo" class="section section-alt">
   <div class="container-wide">
     <div class="section-heading">
-      <div><p class="eyebrow">Minha área</p><h1>Minhas compras</h1><p>Acompanhe pedidos e pagamentos processados pelo <%= asaasSandbox ? 'Sandbox do ' : '' %>Asaas.</p></div>
+      <div>
+        <p class="eyebrow">Minha área</p>
+        <h1>Minhas compras</h1>
+        <p>Acompanhe seus pedidos e pagamentos processados pelo <%= asaasSandbox ? 'Sandbox do ' : '' %>Asaas.</p>
+      </div>
       <a class="button button-ghost" href="/dashboard">Voltar ao painel</a>
     </div>
     <%- include('../partials/flash') %>
 
     <% if (!orders.length) { %>
-      <div class="empty-state"><div class="empty-state-icon" aria-hidden="true">🛍️</div><h2>Nenhuma compra encontrada</h2><p>Quando você comprar um produto, o pedido e seu status aparecerão aqui.</p><a class="button button-primary" href="/?categoria=produtos">Ver produtos</a></div>
+      <div class="empty-state">
+        <div class="empty-state-icon" aria-hidden="true">🛍️</div>
+        <h2>Nenhuma compra encontrada</h2>
+        <p>Quando você comprar um produto, o pedido e seu status aparecerão aqui.</p>
+        <a class="button button-primary" href="/?categoria=produtos">Ver produtos</a>
+      </div>
     <% } else { %>
-      <div class="purchase-list">
+      <div class="purchase-list" aria-label="Lista de pedidos">
         <% orders.forEach((order) => { %>
           <article class="card purchase-card">
-            <a class="purchase-media" href="/anuncios/<%= order.listing.slug %>">
-              <% if (order.imageUrl) { %><img src="<%= order.imageUrl %>" alt=""><% } else { %><span aria-hidden="true">VD</span><% } %>
+            <a class="purchase-media" href="/pedidos/<%= order.id %>" aria-label="Ver pedido de <%= order.listing.title %>">
+              <% if (order.imageUrl) { %>
+                <img src="<%= order.imageUrl %>" alt="<%= order.listing.title %>">
+              <% } else { %>
+                <span aria-hidden="true">VD</span>
+              <% } %>
             </a>
             <div class="purchase-content">
-              <div class="purchase-heading"><div><p class="eyebrow">Pedido de <%= new Date(order.createdAt).toLocaleDateString('pt-BR') %></p><h2><a href="/anuncios/<%= order.listing.slug %>"><%= order.listing.title %></a></h2></div><span class="status-badge status-<%= order.status.toLowerCase().replace('_', '-') %>"><%= formatPaymentStatus(order.paymentStatus, order.status) %></span></div>
-              <p class="listing-price"><%= formatCurrency(order.total) %></p>
-              <p class="muted"><%= order.quantity %> unidade(s) · <%= order.paymentMethod === 'CREDIT_CARD' ? 'Cartão de crédito' : order.paymentMethod === 'BOLETO' ? 'Boleto' : order.paymentMethod === 'PIX' ? 'Pix' : 'Pagamento não gerado' %></p>
-              <% if (order.paymentStatus) { %><p class="muted">Status Asaas: <strong><%= order.paymentStatus %></strong></p><% } %>
+              <div class="purchase-heading">
+                <div class="purchase-title">
+                  <p class="eyebrow">Pedido de <%= new Date(order.createdAt).toLocaleDateString('pt-BR') %></p>
+                  <h2><a href="/pedidos/<%= order.id %>"><%= order.listing.title %></a></h2>
+                </div>
+                <span class="status-badge status-<%= order.status.toLowerCase().replaceAll('_', '-') %>"><%= formatPaymentStatus(order.paymentStatus, order.status) %></span>
+              </div>
+              <div class="purchase-summary">
+                <div><span>Valor</span><strong><%= formatCurrency(order.total) %></strong></div>
+                <div><span>Quantidade</span><strong><%= order.quantity %> unidade(s)</strong></div>
+                <div><span>Pagamento</span><strong><%= order.paymentMethod === 'CREDIT_CARD' ? 'Cartão de crédito' : order.paymentMethod === 'BOLETO' ? 'Boleto' : order.paymentMethod === 'PIX' ? 'Pix' : 'Não gerado' %></strong></div>
+              </div>
               <div class="purchase-actions">
-                <a class="button button-ghost" href="/pedidos/<%= order.id %>">Ver pedido</a>
-                <% if (order.status === 'PENDING_PAYMENT' && order.paymentUrl) { %><a class="button button-primary" href="<%= order.paymentUrl %>" target="_blank" rel="noopener noreferrer">Pagar no Asaas</a><% } %>
+                <a class="button <%= order.status === 'PENDING_PAYMENT' && order.paymentUrl ? 'button-ghost' : 'button-primary' %>" href="/pedidos/<%= order.id %>">Ver detalhes</a>
+                <% if (order.status === 'PENDING_PAYMENT' && order.paymentUrl) { %>
+                  <a class="button button-primary" href="<%= order.paymentUrl %>" target="_blank" rel="noopener noreferrer">Pagar no Asaas</a>
+                <% } %>
                 <% if (order.status === 'PENDING_PAYMENT' && order.paymentExternalId) { %>
-                  <form action="/pedidos/<%= order.id %>/sincronizar" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="button button-ghost" type="submit">Atualizar status</button></form>
+                  <form action="/pedidos/<%= order.id %>/sincronizar" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="button button-ghost" type="submit">Atualizar pagamento</button>
+                  </form>
                 <% } %>
               </div>
             </div>

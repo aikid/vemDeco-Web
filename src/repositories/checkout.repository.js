@@ -83,11 +83,32 @@ async function cancelOrderAndRestoreStock(orderId, buyerId) {
   })
 }
 
-function findBuyerOrder(id, buyerId) {
-  return getPrisma().checkoutOrder.findFirst({
+async function findBuyerOrder(id, buyerId) {
+  const order = await getPrisma().checkoutOrder.findFirst({
     where: { id, buyerId },
-    include: { listing: { select: { title: true, slug: true } } },
+    include: {
+      listing: {
+        select: {
+          title: true,
+          slug: true,
+          images: {
+            orderBy: { position: 'asc' },
+            take: 1,
+            select: { id: true, publicUrl: true },
+          },
+        },
+      },
+    },
   })
+
+  if (!order) return null
+
+  return {
+    ...order,
+    imageUrl: order.listing.images[0]
+      ? order.listing.images[0].publicUrl || `/media/anuncios/${order.listing.images[0].id}`
+      : null,
+  }
 }
 
 async function findBuyerOrders(buyerId) {
