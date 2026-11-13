@@ -63,25 +63,38 @@ function dueDate(days = 3) {
   }).format(target)
 }
 
-function createCustomer({ user, cpfCnpj, phone }) {
+function customerData({ user, cpfCnpj, phone, addressLine, postalCode }) {
+  return {
+    name: user.name,
+    cpfCnpj: cpfCnpj.replace(/\D/g, ''),
+    email: user.email,
+    mobilePhone: phone.replace(/\D/g, ''),
+    address: addressLine?.trim() || undefined,
+    postalCode: postalCode?.replace(/\D/g, '') || undefined,
+    externalReference: user.id,
+    notificationDisabled: true,
+  }
+}
+
+function createCustomer(input) {
   return request('/customers', {
     method: 'POST',
-    body: {
-      name: user.name,
-      cpfCnpj: cpfCnpj.replace(/\D/g, ''),
-      email: user.email,
-      mobilePhone: phone.replace(/\D/g, ''),
-      externalReference: user.id,
-      notificationDisabled: true,
-    },
+    body: customerData(input),
   })
 }
 
-async function getOrCreateCustomer({ user, cpfCnpj, phone }) {
-  const query = new URLSearchParams({ externalReference: user.id, limit: '1' })
+function updateCustomer(customerId, input) {
+  return request(`/customers/${encodeURIComponent(customerId)}`, {
+    method: 'PUT',
+    body: customerData(input),
+  })
+}
+
+async function getOrCreateCustomer(input) {
+  const query = new URLSearchParams({ externalReference: input.user.id, limit: '1' })
   const existing = await request(`/customers?${query}`)
-  if (existing?.data?.[0]?.id) return existing.data[0]
-  return createCustomer({ user, cpfCnpj, phone })
+  if (existing?.data?.[0]?.id) return updateCustomer(existing.data[0].id, input)
+  return createCustomer(input)
 }
 
 function createPayment({ customerId, order, billingType }) {
@@ -112,6 +125,7 @@ async function deletePayment(paymentId) {
 
 module.exports = {
   createCustomer,
+  updateCustomer,
   getOrCreateCustomer,
   createPayment,
   getPayment,

@@ -71,6 +71,8 @@ async function create(req, res, next) {
       user: profile,
       cpfCnpj: result.data.cpfCnpj,
       phone: result.data.phone,
+      addressLine: result.data.addressLine,
+      postalCode: result.data.postalCode,
     })
 
     payment = await asaas.createPayment({

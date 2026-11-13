@@ -68,6 +68,49 @@ test('localiza ou cria cliente no Sandbox com autenticação do Asaas', async (c
   })
 })
 
+test('atualiza CPF e endereço de cliente já existente antes da cobrança', async (context) => {
+  const originalFetch = global.fetch
+  context.after(() => { global.fetch = originalFetch })
+
+  const calls = []
+  global.fetch = async (url, options) => {
+    calls.push({ url, options })
+    if (options.method === 'GET') {
+      return new Response(JSON.stringify({ data: [{ id: 'cus_existente', cpfCnpj: null }] }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      })
+    }
+    return new Response(JSON.stringify({ id: 'cus_existente', cpfCnpj: '24971563792' }), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    })
+  }
+
+  const customer = await asaas.getOrCreateCustomer({
+    user: { id: 'user-1', name: 'Cliente Teste', email: 'cliente@example.test' },
+    cpfCnpj: '249.715.637-92',
+    phone: '(11) 99999-0000',
+    addressLine: 'Rua de Teste, 100',
+    postalCode: '01001-000',
+  })
+
+  assert.equal(customer.cpfCnpj, '24971563792')
+  assert.equal(calls.length, 2)
+  assert.equal(calls[1].url, 'https://api-sandbox.asaas.com/v3/customers/cus_existente')
+  assert.equal(calls[1].options.method, 'PUT')
+  assert.deepEqual(JSON.parse(calls[1].options.body), {
+    name: 'Cliente Teste',
+    cpfCnpj: '24971563792',
+    email: 'cliente@example.test',
+    mobilePhone: '11999990000',
+    address: 'Rua de Teste, 100',
+    postalCode: '01001000',
+    externalReference: 'user-1',
+    notificationDisabled: true,
+  })
+})
+
 test('gera cobrança de cartão sem enviar dados sensíveis à API', async (context) => {
   const originalFetch = global.fetch
   context.after(() => { global.fetch = originalFetch })
